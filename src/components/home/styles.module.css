@@ -1,0 +1,44 @@
+.main {
+  background-color: var(--very-dark-blue);
+  min-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+}
+
+.topInfo {
+  font-size: 1.4em;
+}
+
+.orderStatesBox {
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+  margin-top: 2em;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.orderState {
+  border-radius: 8px;
+  border: 1px solid var(--primary-light-blue);
+  display: flex;
+  flex-direction: row;
+  padding: 0.5em 1em;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  font-size: 1.25em;
+  height: 2.5em;
+}
+
+.orderState svg {
+  width: auto;
+  height: 100%;
+}
+.orderState p {
+  margin-top: 3px;
+  text-align: center;
+}

@@ -3,11 +3,38 @@
 @tailwind utilities;
 
 :root {
-  --very-dark-blue: #0b1120;
-  --very-dark-desaturated-blue: #1a2239;
-  --light-grayish-blue: #d1d9f1;
-  --light-grayish-blue-hover: #e6ecf9;
-  --dark-grayish-blue: #878e9e;
-  --very-dark-grayish-blue-1: #464c59;
-  --very-dark-grayish-blue-2: #2b313c;
+  --very-dark-blue: hsl(235, 21%, 11%);
+  --very-dark-desaturated-blue: hsl(235, 24%, 19%);
+  --light-grayish-blue: hsl(234, 39%, 85%);
+  --light-grayish-blue-hover: hsl(236, 33%, 92%);
+  --dark-grayish-blue: hsl(234, 11%, 52%);
+  --very-dark-grayish-blue-1: hsl(233, 14%, 35%);
+  --very-dark-grayish-blue-2: hsl(237, 14%, 26%);
+  --white: white;
+  --grey: rgb(224, 224, 224);
+  --background-color-light-purple: #e4d9ff;
+  --primary-color-dark-blue: #273469;
+  --primary-color-darker-blue: #242562;
+  --secondary-color-dark-black: #30343f;
+  --third-color-ice-light: #fafaff;
+  --color-light-night-blue: #3d37f1;
+  --third-color-light-black: #424755;
+  --color-charcoal: #272727;
+  --light-indigo: #636ea9;
+  --grey-disabled: #8b93a7;
+  --font-color-primary: #1d275f;
+  --primary-red: #ef4444;
+  --secondary-red: #fa8383;
+  --third-red: #da0202;
+  --primary-green: #1ec91e;
+  --secondary-green: #1aad1a;
+  --primary-light-blue: #007bff;
+  --secondary-light-blue: #0000ff;
+  --third-light-blue: #0068d8;
+  --primary-yellow: #ffab3e;
+  --secondary-yellow: #fd9916;
+}
+
+main {
+  color: var(--light-grayish-blue);
 }

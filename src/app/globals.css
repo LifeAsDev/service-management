@@ -38,3 +38,12 @@
 main {
   color: var(--light-grayish-blue);
 }
+
+body {
+  padding-top: 5em;
+}
+
+body,
+html {
+  overflow-x: hidden;
+}

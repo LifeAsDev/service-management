@@ -1,0 +1,72 @@
+.header {
+  position: fixed;
+  background-color: var(--very-dark-desaturated-blue);
+  height: 5em;
+  width: 100%;
+  top: 0;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5em;
+  color: white;
+}
+
+.menuBtn {
+  cursor: pointer;
+  background-color: var(--very-dark-grayish-blue-1);
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.menuBtn:hover {
+  background-color: var(--very-dark-grayish-blue-2);
+}
+
+.headerItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.headerItem svg {
+  width: 32px;
+}
+
+.userBox {
+  cursor: pointer;
+  position: relative;
+}
+
+.userOptions {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0;
+  transform: translateY(100%);
+  background-color: var(--very-dark-desaturated-blue);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.65);
+  border-radius: 4px;
+  overflow: hidden;
+  height: 0;
+  transition: 0.2s;
+  right: 0;
+}
+
+.userOption {
+  padding: 0.5em 1em;
+}
+.userOption:hover {
+  background-color: var(--very-dark-blue);
+}
+
+.userBox:hover .userOptions {
+  height: 80px;
+}
+.userBox svg {
+  transition: 0.2s;
+  transform: rotate(180deg);
+}
+.userBox:hover svg {
+  transform: rotate(0);
+}

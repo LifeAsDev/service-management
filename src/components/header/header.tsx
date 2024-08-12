@@ -1,11 +1,19 @@
 "use client";
 import SearchInput from "@/components/searchInput/searchInput";
 import styles from "./styles.module.css";
+import { useOnboardingContext } from "@/lib/context";
 export default function Header() {
+  const { setAsideOpen } = useOnboardingContext();
+
   return (
     <header className={styles.header}>
       <div className={styles.headerItem}>
-        <div className={styles.menuBtn}>
+        <div
+          onClick={() => {
+            setAsideOpen((prev: boolean) => !prev);
+          }}
+          className={styles.menuBtn}
+        >
           <svg
             viewBox="0 0 24 24"
             fill="none"

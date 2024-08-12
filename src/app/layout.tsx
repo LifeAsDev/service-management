@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header/header";
+import Aside from "@/components/header/aside/aside";
+import { OnboardingProvider } from "@/lib/context";
+import MainWrapper from "@/components/mainWrapper/mainWrapper";
 
 const josefinSans = Josefin_Sans({ subsets: ["latin"] });
 
@@ -18,8 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={josefinSans.className}>
-        <Header />
-        {children}
+        <OnboardingProvider>
+          <Header />
+          <Aside />
+          <MainWrapper>{children}</MainWrapper>
+        </OnboardingProvider>
       </body>
     </html>
   );

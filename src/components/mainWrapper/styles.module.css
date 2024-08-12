@@ -1,0 +1,8 @@
+.mainWrapper {
+  padding-left: 15em;
+  transition: 0.1s;
+}
+
+.mainWrapper.close {
+  padding-left: 4em;
+}

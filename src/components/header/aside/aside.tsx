@@ -7,7 +7,6 @@ import { useOnboardingContext } from "@/lib/context";
 export default function Aside() {
   const { asideOpen } = useOnboardingContext();
   const currentPage = usePathname();
-
   if (!currentPage.startsWith("/api"))
     return (
       <aside className={`${styles.aside} ${asideOpen && styles.close}`}>

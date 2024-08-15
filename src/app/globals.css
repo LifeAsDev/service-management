@@ -11,6 +11,8 @@
   --very-dark-grayish-blue-1: hsl(233, 14%, 35%);
   --very-dark-grayish-blue-2: hsl(237, 14%, 26%);
   --white: white;
+  --white-hover: rgb(243, 244, 246);
+  --grey2: rgb(209, 213, 219);
   --grey: rgb(224, 224, 224);
   --background-color-light-purple: #e4d9ff;
   --primary-color-dark-blue: #273469;
@@ -37,6 +39,9 @@
 
 main {
   color: var(--light-grayish-blue);
+  background-color: var(--very-dark-blue);
+  min-width: 100%;
+  box-sizing: border-box;
 }
 
 body {
@@ -46,4 +51,17 @@ body {
 body,
 html {
   overflow-x: hidden;
+}
+
+button {
+  background-color: var(--very-dark-desaturated-blue);
+  border: 1px solid var(--light-grayish-blue);
+  border-radius: 0.25em;
+  padding: 0.5em 1em;
+  padding-bottom: 0.425em;
+  color: var(--white);
+}
+
+button:hover {
+  background-color: var(--very-dark-grayish-blue-1);
 }

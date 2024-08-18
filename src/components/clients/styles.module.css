@@ -80,3 +80,8 @@
 .rotate {
   transform: rotate(180deg);
 }
+
+.fetchText {
+  margin-top: 9em;
+  text-align: center;
+}

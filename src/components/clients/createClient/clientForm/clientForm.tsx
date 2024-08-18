@@ -4,7 +4,7 @@ import { useState } from "react";
 import styles from "./styles.module.css";
 
 export default function ClientForm() {
-  const [formData, setFormData] = useState<Omit<Client, "_id">>({
+  const [clientData, setClientData] = useState<Omit<Client, "_id">>({
     fullName: "",
     numero: "",
     correo: "",
@@ -15,14 +15,35 @@ export default function ClientForm() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setClientData({
+      ...clientData,
       [name]: value,
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    try {
+      const data = new FormData();
+      Object.entries(clientData).forEach(([key, value]) => {
+        data.append(key, value);
+      });
+      const response = await fetch("/api/client", {
+        // Replace with your endpoint path
+        method: "POST",
+        body: data,
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        console.log("Client created:", result.client);
+      } else {
+        console.error("Error:", result.message);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (
@@ -35,7 +56,7 @@ export default function ClientForm() {
           type="text"
           id="fullName"
           name="fullName"
-          value={formData.fullName}
+          value={clientData.fullName}
           onChange={handleChange}
           className={styles.input}
           required
@@ -49,7 +70,7 @@ export default function ClientForm() {
           type="text"
           id="numero"
           name="numero"
-          value={formData.numero}
+          value={clientData.numero}
           onChange={handleChange}
           className={styles.input}
           required
@@ -60,10 +81,10 @@ export default function ClientForm() {
           Correo:
         </label>
         <input
-          type="email"
+          type="text"
           id="correo"
           name="correo"
-          value={formData.correo}
+          value={clientData.correo}
           onChange={handleChange}
           className={styles.input}
           required
@@ -77,7 +98,7 @@ export default function ClientForm() {
           type="text"
           id="direccion"
           name="direccion"
-          value={formData.direccion}
+          value={clientData.direccion}
           onChange={handleChange}
           className={styles.input}
           required
@@ -91,7 +112,7 @@ export default function ClientForm() {
           type="text"
           id="notas"
           name="notas"
-          value={formData.notas}
+          value={clientData.notas}
           onChange={handleChange}
           className={styles.input}
         />
@@ -104,7 +125,7 @@ export default function ClientForm() {
           type="text"
           id="id"
           name="id"
-          value={formData.id}
+          value={clientData.id}
           onChange={handleChange}
           className={styles.input}
           required

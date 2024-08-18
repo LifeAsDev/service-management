@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import { formatDate } from "@/lib/calculationFunctions";
 import Client from "@/models/client";
@@ -98,13 +98,28 @@ const mockclients: Client[] = [
 ];
 
 export default function Clients() {
-  const [fetchingMonitor, setFetchingMonitor] = useState(false);
-  const [clientsArr, setClientsArr] = useState<Client[]>(mockclients);
+  const [fetchingMonitor, setFetchingMonitor] = useState(true);
+  const [clientsArr, setClientsArr] = useState<Client[]>([]);
   const [sortByLastDate, setSortByLastDate] = useState(true);
+
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const res = await fetch(`/api/client`, {
+          method: "GET",
+        });
+
+        const resData = await res.json();
+        setFetchingMonitor(false);
+        setClientsArr(resData.clients);
+      } catch (error) {}
+    };
+    fetchClients();
+  }, []);
   return (
     <main className={styles.main}>
       <div className={styles.top}>
-        <h3>Clientes</h3>{" "}
+        <h3>Clientes</h3>
         <Link className={styles.addOrderBtn} href={"/clients/create"}>
           <button>Crear Cliente</button>
         </Link>
@@ -157,9 +172,7 @@ export default function Clients() {
             </tbody>
           </table>
           {fetchingMonitor ? (
-            <div className={styles.overlay}>
-              <div className={styles.loader}></div>
-            </div>
+            <p className={styles.fetchText}>Obteniendo Datos...</p>
           ) : (
             ""
           )}

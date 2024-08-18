@@ -3,6 +3,7 @@ import { useState } from "react";
 import styles from "./styles.module.css";
 import { formatDate } from "@/lib/calculationFunctions";
 import Client from "@/models/client";
+import Link from "next/link";
 const mockclients: Client[] = [
   {
     fullName: "John Doe",
@@ -103,8 +104,10 @@ export default function Clients() {
   return (
     <main className={styles.main}>
       <div className={styles.top}>
-        <h3>Clientes</h3>
-        <button className={styles.addOrderBtn}>Crear Cliente</button>
+        <h3>Clientes</h3>{" "}
+        <Link className={styles.addOrderBtn} href={"/clients/create"}>
+          <button>Crear Cliente</button>
+        </Link>
       </div>
       <div className={styles.tableOutside}>
         <div

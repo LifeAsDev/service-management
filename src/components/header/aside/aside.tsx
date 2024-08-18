@@ -89,7 +89,7 @@ export default function Aside() {
         <Link
           href={"/clients"}
           className={`${styles.asideItem} ${
-            currentPage === "/clients" && styles.asideSelected
+            currentPage.startsWith("/clients") && styles.asideSelected
           }`}
         >
           <svg

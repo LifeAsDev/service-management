@@ -13,16 +13,41 @@ export default function ClientForm() {
     id: "",
   });
 
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof Omit<Client, "_id">, string>>
+  >({});
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setClientData({
       ...clientData,
       [name]: value,
     });
+
+    // Limpiar errores cuando el usuario escribe
+    if (value.trim() !== "") {
+      setErrors({});
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const newErrors: Partial<Record<keyof Omit<Client, "_id">, string>> = {};
+    Object.entries(clientData).forEach(([key, value]) => {
+      if (
+        ["fullName", "numero", "correo", "direccion", "id"].includes(key) &&
+        value.trim() === ""
+      ) {
+        newErrors[key as keyof Omit<Client, "_id">] =
+          "Este campo es obligatorio.";
+      }
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
     try {
       const data = new FormData();
@@ -30,7 +55,6 @@ export default function ClientForm() {
         data.append(key, value);
       });
       const response = await fetch("/api/client", {
-        // Replace with your endpoint path
         method: "POST",
         body: data,
       });
@@ -58,13 +82,18 @@ export default function ClientForm() {
           name="fullName"
           value={clientData.fullName}
           onChange={handleChange}
-          className={styles.input}
-          required
+          className={`${styles.input} ${
+            errors.fullName ? styles.errorInput : ""
+          }`}
+          onFocus={() => setErrors({})}
         />
+        {errors.fullName && (
+          <p className={styles.errorText}>{errors.fullName}</p>
+        )}
       </div>
       <div className={styles.inputGroup}>
         <label htmlFor="numero" className={styles.label}>
-          Numero:
+          Número:
         </label>
         <input
           type="text"
@@ -72,9 +101,12 @@ export default function ClientForm() {
           name="numero"
           value={clientData.numero}
           onChange={handleChange}
-          className={styles.input}
-          required
+          className={`${styles.input} ${
+            errors.numero ? styles.errorInput : ""
+          }`}
+          onFocus={() => setErrors({})}
         />
+        {errors.numero && <p className={styles.errorText}>{errors.numero}</p>}
       </div>
       <div className={styles.inputGroup}>
         <label htmlFor="correo" className={styles.label}>
@@ -86,13 +118,16 @@ export default function ClientForm() {
           name="correo"
           value={clientData.correo}
           onChange={handleChange}
-          className={styles.input}
-          required
+          className={`${styles.input} ${
+            errors.correo ? styles.errorInput : ""
+          }`}
+          onFocus={() => setErrors({})}
         />
+        {errors.correo && <p className={styles.errorText}>{errors.correo}</p>}
       </div>
       <div className={styles.inputGroup}>
         <label htmlFor="direccion" className={styles.label}>
-          Direccion:
+          Dirección:
         </label>
         <input
           type="text"
@@ -100,22 +135,14 @@ export default function ClientForm() {
           name="direccion"
           value={clientData.direccion}
           onChange={handleChange}
-          className={styles.input}
-          required
+          className={`${styles.input} ${
+            errors.direccion ? styles.errorInput : ""
+          }`}
+          onFocus={() => setErrors({})}
         />
-      </div>
-      <div className={styles.inputGroup}>
-        <label htmlFor="notas" className={styles.label}>
-          Notas:
-        </label>
-        <input
-          type="text"
-          id="notas"
-          name="notas"
-          value={clientData.notas}
-          onChange={handleChange}
-          className={styles.input}
-        />
+        {errors.direccion && (
+          <p className={styles.errorText}>{errors.direccion}</p>
+        )}
       </div>
       <div className={styles.inputGroup}>
         <label htmlFor="id" className={styles.label}>
@@ -127,9 +154,10 @@ export default function ClientForm() {
           name="id"
           value={clientData.id}
           onChange={handleChange}
-          className={styles.input}
-          required
+          className={`${styles.input} ${errors.id ? styles.errorInput : ""}`}
+          onFocus={() => setErrors({})}
         />
+        {errors.id && <p className={styles.errorText}>{errors.id}</p>}
       </div>
       <button type="submit" className={styles.button}>
         Crear

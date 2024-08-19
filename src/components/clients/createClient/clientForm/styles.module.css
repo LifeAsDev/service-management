@@ -16,6 +16,7 @@
 
 .inputGroup {
   margin-bottom: 15px;
+  position: relative;
 }
 
 .label {
@@ -31,6 +32,7 @@
   border-radius: 4px;
   width: 100%;
   background-color: var(--very-dark-desaturated-blue);
+  outline: none;
 }
 
 .button {
@@ -46,4 +48,19 @@
 
 .button:hover {
   background-color: #0056b3;
+}
+.errorInput {
+  border-color: red;
+}
+
+.errorText {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+  position: absolute;
+  right: 0;
+}
+
+.input:focus {
+  border-color: white;
 }

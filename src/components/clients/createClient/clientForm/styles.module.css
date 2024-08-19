@@ -44,6 +44,7 @@
   border-radius: 4px;
   cursor: pointer;
   margin-top: 1em;
+  height: 50px;
 }
 
 .button:hover {
@@ -63,4 +64,9 @@
 
 .input:focus {
   border-color: white;
+}
+
+.button.creatingClient {
+  background-color: var(--grey-disabled);
+  cursor: pointer;
 }

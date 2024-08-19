@@ -2,6 +2,7 @@
 import Client from "@/models/client";
 import { useState } from "react";
 import styles from "./styles.module.css";
+import { useRouter } from "next/navigation";
 
 export default function ClientForm() {
   const [clientData, setClientData] = useState<Omit<Client, "_id">>({
@@ -12,10 +13,11 @@ export default function ClientForm() {
     notas: "",
     id: "",
   });
-
   const [errors, setErrors] = useState<
     Partial<Record<keyof Omit<Client, "_id">, string>>
   >({});
+  const [creatingClient, setCreatingClient] = useState(false);
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -32,7 +34,6 @@ export default function ClientForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const newErrors: Partial<Record<keyof Omit<Client, "_id">, string>> = {};
     Object.entries(clientData).forEach(([key, value]) => {
       if (
@@ -48,6 +49,7 @@ export default function ClientForm() {
       setErrors(newErrors);
       return;
     }
+    setCreatingClient(true);
 
     try {
       const data = new FormData();
@@ -60,6 +62,8 @@ export default function ClientForm() {
       });
 
       const result = await response.json();
+      router.push(`/clients`);
+
       if (response.ok) {
         console.log("Client created:", result.client);
       } else {
@@ -71,7 +75,7 @@ export default function ClientForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
+    <form className={styles.form}>
       <div className={styles.inputGroup}>
         <label htmlFor="fullName" className={styles.label}>
           Nombre completo:
@@ -159,8 +163,15 @@ export default function ClientForm() {
         />
         {errors.id && <p className={styles.errorText}>{errors.id}</p>}
       </div>
-      <button type="submit" className={styles.button}>
-        Crear
+      <button
+        disabled={creatingClient}
+        onClick={handleSubmit}
+        type="submit"
+        className={`${styles.button} ${
+          creatingClient && styles.creatingClient
+        }`}
+      >
+        {!creatingClient ? "Crear" : <div className="loader"></div>}
       </button>
     </form>
   );

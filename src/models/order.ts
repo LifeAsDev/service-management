@@ -1,8 +1,10 @@
+import Client from "@/models/client";
+
 interface Order {
   marca: string;
   modelo: string;
   tipo: string;
-  cliente: string;
+  cliente: Client;
   numeroDeSerie: string;
   contraseña: string;
   _id: string;

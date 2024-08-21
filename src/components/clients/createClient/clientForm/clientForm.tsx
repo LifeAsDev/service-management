@@ -37,7 +37,9 @@ export default function ClientForm() {
     const newErrors: Partial<Record<keyof Omit<Client, "_id">, string>> = {};
     Object.entries(clientData).forEach(([key, value]) => {
       if (
-        ["fullName", "numero", "correo", "direccion", "id"].includes(key) &&
+        ["fullName", "numero", "correo", "direccion", "id", "notas"].includes(
+          key
+        ) &&
         value.trim() === ""
       ) {
         newErrors[key as keyof Omit<Client, "_id">] =
@@ -94,6 +96,21 @@ export default function ClientForm() {
         {errors.fullName && (
           <p className={styles.errorText}>{errors.fullName}</p>
         )}
+      </div>{" "}
+      <div className={styles.inputGroup}>
+        <label htmlFor="id" className={styles.label}>
+          ID:
+        </label>
+        <input
+          type="text"
+          id="id"
+          name="id"
+          value={clientData.id}
+          onChange={handleChange}
+          className={`${styles.input} ${errors.id ? styles.errorInput : ""}`}
+          onFocus={() => setErrors({})}
+        />
+        {errors.id && <p className={styles.errorText}>{errors.id}</p>}
       </div>
       <div className={styles.inputGroup}>
         <label htmlFor="numero" className={styles.label}>
@@ -147,21 +164,21 @@ export default function ClientForm() {
         {errors.direccion && (
           <p className={styles.errorText}>{errors.direccion}</p>
         )}
-      </div>
+      </div>{" "}
       <div className={styles.inputGroup}>
-        <label htmlFor="id" className={styles.label}>
-          ID:
+        <label htmlFor="notas" className={styles.label}>
+          Notas:
         </label>
         <input
           type="text"
-          id="id"
-          name="id"
-          value={clientData.id}
+          id="notas"
+          name="notas"
+          value={clientData.notas}
           onChange={handleChange}
-          className={`${styles.input} ${errors.id ? styles.errorInput : ""}`}
+          className={`${styles.input} ${errors.notas ? styles.errorInput : ""}`}
           onFocus={() => setErrors({})}
         />
-        {errors.id && <p className={styles.errorText}>{errors.id}</p>}
+        {errors.notas && <p className={styles.errorText}>{errors.notas}</p>}
       </div>
       <button
         disabled={creatingClient}

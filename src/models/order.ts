@@ -7,7 +7,7 @@ interface Order {
   cliente: Client;
   numeroDeSerie: string;
   contraseña: string;
-  _id: string;
-  createdAt: Date;
+  _id?: string;
+  createdAt?: Date;
 }
 export default Order;

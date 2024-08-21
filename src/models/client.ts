@@ -5,7 +5,7 @@ interface Client {
   direccion: string;
   notas: string;
   id: string;
-  _id: string;
+  _id?: string;
 }
 
 export default Client;

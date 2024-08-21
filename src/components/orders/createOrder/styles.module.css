@@ -1,0 +1,10 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1em;
+}
+
+.main h2 {
+  font-size: 2em;
+  margin: auto;
+}

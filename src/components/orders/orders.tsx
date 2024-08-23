@@ -1,14 +1,30 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import Order from "@/models/order";
 import { formatDate } from "@/lib/calculationFunctions";
 import Link from "next/link";
 
 export default function Orders() {
-  const [fetchingMonitor, setFetchingMonitor] = useState(false);
+  const [fetchingMonitor, setFetchingMonitor] = useState(true);
   const [ordersArr, setOrdersArr] = useState<Order[]>([]);
   const [sortByLastDate, setSortByLastDate] = useState(true);
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const res = await fetch(`/api/order`, {
+          method: "GET",
+        });
+        const resData = await res.json();
+        console.log(resData.orders);
+
+        setFetchingMonitor(false);
+        setOrdersArr(resData.orders);
+      } catch (error) {}
+    };
+    fetchOrders();
+  }, []);
+
   return (
     <main className={styles.main}>
       <div className={styles.top}>
@@ -78,6 +94,9 @@ export default function Orders() {
                       </g>
                     </svg>
                   </div>
+                </th>{" "}
+                <th>
+                  <div>Cliente</div>
                 </th>
                 <th>
                   <div>Modelo</div>
@@ -85,43 +104,36 @@ export default function Orders() {
               </tr>
             </thead>
             <tbody id="evaluationList" className={styles.tbody}>
-              {fetchingMonitor ? (
-                <>
-                  {Array.from({ length: 10 }, (_, index) => (
-                    <tr key={index} className={styles.tr}>
-                      <td className={styles.td}></td>
-                      <td className={styles.td}></td>
-                      <td className={styles.td}></td>
+              {fetchingMonitor
+                ? ""
+                : ordersArr.map((item, i) => (
+                    <tr key={`${item._id}`} className={styles.tr}>
+                      <td className={styles.td}>
+                        <div>
+                          <p>{item._id}</p>
+                        </div>
+                      </td>
+                      <td className={styles.td}>
+                        <div>
+                          <p>{formatDate(item.createdAt)}</p>
+                        </div>
+                      </td>
+                      <td className={styles.td}>
+                        <div>
+                          <p>{item.cliente.fullName}</p>
+                        </div>
+                      </td>
+                      <td className={styles.td}>
+                        <div>
+                          <p>{item.modelo}</p>
+                        </div>
+                      </td>
                     </tr>
                   ))}
-                </>
-              ) : (
-                ordersArr.map((item, i) => (
-                  <tr key={`${item._id}`} className={styles.tr}>
-                    <td className={styles.td}>
-                      <div>
-                        <p>{item._id}</p>
-                      </div>
-                    </td>
-                    <td className={styles.td}>
-                      <div>
-                        <p>{formatDate(item.createdAt)}</p>
-                      </div>
-                    </td>
-                    <td className={styles.td}>
-                      <div>
-                        <p>{item.modelo}</p>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
             </tbody>
           </table>
           {fetchingMonitor ? (
-            <div className={styles.overlay}>
-              <div className={styles.loader}></div>
-            </div>
+            <p className={styles.fetchText}>Obteniendo Datos...</p>
           ) : (
             ""
           )}

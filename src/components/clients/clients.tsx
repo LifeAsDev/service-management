@@ -100,7 +100,6 @@ const mockclients: Client[] = [
 export default function Clients() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
   const [clientsArr, setClientsArr] = useState<Client[]>([]);
-  const [sortByLastDate, setSortByLastDate] = useState(true);
 
   useEffect(() => {
     const fetchClients = async () => {

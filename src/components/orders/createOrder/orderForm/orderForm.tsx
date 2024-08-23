@@ -4,6 +4,8 @@ import { useState } from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/navigation";
 import Order from "@/models/order"; // Importa la interfaz `Order`
+import ConfirmNewClient from "@/components/orders/createOrder/confirmNewClient/confirmNewClient";
+import client from "@/schemas/client";
 
 export default function OrderForm() {
   const [orderData, setOrderData] = useState<Order>({
@@ -21,7 +23,7 @@ export default function OrderForm() {
     numeroDeSerie: "",
     contraseña: "",
   });
-
+  const [confirmNewClient, setConfirmNewClient] = useState(false);
   const [errors, setErrors] = useState<{
     [K in keyof Omit<Order, "_id" | "createdAt" | "cliente">]?: string;
   }>({});
@@ -64,8 +66,11 @@ export default function OrderForm() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (
+    e: React.FormEvent | undefined,
+    confirmNewClient: boolean = false
+  ) => {
+    if (e) e.preventDefault();
     const newOrderErrors: Partial<
       Record<keyof Omit<Order, "_id" | "createdAt">, string>
     > = {};
@@ -110,31 +115,51 @@ export default function OrderForm() {
         data.append(key, value as string);
       });
 
+      data.append("confirmNewClient", String(confirmNewClient)); // donde confirmClientCreate es un booleano
+
       const response = await fetch("/api/order", {
         method: "POST",
         body: data,
       });
 
       const result = await response.json();
-      router.push(`/orders`);
 
       if (response.ok) {
-        console.log("Order created:", result.order);
+        if (result.clientNew) {
+          setConfirmNewClient(true);
+        } else {
+          console.log("Order created:", result.order);
+          router.push(`/orders`);
+        }
       } else {
         console.error("Error:", result.message);
+        setCreatingOrder(false);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      setCreatingOrder(false);
     }
   };
 
+  const cancelOrderPost = () => {
+    setConfirmNewClient(false);
+    setCreatingOrder(false);
+  };
   return (
     <form className={styles.form}>
+      {confirmNewClient && (
+        <ConfirmNewClient
+          cancelOrderPost={cancelOrderPost}
+          handleSubmit={handleSubmit}
+          clientData={clientData}
+        />
+      )}
       <div className={styles.inputGroup}>
         <label htmlFor="marca" className={styles.label}>
           Marca:
         </label>
         <input
+          disabled={creatingOrder}
           type="text"
           id="marca"
           name="marca"
@@ -151,6 +176,7 @@ export default function OrderForm() {
           Modelo:
         </label>
         <input
+          disabled={creatingOrder}
           type="text"
           id="modelo"
           name="modelo"
@@ -169,6 +195,7 @@ export default function OrderForm() {
           Tipo:
         </label>
         <input
+          disabled={creatingOrder}
           type="text"
           id="tipo"
           name="tipo"
@@ -185,6 +212,7 @@ export default function OrderForm() {
           Número de Serie:
         </label>
         <input
+          disabled={creatingOrder}
           type="text"
           id="numeroDeSerie"
           name="numeroDeSerie"
@@ -205,6 +233,7 @@ export default function OrderForm() {
           Contraseña:
         </label>
         <input
+          disabled={creatingOrder}
           type="text"
           id="contraseña"
           name="contraseña"
@@ -219,11 +248,14 @@ export default function OrderForm() {
           <p className={styles.errorText}>{errors.contraseña}</p>
         )}
       </div>
+
+      {/* Client Data */}
       <div className={styles.inputGroup}>
         <label htmlFor="fullName" className={styles.label}>
           Nombre completo:
         </label>
         <input
+          disabled={creatingOrder}
           type="text"
           id="fullName"
           name="fullName"
@@ -243,6 +275,7 @@ export default function OrderForm() {
           ID:
         </label>
         <input
+          disabled={creatingOrder}
           type="text"
           id="id"
           name="id"
@@ -263,6 +296,7 @@ export default function OrderForm() {
           Número:
         </label>
         <input
+          disabled={creatingOrder}
           type="text"
           id="numero"
           name="numero"
@@ -283,6 +317,7 @@ export default function OrderForm() {
           Correo:
         </label>
         <input
+          disabled={creatingOrder}
           type="text"
           id="correo"
           name="correo"
@@ -303,6 +338,7 @@ export default function OrderForm() {
           Dirección:
         </label>
         <input
+          disabled={creatingOrder}
           type="text"
           id="direccion"
           name="direccion"
@@ -322,6 +358,7 @@ export default function OrderForm() {
           Notas:
         </label>
         <input
+          disabled={creatingOrder}
           type="text"
           id="notas"
           name="notas"
@@ -339,7 +376,6 @@ export default function OrderForm() {
       <button
         disabled={creatingOrder}
         onClick={handleSubmit}
-        type="submit"
         className={`${styles.button} ${creatingOrder && styles.creatingClient}`}
       >
         {!creatingOrder ? "Crear" : <div className="loader"></div>}

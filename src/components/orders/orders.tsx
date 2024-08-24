@@ -16,7 +16,6 @@ export default function Orders() {
           method: "GET",
         });
         const resData = await res.json();
-        console.log(resData.orders);
 
         setFetchingMonitor(false);
         setOrdersArr(resData.orders);
@@ -94,7 +93,7 @@ export default function Orders() {
                       </g>
                     </svg>
                   </div>
-                </th>{" "}
+                </th>
                 <th>
                   <div>Cliente</div>
                 </th>
@@ -106,7 +105,8 @@ export default function Orders() {
             <tbody id="evaluationList" className={styles.tbody}>
               {fetchingMonitor
                 ? ""
-                : ordersArr.map((item, i) => (
+                : ordersArr.length &&
+                  ordersArr.map((item, i) => (
                     <tr key={`${item._id}`} className={styles.tr}>
                       <td className={styles.td}>
                         <div>

@@ -70,3 +70,35 @@
   background-color: var(--grey-disabled);
   cursor: default;
 }
+
+.clientsList {
+  position: absolute;
+  top: 100%;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px 5px rgba(0, 0, 0, 0.65);
+  width: 100%;
+  z-index: 1;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  overflow: hidden;
+  display: none;
+}
+
+.clientsList li {
+  height: 3.5em;
+  padding: 1em;
+  background-color: var(--very-dark-grayish-blue-1);
+  cursor: pointer;
+}
+
+.clientsList li:hover {
+  background-color: var(--very-dark-grayish-blue-2);
+}
+
+.input:focus + .clientsList {
+  display: list-item;
+}
+
+.infoSearchFetch {
+  text-align: center;
+}

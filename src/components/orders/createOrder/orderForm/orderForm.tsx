@@ -1,11 +1,10 @@
 "use client";
 import Client from "@/models/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/navigation";
 import Order from "@/models/order"; // Importa la interfaz `Order`
 import ConfirmNewClient from "@/components/orders/createOrder/confirmNewClient/confirmNewClient";
-import client from "@/schemas/client";
 
 export default function OrderForm() {
   const [orderData, setOrderData] = useState<Order>({
@@ -40,6 +39,8 @@ export default function OrderForm() {
   });
 
   const [creatingOrder, setCreatingOrder] = useState(false);
+  const [clientsArr, setClientsArr] = useState<Client[]>([]);
+  const [fetchingMonitor, setFetchingMonitor] = useState(true);
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,6 +146,33 @@ export default function OrderForm() {
     setConfirmNewClient(false);
     setCreatingOrder(false);
   };
+
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const searchParams = new URLSearchParams();
+
+        searchParams.append("keyword", clientData.fullName);
+        const res = await fetch(
+          `/api/client/search?${searchParams.toString()}`,
+          {
+            method: "GET",
+          }
+        );
+
+        const resData = await res.json();
+        if (res.ok) {
+          if (clientData.fullName === resData.keyword) {
+            setFetchingMonitor(false);
+            setClientsArr(resData.clients);
+          }
+        }
+      } catch (error) {}
+    };
+    setFetchingMonitor(true);
+    fetchClients();
+  }, [clientData.fullName]);
+
   return (
     <form className={styles.form}>
       {confirmNewClient && (
@@ -264,11 +292,41 @@ export default function OrderForm() {
           className={`${styles.input} ${
             clientErrors.fullName ? styles.errorInput : ""
           }`}
-          onFocus={() => setClientErrors({})}
+          onFocus={() => {
+            setClientErrors({});
+          }}
         />
         {clientErrors.fullName && (
           <p className={styles.errorText}>{clientErrors.fullName}</p>
         )}
+        <ul className={styles.clientsList}>
+          {fetchingMonitor ? (
+            <li className={styles.infoSearchFetch}>Buscando...</li>
+          ) : (
+            <>
+              {clientsArr.length > 0 ? (
+                <>
+                  {clientsArr.map((item) => {
+                    return (
+                      <li
+                        onMouseDown={() => {
+                          setClientData(item);
+                        }}
+                        key={item._id}
+                      >
+                        {item.fullName} {item.id}
+                      </li>
+                    );
+                  })}
+                </>
+              ) : (
+                <li className={styles.infoSearchFetch}>
+                  No se encontraron clientes.
+                </li>
+              )}
+            </>
+          )}
+        </ul>
       </div>
       <div className={styles.inputGroup}>
         <label htmlFor="id" className={styles.label}>

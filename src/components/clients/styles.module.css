@@ -27,12 +27,14 @@
   display: flex;
   flex-grow: 1;
   padding-bottom: 1em;
+  flex-direction: column;
+  gap: 1em;
 }
 .tableBox {
   overflow: auto;
   position: relative;
   width: 100%;
-  max-height: 60vh;
+  max-height: calc(100vh - 19em);
 }
 
 .tableBox table {

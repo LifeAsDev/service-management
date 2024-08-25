@@ -4,6 +4,7 @@ import styles from "./styles.module.css";
 import { formatDate } from "@/lib/calculationFunctions";
 import Client from "@/models/client";
 import Link from "next/link";
+import SearchInput from "@/components/searchInput/searchInput";
 
 export default function Clients() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
@@ -32,6 +33,7 @@ export default function Clients() {
         </Link>
       </div>
       <div className={styles.tableOutside}>
+        <SearchInput placeholder="Nombre, ID, Correo" />
         <div
           id="evaluationList"
           className={`${fetchingMonitor ? styles.hidden : ""} ${

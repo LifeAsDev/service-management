@@ -3,10 +3,12 @@ export default function SearchInput({
   input,
   setInput,
   action,
+  placeholder,
 }: {
   input?: string;
   setInput?: (arg0: string) => void;
   action?: () => void;
+  placeholder?: string;
 }) {
   return (
     <div className={styles.searchBox}>
@@ -19,6 +21,7 @@ export default function SearchInput({
         onChange={(e) => {
           if (setInput) setInput(e.target.value);
         }}
+        placeholder={placeholder}
         spellCheck="false"
       ></input>
       <svg

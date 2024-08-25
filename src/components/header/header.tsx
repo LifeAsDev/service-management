@@ -37,9 +37,9 @@ export default function Header() {
           </svg>
         </div>
       </div>
-      <div className={styles.headerItem}>
+      {/* <div className={styles.headerItem}>
         <SearchInput />
-      </div>
+      </div> */}
       <div className={`${styles.userBox} ${styles.headerItem}`}>
         Alan Rodriguez
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

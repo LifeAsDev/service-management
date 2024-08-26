@@ -9,19 +9,27 @@ import SearchInput from "@/components/searchInput/searchInput";
 export default function Clients() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
   const [clientsArr, setClientsArr] = useState<Client[]>([]);
+  const [keyword, setKeyword] = useState("");
+  const fetchClients = async () => {
+    setFetchingMonitor(true);
 
-  useEffect(() => {
-    const fetchClients = async () => {
-      try {
-        const res = await fetch(`/api/client`, {
-          method: "GET",
-        });
+    try {
+      const searchParams = new URLSearchParams();
 
-        const resData = await res.json();
+      searchParams.append("keyword", keyword);
+      const res = await fetch(`/api/client?${searchParams.toString()}`, {
+        method: "GET",
+      });
+
+      const resData = await res.json();
+      if (resData.keyword === keyword) {
         setFetchingMonitor(false);
         setClientsArr(resData.clients);
-      } catch (error) {}
-    };
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
     fetchClients();
   }, []);
   return (
@@ -33,7 +41,12 @@ export default function Clients() {
         </Link>
       </div>
       <div className={styles.tableOutside}>
-        <SearchInput placeholder="Nombre, ID, Correo" />
+        <SearchInput
+          input={keyword}
+          setInput={setKeyword}
+          action={fetchClients}
+          placeholder="Nombre, ID, Correo"
+        />
         <div
           id="evaluationList"
           className={`${fetchingMonitor ? styles.hidden : ""} ${

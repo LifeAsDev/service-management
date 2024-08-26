@@ -34,10 +34,18 @@ export async function GET(req: Request) {
   await connectMongoDB();
 
   try {
-    const clients = await Client.find();
+    const { searchParams } = new URL(req.url);
+    const keyword = searchParams.get("keyword") as string;
+
+    const filter = keyword
+      ? { fullName: { $regex: keyword, $options: "i" } } // Filtrado por nombre completo
+      : {}; // Si no hay keyword, busca todos los clientes
+
+    const clients = await Client.find(filter);
 
     return NextResponse.json({
       clients,
+      keyword,
       message: "Clients",
     });
   } catch (error) {

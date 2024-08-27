@@ -38,9 +38,14 @@ export async function GET(req: Request) {
     const keyword = searchParams.get("keyword") as string;
 
     const filter = keyword
-      ? { fullName: { $regex: keyword, $options: "i" } } // Filtrado por nombre completo
-      : {}; // Si no hay keyword, busca todos los clientes
-
+      ? {
+          $or: [
+            { fullName: { $regex: keyword, $options: "i" } },
+            { id: { $regex: keyword, $options: "i" } },
+            { email: { $regex: keyword, $options: "i" } },
+          ],
+        }
+      : {};
     const clients = await Client.find(filter);
 
     return NextResponse.json({

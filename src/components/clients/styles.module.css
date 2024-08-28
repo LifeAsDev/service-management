@@ -8,10 +8,13 @@
 }
 .main {
   padding: 2.75em 3.5em;
-  height: calc(100vh - 5em);
+  max-height: calc(100vh - 5em);
+  min-height: calc(100vh - 5em);
+
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  padding-bottom: 1em;
 }
 
 .addOrderBtn {
@@ -34,7 +37,6 @@
   overflow: auto;
   position: relative;
   width: 100%;
-  max-height: calc(100vh - 19em);
 }
 
 .tableBox table {
@@ -86,4 +88,27 @@
 .fetchText {
   margin-top: 9em;
   text-align: center;
+}
+
+.pageBox {
+  display: flex;
+  flex-direction: row;
+  margin-top: 0.75em;
+  gap: 0.5em;
+}
+
+.page {
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.45);
+  background-color: var(--very-dark-desaturated-blue);
+  width: 2.5em;
+  height: 2.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.page:hover {
+  background-color: var(--very-dark-grayish-blue-1);
 }

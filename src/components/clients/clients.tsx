@@ -10,6 +10,7 @@ export default function Clients() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
   const [clientsArr, setClientsArr] = useState<Client[]>([]);
   const [keyword, setKeyword] = useState("");
+  const [page, setPage] = useState(1);
   const fetchClients = async () => {
     setFetchingMonitor(true);
 
@@ -22,6 +23,7 @@ export default function Clients() {
       });
 
       const resData = await res.json();
+      console.log({ resData });
       if (resData.keyword === keyword) {
         setFetchingMonitor(false);
         setClientsArr(resData.clients);
@@ -99,6 +101,11 @@ export default function Clients() {
             ""
           )}
         </div>
+      </div>
+      <div className={styles.pageBox}>
+        <div className={styles.page}>1</div>
+        <div className={styles.page}>2</div>
+        <div className={styles.page}>3</div>
       </div>
     </main>
   );

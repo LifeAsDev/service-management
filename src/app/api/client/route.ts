@@ -36,21 +36,47 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const keyword = searchParams.get("keyword") as string;
+    let page: number = parseInt(searchParams.get("page") || "1", 10);
+    const pageSize: number = parseInt(searchParams.get("pageSize") || "32", 10);
 
-    const filter = keyword
-      ? {
+    let aggregatePipeline: any[] = [];
+
+    aggregatePipeline.push({
+      $facet: {
+        metadata: [{ $count: "totalCount" }],
+        data: [
+          {
+            $addFields: {
+              sortOrder: {
+                $ifNull: ["$order", Infinity], // Asigna un valor muy alto (Infinity) a los campos null
+              },
+            },
+          },
+          { $sort: { order: 1 } },
+          { $skip: (page - 1) * pageSize },
+          { $limit: pageSize },
+        ],
+      },
+    });
+    if (keyword !== "") {
+      aggregatePipeline.push({
+        $match: {
           $or: [
             { fullName: { $regex: keyword, $options: "i" } },
             { id: { $regex: keyword, $options: "i" } },
             { email: { $regex: keyword, $options: "i" } },
           ],
-        }
-      : {};
-    const clients = await Client.find(filter);
+        },
+      });
+    }
+    const clientsData = await Client.aggregate(aggregatePipeline);
+    const clients = clientsData[0].data;
+    const totalCount = clientsData[0].metadata[0].totalCount;
 
     return NextResponse.json({
       clients,
       keyword,
+      totalCount,
       message: "Clients",
     });
   } catch (error) {

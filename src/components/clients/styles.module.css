@@ -109,6 +109,9 @@
   cursor: pointer;
 }
 
+.page.selected {
+  background-color: var(--very-dark-grayish-blue-2);
+}
 .page:hover {
   background-color: var(--very-dark-grayish-blue-1);
 }

@@ -11,6 +11,8 @@ export default function Clients() {
   const [clientsArr, setClientsArr] = useState<Client[]>([]);
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(3);
+
   const fetchClients = async () => {
     setFetchingMonitor(true);
 
@@ -103,9 +105,17 @@ export default function Clients() {
         </div>
       </div>
       <div className={styles.pageBox}>
-        <div className={styles.page}>1</div>
-        <div className={styles.page}>2</div>
-        <div className={styles.page}>3</div>
+        {Array.from({ length: pageCount }, (_, i) => (
+          <div
+            key={i}
+            className={`${styles.page} ${
+              page === i + 1 ? styles.selected : ""
+            }`}
+            onClick={() => setPage(i + 1)}
+          >
+            {i + 1}
+          </div>
+        ))}
       </div>
     </main>
   );

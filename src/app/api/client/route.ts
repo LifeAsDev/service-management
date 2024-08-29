@@ -37,27 +37,9 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const keyword = searchParams.get("keyword") as string;
     let page: number = parseInt(searchParams.get("page") || "1", 10);
-    const pageSize: number = parseInt(searchParams.get("pageSize") || "32", 10);
+    const pageSize: number = parseInt(searchParams.get("pageSize") || "3", 10);
 
     let aggregatePipeline: any[] = [];
-
-    aggregatePipeline.push({
-      $facet: {
-        metadata: [{ $count: "totalCount" }],
-        data: [
-          {
-            $addFields: {
-              sortOrder: {
-                $ifNull: ["$order", Infinity], // Asigna un valor muy alto (Infinity) a los campos null
-              },
-            },
-          },
-          { $sort: { order: 1 } },
-          { $skip: (page - 1) * pageSize },
-          { $limit: pageSize },
-        ],
-      },
-    });
     if (keyword !== "") {
       aggregatePipeline.push({
         $match: {
@@ -69,9 +51,16 @@ export async function GET(req: Request) {
         },
       });
     }
+    aggregatePipeline.push({
+      $facet: {
+        metadata: [{ $count: "totalCount" }],
+        data: [{ $skip: (page - 1) * pageSize }, { $limit: pageSize }],
+      },
+    });
+
     const clientsData = await Client.aggregate(aggregatePipeline);
     const clients = clientsData[0].data;
-    const totalCount = clientsData[0].metadata[0].totalCount;
+    const totalCount = clientsData[0].metadata[0]?.totalCount ?? 0;
 
     return NextResponse.json({
       clients,

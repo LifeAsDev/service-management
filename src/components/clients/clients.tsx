@@ -11,8 +11,8 @@ export default function Clients() {
   const [clientsArr, setClientsArr] = useState<Client[]>([]);
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(1);
-  const [pageCount, setPageCount] = useState(3);
-
+  const [pageCount, setPageCount] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const fetchClients = async () => {
     setFetchingMonitor(true);
 
@@ -20,22 +20,29 @@ export default function Clients() {
       const searchParams = new URLSearchParams();
 
       searchParams.append("keyword", keyword);
+      searchParams.append("page", page.toString());
+      searchParams.append("pageSize", pageSize.toString());
+
       const res = await fetch(`/api/client?${searchParams.toString()}`, {
         method: "GET",
       });
 
       const resData = await res.json();
-      console.log({ resData });
       if (resData.keyword === keyword) {
+        setPageCount(Math.ceil(resData.totalCount / pageSize));
         setFetchingMonitor(false);
         setClientsArr(resData.clients);
       }
     } catch (error) {}
   };
+  useEffect(() => {
+    fetchClients();
+  }, [page]);
 
   useEffect(() => {
     fetchClients();
   }, []);
+
   return (
     <main className={styles.main}>
       <div className={styles.top}>
@@ -48,7 +55,13 @@ export default function Clients() {
         <SearchInput
           input={keyword}
           setInput={setKeyword}
-          action={fetchClients}
+          action={() => {
+            if (page === 1) fetchClients();
+            else {
+              setPage(1);
+              setPageCount(1);
+            }
+          }}
           placeholder="Nombre, ID, Correo"
         />
         <div

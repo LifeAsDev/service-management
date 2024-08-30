@@ -115,3 +115,25 @@
 .page:hover {
   background-color: var(--very-dark-grayish-blue-1);
 }
+
+.arrow {
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.45);
+  background-color: var(--very-dark-desaturated-blue);
+  width: 2.5em;
+  height: 2.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.arrow:hover {
+  background-color: var(--very-dark-grayish-blue-1);
+}
+
+.arrow.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -118,6 +118,12 @@ export default function Clients() {
         </div>
       </div>
       <div className={styles.pageBox}>
+        <div
+          className={`${styles.arrow} ${page === 1 ? styles.disabled : ""}`}
+          onClick={() => page > 1 && setPage(page - 1)}
+        >
+          {"<"}
+        </div>
         {Array.from({ length: pageCount }, (_, i) => (
           <div
             key={i}
@@ -129,6 +135,14 @@ export default function Clients() {
             {i + 1}
           </div>
         ))}
+        <div
+          className={`${styles.arrow} ${
+            page === pageCount ? styles.disabled : ""
+          }`}
+          onClick={() => page < pageCount && setPage(page + 1)}
+        >
+          {">"}
+        </div>
       </div>
     </main>
   );

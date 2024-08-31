@@ -33,7 +33,10 @@ export default function Clients() {
         setFetchingMonitor(false);
         setClientsArr(resData.clients);
       }
-    } catch (error) {}
+    } catch (error) {
+      setFetchingMonitor(false);
+      setClientsArr([]);
+    }
   };
   useEffect(() => {
     fetchClients();

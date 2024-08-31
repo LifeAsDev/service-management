@@ -37,6 +37,9 @@
   overflow: auto;
   position: relative;
   width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .tableBox table {
@@ -86,8 +89,8 @@
 }
 
 .fetchText {
-  margin-top: 9em;
   text-align: center;
+  margin: auto;
 }
 
 .pageBox {

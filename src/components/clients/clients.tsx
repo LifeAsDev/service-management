@@ -5,6 +5,7 @@ import { formatDate } from "@/lib/calculationFunctions";
 import Client from "@/models/client";
 import Link from "next/link";
 import SearchInput from "@/components/searchInput/searchInput";
+import { useMemo } from "react";
 
 export default function Clients() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
@@ -12,7 +13,8 @@ export default function Clients() {
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
   const fetchClients = async () => {
     setFetchingMonitor(true);
 
@@ -30,6 +32,8 @@ export default function Clients() {
       const resData = await res.json();
       if (resData.keyword === keyword) {
         setPageCount(Math.ceil(resData.totalCount / pageSize));
+        setTotalCount(resData.totalCount);
+
         setFetchingMonitor(false);
         setClientsArr(resData.clients);
       }
@@ -45,6 +49,104 @@ export default function Clients() {
   useEffect(() => {
     fetchClients();
   }, []);
+
+  const usePagination = ({
+    totalCount,
+    pageSize,
+    siblingCount = 1,
+    currentPage,
+  }: {
+    totalCount: number;
+    pageSize: number;
+    siblingCount: number;
+    currentPage: number;
+  }) => {
+    const paginationRange = useMemo(() => {
+      const totalPageCount = Math.ceil(totalCount / pageSize);
+
+      // Definir el rango de los números de página
+      const totalPageNumbers = siblingCount + 5;
+
+      /*
+      Caso 1:
+      Si el número de páginas es menor que el rango definido, devolvemos un array con todas las páginas.
+    */
+      if (totalPageNumbers >= totalPageCount) {
+        return Array.from({ length: totalPageCount }, (_, index) => index + 1);
+      }
+
+      /*
+      Calcular las posiciones de las páginas inicial y final
+    */
+      const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
+      const rightSiblingIndex = Math.min(
+        currentPage + siblingCount,
+        totalPageCount
+      );
+
+      const shouldShowLeftDots = leftSiblingIndex > 2;
+      const shouldShowRightDots = rightSiblingIndex < totalPageCount - 2;
+
+      const firstPageIndex = 1;
+      const lastPageIndex = totalPageCount;
+
+      /*
+      Caso 2:
+      No mostrar puntos a la izquierda ni a la derecha del rango
+    */
+      if (!shouldShowLeftDots && !shouldShowRightDots) {
+        const middleRange = Array.from(
+          { length: totalPageCount },
+          (_, index) => index + 1
+        );
+        return middleRange;
+      }
+
+      /*
+      Caso 3:
+      Mostrar puntos en el lado derecho
+    */
+      if (!shouldShowLeftDots && shouldShowRightDots) {
+        const leftRange = Array.from(
+          { length: 3 + 2 * siblingCount },
+          (_, index) => index + 1
+        );
+        return [...leftRange, "...", totalPageCount];
+      }
+
+      /*
+      Caso 4:
+      Mostrar puntos en el lado izquierdo
+    */
+      if (shouldShowLeftDots && !shouldShowRightDots) {
+        const rightRangeLength = 3 + 2 * siblingCount;
+        const rightRange = Array.from(
+          { length: rightRangeLength },
+          (_, index) => totalPageCount - rightRangeLength + index + 1
+        );
+        return [firstPageIndex, "...", ...rightRange];
+      }
+      /*
+      Caso 5:
+      Mostrar puntos en ambos lados
+    */
+      if (shouldShowLeftDots && shouldShowRightDots) {
+        const middleRange = Array.from(
+          { length: rightSiblingIndex - leftSiblingIndex + 1 },
+          (_, index) => leftSiblingIndex + index
+        );
+        return [firstPageIndex, "...", ...middleRange, "...", lastPageIndex];
+      }
+    }, [totalCount, pageSize, siblingCount, currentPage]);
+
+    return paginationRange;
+  };
+  const paginationRange = usePagination({
+    totalCount,
+    pageSize,
+    siblingCount: 3,
+    currentPage: page,
+  });
 
   return (
     <main className={styles.main}>
@@ -127,17 +229,32 @@ export default function Clients() {
         >
           {"<"}
         </div>
-        {Array.from({ length: pageCount }, (_, i) => (
-          <div
-            key={i}
-            className={`${styles.page} ${
-              page === i + 1 ? styles.selected : ""
-            }`}
-            onClick={() => setPage(i + 1)}
-          >
-            {i + 1}
-          </div>
-        ))}
+
+        {paginationRange &&
+          paginationRange.map((pageNumber, index) => {
+            if (pageNumber === "...") {
+              return (
+                <div
+                  key={index}
+                  className={`${styles.page} ${styles.ellipsis}`}
+                >
+                  ...
+                </div>
+              );
+            }
+
+            return (
+              <div
+                key={index}
+                className={`${styles.page} ${
+                  page === pageNumber ? styles.selected : ""
+                }`}
+                onClick={() => setPage(Number(pageNumber))}
+              >
+                {pageNumber}
+              </div>
+            );
+          })}
         <div
           className={`${styles.arrow} ${
             page === pageCount ? styles.disabled : ""

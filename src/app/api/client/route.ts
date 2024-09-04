@@ -46,7 +46,7 @@ export async function GET(req: Request) {
           $or: [
             { fullName: { $regex: keyword, $options: "i" } },
             { id: { $regex: keyword, $options: "i" } },
-            { email: { $regex: keyword, $options: "i" } },
+            { correo: { $regex: keyword, $options: "i" } },
           ],
         },
       });

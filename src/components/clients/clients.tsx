@@ -13,7 +13,7 @@ export default function Clients() {
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(1);
-  const [pageSize, setPageSize] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const fetchClients = async () => {
     setFetchingMonitor(true);

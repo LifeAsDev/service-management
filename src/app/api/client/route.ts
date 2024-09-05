@@ -67,6 +67,7 @@ export async function GET(req: Request) {
       keyword,
       totalCount,
       message: "Clients",
+      page,
     });
   } catch (error) {
     console.error("Error client:", error);

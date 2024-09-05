@@ -30,7 +30,7 @@ export default function Clients() {
       });
 
       const resData = await res.json();
-      if (resData.keyword === keyword) {
+      if (resData.keyword === keyword && resData.page === page) {
         setPageCount(Math.ceil(resData.totalCount / pageSize));
         setTotalCount(resData.totalCount);
 

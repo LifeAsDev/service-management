@@ -9,5 +9,13 @@ interface Order {
   contraseña: string;
   _id?: string;
   createdAt?: Date;
+  estado:
+    | "Asignada"
+    | "Revisión"
+    | "Reparada"
+    | "Rechazada"
+    | "Sin Solución"
+    | "Entregado";
+  costos: { nombre: string; costo: string }[];
 }
 export default Order;

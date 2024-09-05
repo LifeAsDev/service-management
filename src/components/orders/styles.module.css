@@ -8,10 +8,12 @@
 }
 .main {
   padding: 2.75em 3.5em;
-  height: calc(100vh - 5em);
+  max-height: calc(100vh - 5em);
+  min-height: calc(100vh - 5em);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  padding-bottom: 1em;
 }
 
 .addOrderBtn {
@@ -27,12 +29,17 @@
   display: flex;
   flex-grow: 1;
   padding-bottom: 1em;
+  flex-direction: column;
+  gap: 1em;
+  height: calc(100vh - 20em);
 }
 .tableBox {
   overflow: auto;
   position: relative;
   width: 100%;
-  max-height: 60vh;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .tableBox table {
@@ -82,6 +89,54 @@
 }
 
 .fetchText {
-  margin-top: 9em;
   text-align: center;
+  margin: auto;
+}
+
+.pageBox {
+  display: flex;
+  flex-direction: row;
+  margin-top: 0.75em;
+  gap: 0.5em;
+}
+
+.page {
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.45);
+  background-color: var(--very-dark-desaturated-blue);
+  width: 2.5em;
+  height: 2.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.page.selected {
+  background-color: var(--very-dark-grayish-blue-2);
+}
+.page:hover {
+  background-color: var(--very-dark-grayish-blue-1);
+}
+
+.arrow {
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.45);
+  background-color: var(--very-dark-desaturated-blue);
+  width: 2.5em;
+  height: 2.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.arrow:hover {
+  background-color: var(--very-dark-grayish-blue-1);
+}
+
+.arrow.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

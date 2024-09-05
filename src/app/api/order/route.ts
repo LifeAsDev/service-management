@@ -2,6 +2,7 @@ import { connectMongoDB } from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 import Order from "@/schemas/order";
 import Client from "@/schemas/client";
+import { SortOrder } from "mongoose";
 
 export async function POST(req: Request) {
   await connectMongoDB();
@@ -60,11 +61,44 @@ export async function GET(req: Request) {
   await connectMongoDB();
 
   try {
-    const orders = await Order.find().populate("cliente");
+    const { searchParams } = new URL(req.url);
+    const keyword = searchParams.get("keyword") || ""; // Obtener el keyword de los parámetros de búsqueda
+    let page: number = parseInt(searchParams.get("page") || "1", 10);
+    let pageSize: number = parseInt(searchParams.get("pageSize") || "10", 10);
+    let sortByLastDate: SortOrder =
+      searchParams.get("sortByLastDate") === "true" ? -1 : 1;
 
+    // Validaciones de los parámetros de paginación
+    if (isNaN(page) || page < 1) page = 1;
+    if (isNaN(pageSize) || pageSize < 1 || pageSize > 100) pageSize = 10;
+
+    // Construir el filtro de búsqueda
+    const searchFilter = keyword
+      ? {
+          $or: [
+            { "cliente.fullName": { $regex: keyword, $options: "i" } },
+            { modelo: { $regex: keyword, $options: "i" } },
+          ],
+        }
+      : {};
+
+    // Calcular el número total de órdenes que coinciden con el filtro
+    const totalCount = await Order.countDocuments(searchFilter);
+
+    // Obtener las órdenes con paginación y filtro
+    const orders = await Order.find(searchFilter)
+      .populate("cliente") // Asegúrate de que este campo está correctamente relacionado en el esquema
+      .sort({ createdAt: sortByLastDate }) // Ordenar por fecha de creación basado en sortByLastDate
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
     return NextResponse.json({
       orders,
-      message: "Orders",
+      totalCount,
+      page,
+      pageSize,
+      message: "Orders fetched successfully",
+      sortByLastDate: sortByLastDate === -1,
+      keyword,
     });
   } catch (error) {
     console.error("Error retrieving orders:", error);

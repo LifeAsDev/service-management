@@ -9,13 +9,14 @@ interface Order {
   contraseña: string;
   _id?: string;
   createdAt?: Date;
-  estado:
+  estado?:
     | "Asignada"
     | "Revisión"
     | "Reparada"
     | "Rechazada"
     | "Sin Solución"
     | "Entregado";
-  costos: { nombre: string; costo: string }[];
+  costos?: { nombre: string; costo: string }[];
+  clienteFullName?: string;
 }
 export default Order;

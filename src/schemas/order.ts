@@ -22,6 +22,27 @@ const orderSchema = new Schema<Order>(
     contraseña: {
       type: String,
     },
+    estado: {
+      type: String,
+      enum: [
+        "Asignada",
+        "Revisión",
+        "Reparada",
+        "Rechazada",
+        "Sin Solución",
+        "Entregado",
+      ],
+      default: "Asignada",
+    },
+    costos: [
+      {
+        nombre: String,
+        costo: String,
+      },
+    ],
+    clienteFullName: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

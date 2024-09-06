@@ -187,6 +187,9 @@ export default function Clients() {
                 <th>
                   <div>Correo</div>
                 </th>
+                <th>
+                  <div>Direccion</div>
+                </th>
               </tr>
             </thead>
             <tbody id="evaluationList" className={styles.tbody}>
@@ -208,6 +211,11 @@ export default function Clients() {
                     <td className={styles.td}>
                       <div>
                         <p>{item.correo}</p>
+                      </div>
+                    </td>{" "}
+                    <td className={styles.td}>
+                      <div className={styles.direccionBox}>
+                        <p>{item.direccion}</p>
                       </div>
                     </td>
                   </tr>

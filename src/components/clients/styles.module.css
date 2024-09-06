@@ -140,3 +140,9 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.direccionBox {
+  max-width: 35vw;
+  word-wrap: break-word; /* Hace que las palabras largas se rompan */
+  white-space: normal; /* Permite el ajuste de línea */
+}

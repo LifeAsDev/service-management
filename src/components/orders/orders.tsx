@@ -157,6 +157,9 @@ export default function Orders() {
               <tr>
                 <th>
                   <div>Orden</div>
+                </th>{" "}
+                <th>
+                  <div>Estado</div>
                 </th>
                 <th>
                   <div className={styles.dateHeadBox}>
@@ -215,6 +218,11 @@ export default function Orders() {
                       <td className={styles.td}>
                         <div>
                           <p>{item._id}</p>
+                        </div>
+                      </td>{" "}
+                      <td className={styles.td}>
+                        <div>
+                          <p>{item.estado || "Sin Estado"}</p>
                         </div>
                       </td>
                       <td className={styles.td}>

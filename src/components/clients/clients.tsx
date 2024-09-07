@@ -6,6 +6,7 @@ import Client from "@/models/client";
 import Link from "next/link";
 import SearchInput from "@/components/searchInput/searchInput";
 import { useMemo } from "react";
+import DropdownMenu from "@/components/clients/dropdownMenu/dropdownMenu";
 
 export default function Clients() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
@@ -50,6 +51,8 @@ export default function Clients() {
     fetchClients();
   }, []);
 
+  const deleteClient = () => {};
+  const editClient = () => {};
   const usePagination = ({
     totalCount,
     pageSize,
@@ -199,7 +202,13 @@ export default function Clients() {
                 clientsArr.map((item, i) => (
                   <tr key={`${item._id}`} className={styles.tr}>
                     <td className={styles.td}>
-                      <div>
+                      <div className={styles.fullNameBox}>
+                        <DropdownMenu
+                          options={[
+                            { text: "Borrar", function: deleteClient },
+                            { text: "Editar", function: editClient },
+                          ]}
+                        />
                         <p>{item.fullName}</p>
                       </div>
                     </td>
@@ -237,7 +246,6 @@ export default function Clients() {
         >
           {"<"}
         </div>
-
         {paginationRange &&
           paginationRange.map((pageNumber, index) => {
             if (pageNumber === "...") {

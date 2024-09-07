@@ -24,7 +24,7 @@ export default function DropdownMenu({
       if (rect.bottom + menuHeight > viewportHeight) {
         setOpenDirection("up");
         setMenuPosition({
-          top: rect.top + window.scrollY - menuHeight, // Posicionarlo arriba del SVG
+          top: rect.top + window.scrollY - menuHeight / 1.5, // Posicionarlo arriba del SVG
           left: rect.left + window.scrollX,
         });
       } else {

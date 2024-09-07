@@ -7,6 +7,7 @@ import Link from "next/link";
 import SearchInput from "@/components/searchInput/searchInput";
 import { useMemo } from "react";
 import DropdownMenu from "@/components/clients/dropdownMenu/dropdownMenu";
+import DeleteClient from "@/components/clients/deleteClient/deleteClient";
 
 export default function Clients() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
@@ -16,6 +17,9 @@ export default function Clients() {
   const [pageCount, setPageCount] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
+  const [confirmClientDelete, setConfirmClientDelete] = useState<
+    Client | false
+  >(false);
   const fetchClients = async () => {
     setFetchingMonitor(true);
 
@@ -51,7 +55,25 @@ export default function Clients() {
     fetchClients();
   }, []);
 
-  const deleteClient = () => {};
+  const fetchDeleteClient = async () => {
+    setFetchingMonitor(true);
+    setClientsArr([]);
+
+    try {
+      const searchParams = new URLSearchParams();
+
+      searchParams.append("keyword", keyword);
+
+      const res = await fetch(`/api/client?${searchParams.toString()}`, {
+        method: "DELETE",
+      });
+
+      const resData = await res.json();
+      fetchClients();
+    } catch (error) {
+      fetchClients();
+    }
+  };
   const editClient = () => {};
   const usePagination = ({
     totalCount,
@@ -153,6 +175,15 @@ export default function Clients() {
 
   return (
     <main className={styles.main}>
+      {confirmClientDelete && (
+        <DeleteClient
+          handleSubmit={() => {
+            fetchDeleteClient();
+          }}
+          clientData={confirmClientDelete}
+          cancel={() => setConfirmClientDelete(false)}
+        />
+      )}
       <div className={styles.top}>
         <h3>Clientes</h3>
         <Link className={styles.addOrderBtn} href={"/clients/create"}>
@@ -205,7 +236,12 @@ export default function Clients() {
                       <div className={styles.fullNameBox}>
                         <DropdownMenu
                           options={[
-                            { text: "Borrar", function: deleteClient },
+                            {
+                              text: "Borrar",
+                              function: () => {
+                                setConfirmClientDelete(item);
+                              },
+                            },
                             { text: "Editar", function: editClient },
                           ]}
                         />

@@ -74,3 +74,38 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: "Error client" }, { status: 500 });
   }
 }
+
+export async function DELETE(req: Request) {
+  await connectMongoDB();
+
+  try {
+    const { searchParams } = new URL(req.url);
+    const clientId = searchParams.get("id");
+
+    if (!clientId) {
+      return NextResponse.json(
+        { message: "Client ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const deletedClient = await Client.findByIdAndDelete(clientId);
+
+    if (!deletedClient) {
+      return NextResponse.json(
+        { message: "Client not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      message: "Client deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting client:", error);
+    return NextResponse.json(
+      { message: "Error deleting client" },
+      { status: 500 }
+    );
+  }
+}

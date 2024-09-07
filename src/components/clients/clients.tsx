@@ -62,7 +62,7 @@ export default function Clients() {
     try {
       const searchParams = new URLSearchParams();
 
-      searchParams.append("keyword", keyword);
+      searchParams.append("id", (confirmClientDelete as Client)._id!);
 
       const res = await fetch(`/api/client?${searchParams.toString()}`, {
         method: "DELETE",
@@ -178,6 +178,7 @@ export default function Clients() {
       {confirmClientDelete && (
         <DeleteClient
           handleSubmit={() => {
+            setConfirmClientDelete(false);
             fetchDeleteClient();
           }}
           clientData={confirmClientDelete}

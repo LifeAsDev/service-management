@@ -4,15 +4,21 @@ import { useState } from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/navigation";
 
-export default function ClientForm() {
-  const [clientData, setClientData] = useState<Omit<Client, "_id">>({
-    fullName: "",
-    numero: "",
-    correo: "",
-    direccion: "",
-    notas: "",
-    id: "",
-  });
+export default function ClientForm({
+  clientFetch,
+}: {
+  clientFetch?: Omit<Client, "_id">;
+}) {
+  const [clientData, setClientData] = useState<Omit<Client, "_id">>(
+    clientFetch || {
+      fullName: "",
+      numero: "",
+      correo: "",
+      direccion: "",
+      notas: "",
+      id: "",
+    }
+  );
   const [errors, setErrors] = useState<
     Partial<Record<keyof Omit<Client, "_id">, string>>
   >({});
@@ -96,7 +102,7 @@ export default function ClientForm() {
         {errors.fullName && (
           <p className={styles.errorText}>{errors.fullName}</p>
         )}
-      </div>{" "}
+      </div>
       <div className={styles.inputGroup}>
         <label htmlFor="id" className={styles.label}>
           ID:
@@ -164,7 +170,7 @@ export default function ClientForm() {
         {errors.direccion && (
           <p className={styles.errorText}>{errors.direccion}</p>
         )}
-      </div>{" "}
+      </div>
       <div className={styles.inputGroup}>
         <label htmlFor="notas" className={styles.label}>
           Notas:
@@ -188,7 +194,11 @@ export default function ClientForm() {
           creatingClient && styles.creatingClient
         }`}
       >
-        {!creatingClient ? "Crear" : <div className="loader"></div>}
+        {!creatingClient ? (
+          <>{clientFetch ? "Guardar" : "Crear"}</>
+        ) : (
+          <div className="loader"></div>
+        )}
       </button>
     </form>
   );

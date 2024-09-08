@@ -42,6 +42,7 @@ main {
   background-color: var(--very-dark-blue);
   min-width: 100%;
   box-sizing: border-box;
+  min-height: calc(100vh - 5em);
 }
 
 body {

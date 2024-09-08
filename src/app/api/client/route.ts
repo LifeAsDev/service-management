@@ -2,8 +2,12 @@ import { connectMongoDB } from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 import Client from "@/schemas/client"; // Import the Client model
 
-export async function POST(req: Request) {
+export async function POST(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
   await connectMongoDB();
+  const { id } = params; // Obtenemos el id de los parámetros
 
   try {
     const formData = await req.formData();

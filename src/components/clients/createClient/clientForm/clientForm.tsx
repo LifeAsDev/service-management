@@ -4,11 +4,7 @@ import { useState } from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/navigation";
 
-export default function ClientForm({
-  clientFetch,
-}: {
-  clientFetch?: Omit<Client, "_id">;
-}) {
+export default function ClientForm({ clientFetch }: { clientFetch?: Client }) {
   const [clientData, setClientData] = useState<Omit<Client, "_id">>(
     clientFetch || {
       fullName: "",
@@ -59,21 +55,32 @@ export default function ClientForm({
     }
     setCreatingClient(true);
 
+    // Definir el método (POST o PATCH) según si clientFetch es falsy o truthy
+    const method = clientFetch ? "PATCH" : "POST";
+    const endpoint = clientFetch
+      ? `/api/client/${clientFetch._id}`
+      : "/api/client";
+
     try {
       const data = new FormData();
       Object.entries(clientData).forEach(([key, value]) => {
         data.append(key, value);
       });
-      const response = await fetch("/api/client", {
-        method: "POST",
+
+      // Hacer la solicitud con POST o PATCH
+      const response = await fetch(endpoint, {
+        method,
         body: data,
       });
 
       const result = await response.json();
-      router.push(`/clients`);
 
       if (response.ok) {
-        console.log("Client created:", result.client);
+        router.push(`/clients`); // Redirige después de la creación/edición
+        console.log(
+          `${clientFetch ? "Client updated" : "Client created"}:`,
+          result.client
+        );
       } else {
         console.error("Error:", result.message);
       }

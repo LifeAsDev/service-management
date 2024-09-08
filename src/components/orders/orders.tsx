@@ -232,7 +232,7 @@ export default function Orders() {
                       </td>
                       <td className={styles.td}>
                         <div>
-                          <p>{item.cliente.fullName}</p>
+                          <p>{item.cliente?.fullName || "Sin Cliente"}</p>
                         </div>
                       </td>
                       <td className={styles.td}>

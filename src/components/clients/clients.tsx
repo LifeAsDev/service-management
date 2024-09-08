@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
-import { formatDate } from "@/lib/calculationFunctions";
 import Client from "@/models/client";
 import Link from "next/link";
 import SearchInput from "@/components/searchInput/searchInput";
 import { useMemo } from "react";
 import DropdownMenu from "@/components/clients/dropdownMenu/dropdownMenu";
 import DeleteClient from "@/components/clients/deleteClient/deleteClient";
+import { useRouter } from "next/navigation";
 
 export default function Clients() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
@@ -20,6 +20,8 @@ export default function Clients() {
   const [confirmClientDelete, setConfirmClientDelete] = useState<
     Client | false
   >(false);
+  const router = useRouter();
+
   const fetchClients = async () => {
     setFetchingMonitor(true);
 
@@ -74,7 +76,10 @@ export default function Clients() {
       fetchClients();
     }
   };
-  const editClient = () => {};
+  const editClient = (clientId: string) => {
+    // Redirigir a /clients/edit
+    router.push(`/clients/edit/${clientId}`);
+  };
   const usePagination = ({
     totalCount,
     pageSize,
@@ -243,7 +248,10 @@ export default function Clients() {
                                 setConfirmClientDelete(item);
                               },
                             },
-                            { text: "Editar", function: editClient },
+                            {
+                              text: "Editar",
+                              function: () => editClient(item._id!),
+                            },
                           ]}
                         />
                         <p>{item.fullName}</p>

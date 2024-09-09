@@ -37,3 +37,12 @@
 .dropdownMenu li:hover {
   background-color: var(--very-dark-grayish-blue-2);
 }
+
+.optionsBox svg {
+  height: 24px;
+  cursor: pointer;
+  transition: 0.1s;
+}
+.optionsBox svg:hover {
+  transform: scale(1.1);
+}

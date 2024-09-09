@@ -6,6 +6,7 @@ import { formatDate } from "@/lib/calculationFunctions";
 import Link from "next/link";
 import { useMemo } from "react";
 import SearchInput from "@/components/searchInput/searchInput";
+import DropdownMenu from "@/components/clients/dropdownMenu/dropdownMenu";
 
 export default function Orders() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
@@ -157,7 +158,7 @@ export default function Orders() {
               <tr>
                 <th>
                   <div>Orden</div>
-                </th>{" "}
+                </th>
                 <th>
                   <div>Estado</div>
                 </th>
@@ -216,7 +217,19 @@ export default function Orders() {
                   ordersArr.map((item, i) => (
                     <tr key={`${item._id}`} className={styles.tr}>
                       <td className={styles.td}>
-                        <div>
+                        <div className={styles.td1}>
+                          <DropdownMenu
+                            options={[
+                              {
+                                text: "Borrar",
+                                function: () => {},
+                              },
+                              {
+                                text: "Editar",
+                                function: () => {},
+                              },
+                            ]}
+                          />
                           <p>{item._id}</p>
                         </div>
                       </td>{" "}

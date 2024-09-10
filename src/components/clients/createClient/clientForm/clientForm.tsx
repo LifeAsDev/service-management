@@ -112,7 +112,7 @@ export default function ClientForm({ clientFetch }: { clientFetch?: Client }) {
       </div>
       <div className={styles.inputGroup}>
         <label htmlFor="id" className={styles.label}>
-          ID:
+          RUT:
         </label>
         <input
           type="text"

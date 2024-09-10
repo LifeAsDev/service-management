@@ -222,7 +222,7 @@ export default function Clients() {
                   <div>Nombre Completo</div>
                 </th>
                 <th>
-                  <div className={styles.dateHeadBox}>ID</div>
+                  <div className={styles.dateHeadBox}>RUT</div>
                 </th>
                 <th>
                   <div>Correo</div>

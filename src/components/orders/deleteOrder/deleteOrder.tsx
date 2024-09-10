@@ -1,54 +1,49 @@
-import Client from "@/models/client";
+import { formatDate } from "@/lib/calculationFunctions";
 import styles from "./styles.module.css";
-export default function DeleteClient({
+import Order from "@/models/order";
+export default function DeleteOrder({
   handleSubmit,
-  clientData,
+  orderData,
   cancel,
 }: {
   handleSubmit: () => void;
-  clientData: Client;
+  orderData: Order;
   cancel: () => void;
 }) {
   return (
     <div className={styles.overlay}>
       <div className={styles.clientBox}>
-        <h3 className={styles.h3}>Borrar Cliente</h3>
+        <h3 className={styles.h3}>Borrar Orden</h3>
         <div className={styles.clientDataGrid}>
           <div className={styles.inputGroup}>
-            <label htmlFor="fullName" className={styles.label}>
-              Nombre completo:
+            <label htmlFor="orden" className={styles.label}>
+              Orden:
             </label>
-            <p>{clientData.fullName}</p>
+            <p>{orderData._id}</p>
           </div>
           <div className={styles.inputGroup}>
-            <label htmlFor="id" className={styles.label}>
-              RUT:
+            <label htmlFor="estado" className={styles.label}>
+              Estado:
             </label>
-            <p>{clientData.id}</p>
+            <p>{orderData.estado || "Sin Estado"}</p>
           </div>
           <div className={styles.inputGroup}>
-            <label htmlFor="numero" className={styles.label}>
-              Número:
+            <label htmlFor="fecha" className={styles.label}>
+              Fecha:
             </label>
-            <p>{clientData.numero}</p>
+            <p>{formatDate(orderData.createdAt)}</p>
           </div>
           <div className={styles.inputGroup}>
-            <label htmlFor="correo" className={styles.label}>
-              Correo:
+            <label htmlFor="cliente" className={styles.label}>
+              Cliente:
             </label>
-            <p>{clientData.correo}</p>
+            <p>{orderData.clienteFullName || "Sin Cliente"}</p>
           </div>
           <div className={styles.inputGroup}>
-            <label htmlFor="direccion" className={styles.label}>
-              Dirección:
+            <label htmlFor="equipo" className={styles.label}>
+              Equipo:
             </label>
-            <p>{clientData.direccion}</p>
-          </div>
-          <div className={styles.inputGroup}>
-            <label htmlFor="notas" className={styles.label}>
-              Notas:
-            </label>
-            <p>{clientData.notas}</p>
+            <p>{`${orderData.modelo} ${orderData.marca}`}</p>
           </div>
         </div>
         <div className={styles.btnBox}>
@@ -59,7 +54,7 @@ export default function DeleteClient({
             Volver
           </button>
           <button onClick={handleSubmit} className={`${styles.button}`}>
-            Borrar Cliente
+            Borrar Orden
           </button>
         </div>
       </div>

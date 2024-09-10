@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import SearchInput from "@/components/searchInput/searchInput";
 import DropdownMenu from "@/components/clients/dropdownMenu/dropdownMenu";
+import DeleteOrder from "@/components/orders/deleteOrder/deleteOrder";
 
 export default function Orders() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
@@ -17,6 +18,9 @@ export default function Orders() {
   const [pageSize, setPageSize] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
   const [keyword, setKeyword] = useState("");
+  const [confirmOrderDelete, setConfirmOrderDelete] = useState<Order | false>(
+    false
+  );
 
   const fetchOrders = async () => {
     setFetchingMonitor(true);
@@ -125,9 +129,38 @@ export default function Orders() {
     siblingCount: 3,
     currentPage: page,
   });
+  const fetchDeleteOrder = async () => {
+    setFetchingMonitor(true);
+    setOrdersArr([]);
+
+    try {
+      const searchParams = new URLSearchParams();
+
+      searchParams.append("id", (confirmOrderDelete as Order)._id!);
+
+      const res = await fetch(`/api/order?${searchParams.toString()}`, {
+        method: "DELETE",
+      });
+
+      const resData = await res.json();
+      fetchOrders();
+    } catch (error) {
+      fetchOrders();
+    }
+  };
 
   return (
     <main className={styles.main}>
+      {confirmOrderDelete && (
+        <DeleteOrder
+          handleSubmit={() => {
+            setConfirmOrderDelete(false);
+            fetchDeleteOrder();
+          }}
+          orderData={confirmOrderDelete}
+          cancel={() => setConfirmOrderDelete(false)}
+        />
+      )}
       <div className={styles.top}>
         <h3>Órdenes</h3>
         <Link className={styles.addOrderBtn} href={"/orders/create"}>
@@ -222,7 +255,9 @@ export default function Orders() {
                             options={[
                               {
                                 text: "Borrar",
-                                function: () => {},
+                                function: () => {
+                                  setConfirmOrderDelete(item);
+                                },
                               },
                               {
                                 text: "Editar",

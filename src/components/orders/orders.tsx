@@ -145,7 +145,7 @@ export default function Orders() {
               setPageCount(1);
             }
           }}
-          placeholder="Orden, Cliente, Modelo"
+          placeholder="Orden, Cliente, Modelo, Marca"
         />
         <div
           id="evaluationList"
@@ -206,7 +206,7 @@ export default function Orders() {
                   <div>Cliente</div>
                 </th>
                 <th>
-                  <div>Modelo</div>
+                  <div>Equipo</div>
                 </th>
               </tr>
             </thead>
@@ -226,6 +226,10 @@ export default function Orders() {
                               },
                               {
                                 text: "Editar",
+                                function: () => {},
+                              },
+                              {
+                                text: "Imprimir",
                                 function: () => {},
                               },
                             ]}
@@ -250,7 +254,7 @@ export default function Orders() {
                       </td>
                       <td className={styles.td}>
                         <div>
-                          <p>{item.modelo}</p>
+                          <p>{`${item.modelo} ${item.marca}`}</p>
                         </div>
                       </td>
                     </tr>

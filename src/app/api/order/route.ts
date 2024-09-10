@@ -82,6 +82,7 @@ export async function GET(req: Request) {
         $match: {
           $or: [
             { modelo: { $regex: keyword, $options: "i" } },
+            { marca: { $regex: keyword, $options: "i" } },
             { clienteFullName: { $regex: keyword, $options: "i" } },
             { tempOrderId: { $regex: keyword, $options: "i" } },
           ],

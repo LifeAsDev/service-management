@@ -4,9 +4,11 @@ import ClientForm from "@/components/clients/createClient/clientForm/clientForm"
 import styles from "./styles.module.css";
 import { useEffect, useState } from "react";
 import Client from "@/models/client";
+import { useRouter } from "next/navigation";
 
 export default function CreateClient({ id }: { id?: string }) {
   const [clientFetch, setClientFetch] = useState<Omit<Client, "_id"> | null>();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchClient = async () => {
@@ -23,8 +25,11 @@ export default function CreateClient({ id }: { id?: string }) {
         // Asegúrate de que se reciban datos válidos antes de actualizar el estado
         if (res.ok) {
           setClientFetch(resData.client);
+        } else {
+          router.push(`/clients`);
         }
       } catch (error) {
+        router.push(`/clients`);
         setClientFetch(null);
       }
     };

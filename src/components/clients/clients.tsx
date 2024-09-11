@@ -232,49 +232,47 @@ export default function Clients() {
                 </th>
               </tr>
             </thead>
-            <tbody id="evaluationList" className={styles.tbody}>
-              {fetchingMonitor ? (
-                <></>
-              ) : (
-                clientsArr.map((item, i) => (
-                  <tr key={`${item._id}`} className={styles.tr}>
-                    <td className={styles.td}>
-                      <div className={styles.fullNameBox}>
-                        <DropdownMenu
-                          options={[
-                            {
-                              text: "Borrar",
-                              function: () => {
-                                setConfirmClientDelete(item);
+            <tbody id="evaluationListBody" className={styles.tbody}>
+              {fetchingMonitor
+                ? ""
+                : clientsArr.map((item, i) => (
+                    <tr key={`${item._id}`} className={styles.tr}>
+                      <td className={styles.td}>
+                        <div className={styles.fullNameBox}>
+                          <DropdownMenu
+                            options={[
+                              {
+                                text: "Borrar",
+                                function: () => {
+                                  setConfirmClientDelete(item);
+                                },
                               },
-                            },
-                            {
-                              text: "Editar",
-                              function: () => editClient(item._id!),
-                            },
-                          ]}
-                        />
-                        <p>{item.fullName}</p>
-                      </div>
-                    </td>
-                    <td className={styles.td}>
-                      <div>
-                        <p>{item.id}</p>
-                      </div>
-                    </td>
-                    <td className={styles.td}>
-                      <div>
-                        <p>{item.correo}</p>
-                      </div>
-                    </td>{" "}
-                    <td className={styles.td}>
-                      <div className={styles.direccionBox}>
-                        <p>{item.direccion}</p>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
+                              {
+                                text: "Editar",
+                                function: () => editClient(item._id!),
+                              },
+                            ]}
+                          />
+                          <p>{item.fullName}</p>
+                        </div>
+                      </td>
+                      <td className={styles.td}>
+                        <div>
+                          <p>{item.id}</p>
+                        </div>
+                      </td>
+                      <td className={styles.td}>
+                        <div>
+                          <p>{item.correo}</p>
+                        </div>
+                      </td>
+                      <td className={styles.td}>
+                        <div className={styles.direccionBox}>
+                          <p>{item.direccion}</p>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
             </tbody>
           </table>
           {fetchingMonitor ? (

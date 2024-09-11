@@ -57,6 +57,25 @@ export default function DropdownMenu({
     };
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    const div = document.getElementById("evaluationList");
+
+    const handleScroll = () => {
+      setIsMenuOpen(false);
+    };
+
+    if (div) {
+      div.addEventListener("scroll", handleScroll);
+    }
+
+    // Cleanup the event listener when the component is unmounted
+    return () => {
+      if (div) {
+        div.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
+
   return (
     <div className={styles.optionsBox}>
       <svg

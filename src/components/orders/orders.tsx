@@ -243,7 +243,7 @@ export default function Orders() {
                 </th>
               </tr>
             </thead>
-            <tbody id="evaluationList" className={styles.tbody}>
+            <tbody id="evaluationListBody" className={styles.tbody}>
               {fetchingMonitor
                 ? null
                 : ordersArr.length > 0 &&
@@ -271,7 +271,7 @@ export default function Orders() {
                           />
                           <p>{item._id}</p>
                         </div>
-                      </td>{" "}
+                      </td>
                       <td className={styles.td}>
                         <div>
                           <p>{item.estado || "Sin Estado"}</p>

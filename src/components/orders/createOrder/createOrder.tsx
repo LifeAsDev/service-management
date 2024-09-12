@@ -6,6 +6,7 @@ export default function CreateOrder() {
     <main className={styles.main}>
       <h2>Crear Orden</h2>
       <div className={styles.serviceBox}>
+        <OrderForm />
         <SetOrderClientForm />
       </div>
     </main>

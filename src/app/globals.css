@@ -87,3 +87,16 @@ button:hover {
     transform: rotate(1turn);
   }
 }
+
+input {
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  background-color: var(--very-dark-desaturated-blue);
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--primary-yellow); /* Un buen contraste */
+}

@@ -8,9 +8,12 @@
   color: white;
   outline: none;
   font-weight: 400;
+  border: none;
+  padding: 0;
   border-bottom: 2px solid white;
   width: 15em;
   font-size: 1.1em;
+  border-radius: 0;
 }
 .searchBox svg {
   width: 28px;

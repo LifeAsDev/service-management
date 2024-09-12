@@ -10,6 +10,7 @@
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.45);
   background-color: var(--very-dark-desaturated-blue);
   padding-bottom: 1em;
+  height: fit-content;
 }
 
 .inputGroup {

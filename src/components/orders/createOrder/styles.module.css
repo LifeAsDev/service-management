@@ -4,6 +4,7 @@
   padding: 0 2em;
   padding-top: 1em;
   min-height: 120vh;
+  position: relative;
 }
 
 .main h2 {
@@ -15,4 +16,19 @@
   display: flex;
   flex-direction: row;
   gap: 2em;
+}
+
+.button {
+  color: white;
+  background-color: #007bff;
+  border: none;
+  cursor: pointer;
+  margin-top: 0.5em;
+  position: fixed;
+  right: 2em;
+  top: 5.5em;
+}
+
+.button:hover {
+  background-color: #0056b3;
 }

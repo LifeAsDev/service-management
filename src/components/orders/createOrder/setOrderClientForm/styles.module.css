@@ -23,13 +23,6 @@
   gap: 1em;
 }
 
-.setOrderClientForm h3 {
-  font-size: 1.5em;
-  font-weight: 600;
-  margin-bottom: 0.35em;
-  text-align: center;
-}
-
 .inputGroup {
   position: relative;
 }
@@ -154,4 +147,16 @@
 }
 .closeBtn:hover {
   background-color: var(--very-dark-grayish-blue-1);
+}
+
+.errorInput {
+  border-color: red;
+}
+
+.errorText {
+  color: red;
+  font-size: 12px;
+  margin-top: 2px;
+  position: absolute;
+  right: 0;
 }

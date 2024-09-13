@@ -83,6 +83,8 @@ export default function ClientForm({ clientFetch }: { clientFetch?: Client }) {
         );
       } else {
         console.error("Error:", result.message);
+        setCreatingClient(false);
+        setErrors(result.errors);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -90,109 +92,7 @@ export default function ClientForm({ clientFetch }: { clientFetch?: Client }) {
   };
 
   return (
-    <form className={styles.form}>
-      <div className={styles.inputGroup}>
-        <label htmlFor="fullName" className={styles.label}>
-          Nombre completo:
-        </label>
-        <input
-          type="text"
-          id="fullName"
-          name="fullName"
-          value={clientData.fullName}
-          onChange={handleChange}
-          className={`${styles.input} ${
-            errors.fullName ? styles.errorInput : ""
-          }`}
-          onFocus={() => setErrors({})}
-        />
-        {errors.fullName && (
-          <p className={styles.errorText}>{errors.fullName}</p>
-        )}
-      </div>
-      <div className={styles.inputGroup}>
-        <label htmlFor="id" className={styles.label}>
-          RUT:
-        </label>
-        <input
-          type="text"
-          id="id"
-          name="id"
-          value={clientData.id}
-          onChange={handleChange}
-          className={`${styles.input} ${errors.id ? styles.errorInput : ""}`}
-          onFocus={() => setErrors({})}
-        />
-        {errors.id && <p className={styles.errorText}>{errors.id}</p>}
-      </div>
-      <div className={styles.inputGroup}>
-        <label htmlFor="numero" className={styles.label}>
-          Número:
-        </label>
-        <input
-          type="text"
-          id="numero"
-          name="numero"
-          value={clientData.numero}
-          onChange={handleChange}
-          className={`${styles.input} ${
-            errors.numero ? styles.errorInput : ""
-          }`}
-          onFocus={() => setErrors({})}
-        />
-        {errors.numero && <p className={styles.errorText}>{errors.numero}</p>}
-      </div>
-      <div className={styles.inputGroup}>
-        <label htmlFor="correo" className={styles.label}>
-          Correo:
-        </label>
-        <input
-          type="text"
-          id="correo"
-          name="correo"
-          value={clientData.correo}
-          onChange={handleChange}
-          className={`${styles.input} ${
-            errors.correo ? styles.errorInput : ""
-          }`}
-          onFocus={() => setErrors({})}
-        />
-        {errors.correo && <p className={styles.errorText}>{errors.correo}</p>}
-      </div>
-      <div className={styles.inputGroup}>
-        <label htmlFor="direccion" className={styles.label}>
-          Dirección:
-        </label>
-        <input
-          type="text"
-          id="direccion"
-          name="direccion"
-          value={clientData.direccion}
-          onChange={handleChange}
-          className={`${styles.input} ${
-            errors.direccion ? styles.errorInput : ""
-          }`}
-          onFocus={() => setErrors({})}
-        />
-        {errors.direccion && (
-          <p className={styles.errorText}>{errors.direccion}</p>
-        )}
-      </div>
-      <div className={styles.inputGroup}>
-        <label htmlFor="notas" className={styles.label}>
-          Notas:
-        </label>
-        <input
-          type="text"
-          id="notas"
-          name="notas"
-          value={clientData.notas}
-          onChange={handleChange}
-          className={`${styles.input} ${errors.notas ? styles.errorInput : ""}`}
-          onFocus={() => setErrors({})}
-        />
-        {errors.notas && <p className={styles.errorText}>{errors.notas}</p>}
-      </div>
+    <>
       <button
         disabled={creatingClient}
         onClick={handleSubmit}
@@ -207,6 +107,112 @@ export default function ClientForm({ clientFetch }: { clientFetch?: Client }) {
           <div className="loader"></div>
         )}
       </button>
-    </form>
+      <form className={styles.form}>
+        <div className={styles.inputGroup}>
+          <label htmlFor="fullName" className={styles.label}>
+            Nombre completo:
+          </label>
+          <input
+            type="text"
+            id="fullName"
+            name="fullName"
+            value={clientData.fullName}
+            onChange={handleChange}
+            className={`${styles.input} ${
+              errors.fullName ? styles.errorInput : ""
+            }`}
+            onFocus={() => setErrors({})}
+          />
+          {errors.fullName && (
+            <p className={styles.errorText}>{errors.fullName}</p>
+          )}
+        </div>
+        <div className={styles.inputGroup}>
+          <label htmlFor="id" className={styles.label}>
+            RUT:
+          </label>
+          <input
+            type="text"
+            id="id"
+            name="id"
+            value={clientData.id}
+            onChange={handleChange}
+            className={`${styles.input} ${errors.id ? styles.errorInput : ""}`}
+            onFocus={() => setErrors({})}
+          />
+          {errors.id && <p className={styles.errorText}>{errors.id}</p>}
+        </div>
+        <div className={styles.inputGroup}>
+          <label htmlFor="numero" className={styles.label}>
+            Número:
+          </label>
+          <input
+            type="text"
+            id="numero"
+            name="numero"
+            value={clientData.numero}
+            onChange={handleChange}
+            className={`${styles.input} ${
+              errors.numero ? styles.errorInput : ""
+            }`}
+            onFocus={() => setErrors({})}
+          />
+          {errors.numero && <p className={styles.errorText}>{errors.numero}</p>}
+        </div>
+        <div className={styles.inputGroup}>
+          <label htmlFor="correo" className={styles.label}>
+            Correo:
+          </label>
+          <input
+            type="text"
+            id="correo"
+            name="correo"
+            value={clientData.correo}
+            onChange={handleChange}
+            className={`${styles.input} ${
+              errors.correo ? styles.errorInput : ""
+            }`}
+            onFocus={() => setErrors({})}
+          />
+          {errors.correo && <p className={styles.errorText}>{errors.correo}</p>}
+        </div>
+        <div className={styles.inputGroup}>
+          <label htmlFor="direccion" className={styles.label}>
+            Dirección:
+          </label>
+          <input
+            type="text"
+            id="direccion"
+            name="direccion"
+            value={clientData.direccion}
+            onChange={handleChange}
+            className={`${styles.input} ${
+              errors.direccion ? styles.errorInput : ""
+            }`}
+            onFocus={() => setErrors({})}
+          />
+          {errors.direccion && (
+            <p className={styles.errorText}>{errors.direccion}</p>
+          )}
+        </div>
+        <div className={styles.inputGroup}>
+          <label htmlFor="notas" className={styles.label}>
+            Notas:
+          </label>
+          <input
+            type="text"
+            id="notas"
+            name="notas"
+            value={clientData.notas}
+            onChange={handleChange}
+            className={`${styles.input} ${
+              errors.notas ? styles.errorInput : ""
+            }`}
+            onFocus={() => setErrors({})}
+          />
+          {errors.notas && <p className={styles.errorText}>{errors.notas}</p>}
+        </div>
+      </form>
+    </>
   );
 }

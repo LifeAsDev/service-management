@@ -5,7 +5,6 @@ import styles from "./styles.module.css";
 
 export default function SetOrderClientForm() {
   const [isHidden, setIsHidden] = useState(true); // Estado para controlar la visibilidad
-  const collapsibleRef = useRef<HTMLDivElement>(null);
   const [clientData, setClientData] = useState<Client>({
     fullName: "",
     numero: "",
@@ -21,7 +20,7 @@ export default function SetOrderClientForm() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
   const [clientsArr, setClientsArr] = useState<Client[]>([]);
 
-  const [creatingOrder, setCreatingOrder] = useState(false);
+  const [creatingClient, setCreatingClient] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,11 +36,12 @@ export default function SetOrderClientForm() {
       }
     }
   };
+
   useEffect(() => {
     const container = document.getElementById("setOrderClientForm");
     if (container) {
       // Si está oculto, colapsa la altura a 0, si no, ajusta la altura a "auto"
-      container.style.height = isHidden ? "0" : `${container.scrollHeight}px`;
+      container.style.height = isHidden ? "0" : `auto`;
     }
   }, [isHidden]);
   useEffect(() => {
@@ -85,6 +85,63 @@ export default function SetOrderClientForm() {
       id: "",
       notas: "",
     });
+  };
+
+  const handleSubmit = async () => {
+    setClientErrors({});
+
+    const newErrors: Partial<Record<keyof Omit<Client, "_id">, string>> = {};
+    Object.entries(clientData).forEach(([key, value]) => {
+      if (
+        ["fullName", "numero", "correo", "direccion", "id", "notas"].includes(
+          key
+        ) &&
+        value.trim() === ""
+      ) {
+        newErrors[key as keyof Omit<Client, "_id">] =
+          "Este campo es obligatorio.";
+      }
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setClientErrors(newErrors);
+      return;
+    }
+    setCreatingClient(true);
+
+    // Definir el método (POST o PATCH) según si clientFetch es falsy o truthy
+    const method = "POST";
+    const endpoint = "/api/client";
+
+    try {
+      const data = new FormData();
+      Object.entries(clientData).forEach(([key, value]) => {
+        data.append(key, value);
+      });
+
+      // Hacer la solicitud con POST o PATCH
+      const response = await fetch(endpoint, {
+        method,
+        body: data,
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log(`"Client created":`, result.client);
+        setClientData(result.client);
+        setClientSelected(true);
+        setCreatingClient(false);
+        setIsHidden(true);
+      } else {
+        console.error("Error:", result.message);
+        setCreatingClient(false);
+        setClientErrors(result.errors);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setCreatingClient(false);
+    }
   };
   return (
     <div className={styles.setOrderClientForm}>
@@ -136,7 +193,10 @@ export default function SetOrderClientForm() {
             Nombre completo:
           </label>
           <input
-            disabled={creatingOrder}
+            onBlur={() => {
+              setClientErrors({});
+            }}
+            disabled={creatingClient}
             type="text"
             id="fullName"
             name="fullName"
@@ -220,7 +280,10 @@ export default function SetOrderClientForm() {
             ID:
           </label>
           <input
-            disabled={creatingOrder}
+            onBlur={() => {
+              setClientErrors({});
+            }}
+            disabled={creatingClient}
             type="text"
             id="id"
             name="id"
@@ -240,7 +303,10 @@ export default function SetOrderClientForm() {
             Número:
           </label>
           <input
-            disabled={creatingOrder}
+            onBlur={() => {
+              setClientErrors({});
+            }}
+            disabled={creatingClient}
             type="text"
             id="numero"
             name="numero"
@@ -260,7 +326,10 @@ export default function SetOrderClientForm() {
             Correo:
           </label>
           <input
-            disabled={creatingOrder}
+            onBlur={() => {
+              setClientErrors({});
+            }}
+            disabled={creatingClient}
             type="text"
             id="correo"
             name="correo"
@@ -280,7 +349,10 @@ export default function SetOrderClientForm() {
             Dirección:
           </label>
           <input
-            disabled={creatingOrder}
+            onBlur={() => {
+              setClientErrors({});
+            }}
+            disabled={creatingClient}
             type="text"
             id="direccion"
             name="direccion"
@@ -300,7 +372,10 @@ export default function SetOrderClientForm() {
             Notas:
           </label>
           <input
-            disabled={creatingOrder}
+            onBlur={() => {
+              setClientErrors({});
+            }}
+            disabled={creatingClient}
             type="text"
             id="notas"
             name="notas"
@@ -316,13 +391,13 @@ export default function SetOrderClientForm() {
           )}
         </div>
         <button
-          disabled={creatingOrder}
-          onClick={() => {}}
+          disabled={creatingClient}
+          onClick={handleSubmit}
           className={`${styles.button} ${
-            creatingOrder && styles.creatingClient
+            creatingClient && styles.creatingClient
           }`}
         >
-          {!creatingOrder ? "Crear" : <div className="loader"></div>}
+          {!creatingClient ? "Crear" : <div className="loader"></div>}
         </button>
       </div>
     </div>

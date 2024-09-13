@@ -30,6 +30,9 @@
   border: none;
   cursor: pointer;
   margin-top: 0.5em;
+  position: fixed;
+  right: 2em;
+  top: 6em;
 }
 
 .button:hover {

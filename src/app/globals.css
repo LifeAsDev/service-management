@@ -58,9 +58,11 @@ button {
   background-color: var(--very-dark-desaturated-blue);
   border: 1px solid var(--light-grayish-blue);
   border-radius: 0.25em;
-  padding: 0.5em 1em;
+  padding: 0.5em 2em;
   padding-bottom: 0.425em;
   color: var(--white);
+  height: 39px;
+  min-width: 105px;
 }
 
 button:hover {
@@ -99,4 +101,11 @@ input {
 
 input:focus {
   border-color: var(--primary-yellow); /* Un buen contraste */
+}
+
+h3 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-bottom: 0.35em;
+  text-align: center;
 }

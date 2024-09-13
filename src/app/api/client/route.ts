@@ -2,12 +2,8 @@ import { connectMongoDB } from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 import Client from "@/schemas/client"; // Import the Client model
 
-export async function POST(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req: Request, { params }: { params: any }) {
   await connectMongoDB();
-  const { id } = params; // Obtenemos el id de los parámetros
 
   try {
     const formData = await req.formData();
@@ -20,6 +16,19 @@ export async function POST(
       id: formData.get("id") as string,
     };
 
+    // Verificar si ya existe un cliente con el mismo ID
+    const existingClient = await Client.findOne({ id: clientData.id });
+    if (existingClient) {
+      return NextResponse.json(
+        {
+          message: "Client with this ID already exists",
+          errors: { id: "Ya existe un cliente con este RUT" },
+        },
+        { status: 400 }
+      );
+    }
+
+    // Crear el nuevo cliente si no existe
     const client = await Client.create(clientData);
 
     return NextResponse.json({

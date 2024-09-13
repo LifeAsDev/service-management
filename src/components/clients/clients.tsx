@@ -234,7 +234,7 @@ export default function Clients() {
             </thead>
             <tbody id="evaluationListBody" className={styles.tbody}>
               {fetchingMonitor
-                ? ""
+                ? null
                 : clientsArr.map((item, i) => (
                     <tr key={`${item._id}`} className={styles.tr}>
                       <td className={styles.td}>

@@ -175,13 +175,8 @@ export default function OrderForm() {
 
   return (
     <form className={styles.form}>
-      {confirmNewClient && (
-        <ConfirmNewClient
-          cancelOrderPost={cancelOrderPost}
-          handleSubmit={handleSubmit}
-          clientData={clientData}
-        />
-      )}
+      <h3>Servicio</h3>
+
       <div className={styles.inputGroup}>
         <label htmlFor="marca" className={styles.label}>
           Marca:
@@ -198,7 +193,6 @@ export default function OrderForm() {
         />
         {errors.marca && <p className={styles.errorText}>{errors.marca}</p>}
       </div>
-
       <div className={styles.inputGroup}>
         <label htmlFor="modelo" className={styles.label}>
           Modelo:
@@ -217,7 +211,6 @@ export default function OrderForm() {
         />
         {errors.modelo && <p className={styles.errorText}>{errors.modelo}</p>}
       </div>
-
       <div className={styles.inputGroup}>
         <label htmlFor="tipo" className={styles.label}>
           Tipo:
@@ -234,7 +227,6 @@ export default function OrderForm() {
         />
         {errors.tipo && <p className={styles.errorText}>{errors.tipo}</p>}
       </div>
-
       <div className={styles.inputGroup}>
         <label htmlFor="numeroDeSerie" className={styles.label}>
           Número de Serie:
@@ -255,7 +247,6 @@ export default function OrderForm() {
           <p className={styles.errorText}>{errors.numeroDeSerie}</p>
         )}
       </div>
-
       <div className={styles.inputGroup}>
         <label htmlFor="contraseña" className={styles.label}>
           Contraseña:

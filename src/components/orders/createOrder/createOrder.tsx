@@ -26,6 +26,7 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
     [K in keyof Omit<Order, "_id" | "createdAt" | "cliente">]?: string;
   }>({});
   const [creatingOrder, setCreatingOrder] = useState(false);
+  const [tabSelected, setTabSelected] = useState<number>(0);
 
   const handleSubmit = async () => {
     const newOrderErrors: Partial<
@@ -85,7 +86,31 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
     <main className={styles.main}>
       <h2>Crear Orden</h2>
       <div className={styles.serviceBox}>
-        <OrderForm />
+        <div className={styles.serviceLeftBox}>
+          <div className={styles.tabsBox}>
+            <div
+              onClick={() => {
+                setTabSelected(0);
+              }}
+              className={`${styles.tabBox} ${
+                tabSelected === 0 && styles.selected
+              }`}
+            >
+              Servicio
+            </div>
+            <div
+              onClick={() => {
+                setTabSelected(1);
+              }}
+              className={`${styles.tabBox} ${
+                tabSelected === 1 && styles.selected
+              }`}
+            >
+              Costo
+            </div>
+          </div>
+          {tabSelected === 0 ? <OrderForm /> : ""}
+        </div>
         <SetOrderClientForm />
       </div>
       <button

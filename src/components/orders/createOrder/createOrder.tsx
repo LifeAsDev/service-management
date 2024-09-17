@@ -98,15 +98,33 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
   >({});
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, id } = e.target;
-    if (name.startsWith("name") || name.startsWith("price")) {
-      const costosKey = name.startsWith("name") ? "name" : "price";
+    if (name.startsWith("description") || name.startsWith("price")) {
+      const costosKey = name.startsWith("description") ? "nombre" : "costo";
       const costosIndex = parseInt(
-        name.replace("name", "").replace("price", "")
+        name.replace("description", "").replace("price", "")
       );
+      const newValue =
+        costosKey === "costo"
+          ? value === ""
+            ? ""
+            : parseFloat(value) || ""
+          : value;
 
-      setClientData({
-        ...clientData,
-        [name]: value,
+      setOrderData((prev) => {
+        const newOrderData = { ...prev };
+
+        const updatedCostos = [...(newOrderData.costos || [])];
+
+        if (updatedCostos[costosIndex]) {
+          updatedCostos[costosIndex] = {
+            ...updatedCostos[costosIndex],
+            [costosKey]: newValue,
+          };
+        }
+
+        newOrderData.costos = updatedCostos;
+
+        return newOrderData;
       });
     } else if (Object.keys(clientData).includes(name)) {
       setClientData({
@@ -160,10 +178,12 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
             <OrderForm handleChange={handleChange} />
           ) : (
             <OrderCostForm
+              setOrderData={setOrderData}
               handleChange={handleChange}
               errorsCosts={errorsCost}
               setErrorsCosts={setErrorsCost}
               creatingOrder={creatingOrder}
+              costs={orderData.costos}
             />
           )}
         </div>

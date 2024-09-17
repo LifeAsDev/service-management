@@ -31,7 +31,7 @@ export default function SetOrderClientForm({
     const container = document.getElementById("setOrderClientForm");
     if (container) {
       // Si está oculto, colapsa la altura a 0, si no, ajusta la altura a "auto"
-      container.style.height = isHidden ? "0" : `auto`;
+      container.style.height = isHidden ? "0" : `417px`;
     }
   }, [isHidden]);
   useEffect(() => {
@@ -264,7 +264,11 @@ export default function SetOrderClientForm({
           </g>
         </svg>
       </p>
-      <div id="setOrderClientForm" className={styles.collapsibleContent}>
+      <div
+        style={{ height: 0 }}
+        id="setOrderClientForm"
+        className={styles.collapsibleContent}
+      >
         <div className={styles.inputGroup}>
           <label htmlFor="id" className={styles.label}>
             ID:

@@ -16,7 +16,7 @@ interface Order {
     | "Rechazada"
     | "Sin Solución"
     | "Entregado";
-  costos?: { nombre: string; costo: string }[];
+  costos?: { nombre: string; costo: string; key?: string }[];
   clienteFullName?: string;
 }
 export default Order;

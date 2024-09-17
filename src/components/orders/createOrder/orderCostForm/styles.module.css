@@ -13,7 +13,6 @@
 }
 
 .inputGroup {
-  margin-bottom: 15px;
   position: relative;
 }
 
@@ -39,6 +38,7 @@
   flex-direction: row;
   width: 100%;
   gap: 1em;
+  margin-bottom: 0.5em;
 }
 
 .costoLi .inputGroup:first-of-type {
@@ -56,6 +56,7 @@
   text-align: center;
   padding: 4px;
   cursor: pointer;
+  margin-top: 0.75em;
 }
 
 .costoUl {
@@ -74,4 +75,14 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.costMinus {
+  cursor: pointer;
+  height: 34px;
+  margin-top: auto;
+}
+
+.costMinus:hover {
+  transform: scale(1.1);
 }

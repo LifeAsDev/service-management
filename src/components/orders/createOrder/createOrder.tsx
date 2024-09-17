@@ -5,7 +5,9 @@ import SetOrderClientForm from "@/components/orders/createOrder/setOrderClientFo
 import confirmNewClient from "@/components/orders/createOrder/confirmNewClient/confirmNewClient";
 import Order from "@/models/order";
 import router from "next/router";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
+import OrderCostForm from "@/components/orders/createOrder/orderCostForm/orderCostForm";
+import Client from "@/models/client";
 export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
   const [orderData, setOrderData] = useState<Order>({
     marca: "",
@@ -22,12 +24,22 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
     numeroDeSerie: "",
     contraseña: "",
   });
+  const [clientData, setClientData] = useState<Client>({
+    fullName: "",
+    numero: "",
+    correo: "",
+    direccion: "",
+    id: "",
+    notas: "",
+  });
   const [errors, setErrors] = useState<{
     [K in keyof Omit<Order, "_id" | "createdAt" | "cliente">]?: string;
   }>({});
   const [creatingOrder, setCreatingOrder] = useState(false);
   const [tabSelected, setTabSelected] = useState<number>(0);
-
+  const [errorsCost, setErrorsCost] = useState<
+    { nombre?: string; costo?: string }[]
+  >([]);
   const handleSubmit = async () => {
     const newOrderErrors: Partial<
       Record<keyof Omit<Order, "_id" | "createdAt">, string>
@@ -81,6 +93,41 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
       setCreatingOrder(false);
     }
   };
+  const [clientErrors, setClientErrors] = useState<
+    Partial<Record<keyof Client, string>>
+  >({});
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, id } = e.target;
+    if (name.startsWith("name") || name.startsWith("price")) {
+      const costosKey = name.startsWith("name") ? "name" : "price";
+      const costosIndex = parseInt(
+        name.replace("name", "").replace("price", "")
+      );
+
+      setClientData({
+        ...clientData,
+        [name]: value,
+      });
+    } else if (Object.keys(clientData).includes(name)) {
+      setClientData({
+        ...clientData,
+        [name]: value,
+      });
+
+      if (value.trim() !== "") {
+        setClientErrors({ ...clientErrors, [name]: undefined });
+      }
+    } else {
+      setOrderData({
+        ...orderData,
+        [name]: value,
+      });
+
+      if (value.trim() !== "") {
+        setErrors({ ...errors, [name]: undefined });
+      }
+    }
+  };
 
   return (
     <main className={styles.main}>
@@ -109,9 +156,24 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
               Costo
             </div>
           </div>
-          {tabSelected === 0 ? <OrderForm /> : ""}
+          {tabSelected === 0 ? (
+            <OrderForm handleChange={handleChange} />
+          ) : (
+            <OrderCostForm
+              handleChange={handleChange}
+              errorsCosts={errorsCost}
+              setErrorsCosts={setErrorsCost}
+              creatingOrder={creatingOrder}
+            />
+          )}
         </div>
-        <SetOrderClientForm />
+        <SetOrderClientForm
+          handleChange={handleChange}
+          clientData={clientData}
+          setClientErrors={setClientErrors}
+          clientErrors={clientErrors}
+          setClientData={setClientData}
+        />
       </div>
       <button
         disabled={creatingOrder}

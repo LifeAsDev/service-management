@@ -6,7 +6,11 @@ import { useRouter } from "next/navigation";
 import Order from "@/models/order"; // Importa la interfaz `Order`
 import ConfirmNewClient from "@/components/orders/createOrder/confirmNewClient/confirmNewClient";
 
-export default function OrderForm() {
+export default function OrderForm({
+  handleChange,
+}: {
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
   const [orderData, setOrderData] = useState<Order>({
     marca: "",
     modelo: "",
@@ -42,30 +46,6 @@ export default function OrderForm() {
   const [clientsArr, setClientsArr] = useState<Client[]>([]);
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
   const router = useRouter();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    if (Object.keys(clientData).includes(name)) {
-      setClientData({
-        ...clientData,
-        [name]: value,
-      });
-
-      if (value.trim() !== "") {
-        setClientErrors({ ...clientErrors, [name]: undefined });
-      }
-    } else {
-      setOrderData({
-        ...orderData,
-        [name]: value,
-      });
-
-      if (value.trim() !== "") {
-        setErrors({ ...errors, [name]: undefined });
-      }
-    }
-  };
 
   const handleSubmit = async (
     e: React.FormEvent | undefined,

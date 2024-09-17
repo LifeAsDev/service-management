@@ -1,41 +1,31 @@
 "use client";
 import Client from "@/models/client";
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import styles from "./styles.module.css";
 
-export default function SetOrderClientForm() {
+export default function SetOrderClientForm({
+  clientData,
+  setClientErrors,
+  handleChange,
+  clientErrors,
+  setClientData,
+}: {
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  clientData: Client;
+  setClientErrors: Dispatch<
+    SetStateAction<Partial<Record<keyof Client, string>>>
+  >;
+  clientErrors: Partial<Record<keyof Client, string>>;
+  setClientData: Dispatch<SetStateAction<Client>>;
+}) {
   const [isHidden, setIsHidden] = useState(true); // Estado para controlar la visibilidad
-  const [clientData, setClientData] = useState<Client>({
-    fullName: "",
-    numero: "",
-    correo: "",
-    direccion: "",
-    id: "",
-    notas: "",
-  });
+
   const [clientSelected, setClientSelected] = useState(false);
-  const [clientErrors, setClientErrors] = useState<
-    Partial<Record<keyof Client, string>>
-  >({});
+
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
   const [clientsArr, setClientsArr] = useState<Client[]>([]);
 
   const [creatingClient, setCreatingClient] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    if (Object.keys(clientData).includes(name)) {
-      setClientData({
-        ...clientData,
-        [name]: value,
-      });
-
-      if (value.trim() !== "") {
-        setClientErrors({ ...clientErrors, [name]: undefined });
-      }
-    }
-  };
 
   useEffect(() => {
     const container = document.getElementById("setOrderClientForm");

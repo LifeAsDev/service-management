@@ -1,0 +1,77 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 1em 1em;
+  margin-top: 0.9em;
+  margin-bottom: 3em;
+  border-radius: 8px;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.45);
+  background-color: var(--very-dark-desaturated-blue);
+  height: fit-content;
+  width: 100%;
+}
+
+.inputGroup {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.label {
+  font-weight: 500;
+  display: block;
+}
+
+.errorInput {
+  border-color: red;
+}
+
+.errorText {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+  position: absolute;
+  right: 0;
+}
+
+.costoLi {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 1em;
+}
+
+.costoLi .inputGroup:first-of-type {
+  width: 70%;
+}
+.costoLi .inputGroup:nth-of-type(2) {
+  width: 30%;
+}
+
+.costoAddBtn {
+  height: 1.5em;
+  border: dashed 2px #ccc;
+  border-radius: 4px;
+  box-sizing: content-box;
+  text-align: center;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.costoUl {
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 1em;
+}
+
+.costsBox {
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.costsBox li {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

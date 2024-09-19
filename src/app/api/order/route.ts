@@ -10,28 +10,7 @@ export async function POST(req: Request) {
   try {
     const formData = await req.formData();
 
-    const confirmNewClient = formData.get("confirmNewClient") === "true";
-    const clientData = {
-      fullName: formData.get("fullName") as string,
-      numero: formData.get("numero") as string,
-      correo: formData.get("correo") as string,
-      direccion: formData.get("direccion") as string,
-      notas: formData.get("notas") as string,
-      id: formData.get("id") as string,
-    };
-
-    let client = await Client.findOne({ id: clientData.id });
-
-    if (!client) {
-      if (confirmNewClient) {
-        client = await Client.create(clientData);
-      } else {
-        return NextResponse.json({
-          clientNew: true,
-          message: "Client new",
-        });
-      }
-    }
+    const client = await Client.findById(formData.get("clientId"));
 
     const orderData = {
       marca: formData.get("marca") as string,
@@ -44,6 +23,7 @@ export async function POST(req: Request) {
     };
 
     const order = await Order.create(orderData);
+
     return NextResponse.json({
       order,
       message: "Order created successfully",

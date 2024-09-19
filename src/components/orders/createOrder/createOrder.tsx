@@ -2,10 +2,9 @@
 import OrderForm from "@/components/orders/createOrder/orderForm/orderForm";
 import styles from "./styles.module.css";
 import SetOrderClientForm from "@/components/orders/createOrder/setOrderClientForm/setOrderClientForm";
-import confirmNewClient from "@/components/orders/createOrder/confirmNewClient/confirmNewClient";
 import Order from "@/models/order";
-import router from "next/router";
-import { SetStateAction, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import OrderCostForm from "@/components/orders/createOrder/orderCostForm/orderCostForm";
 import Client from "@/models/client";
 export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
@@ -36,6 +35,7 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
   const [clientErrors, setClientErrors] = useState<
     Partial<Record<keyof Client | "cliente", string>>
   >({});
+  const router = useRouter();
 
   const handleSubmit = async () => {
     const newOrderErrors: Partial<

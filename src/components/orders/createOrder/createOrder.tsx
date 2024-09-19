@@ -87,8 +87,6 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
 
       return;
     }
-    console.log("Created");
-    return;
     setCreatingOrder(true);
 
     try {
@@ -96,9 +94,7 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
       Object.entries(orderData).forEach(([key, value]) => {
         data.append(key, value as string);
       });
-      data.append("clientId", "asdaad" as string);
-
-      data.append("confirmNewClient", String(confirmNewClient)); // donde confirmClientCreate es un booleano
+      data.append("clientId", clientSelected as string);
 
       const response = await fetch("/api/order", {
         method: "POST",

@@ -28,7 +28,7 @@
 .errorText {
   color: red;
   font-size: 12px;
-  margin-top: 4px;
+  margin-top: 2px;
   position: absolute;
   right: 0;
 }
@@ -38,7 +38,7 @@
   flex-direction: row;
   width: 100%;
   gap: 1em;
-  margin-bottom: 0.5em;
+  margin-bottom: 1.1em;
 }
 
 .costoLi .inputGroup:first-of-type {
@@ -56,7 +56,7 @@
   text-align: center;
   padding: 4px;
   cursor: pointer;
-  margin-top: 0.75em;
+  margin-top: 1.5em;
 }
 
 .costoUl {

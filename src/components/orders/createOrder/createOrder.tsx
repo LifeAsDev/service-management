@@ -24,14 +24,7 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
     numeroDeSerie: "",
     contraseña: "",
   });
-  const [clientData, setClientData] = useState<Client>({
-    fullName: "",
-    numero: "",
-    correo: "",
-    direccion: "",
-    id: "",
-    notas: "",
-  });
+  const [clientSelected, setClientSelected] = useState<false | string>(false);
   const [errors, setErrors] = useState<{
     [K in keyof Omit<Order, "_id" | "createdAt" | "cliente">]?: string;
   }>({});
@@ -40,10 +33,22 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
   const [errorsCost, setErrorsCost] = useState<
     { nombre?: string; costo?: string }[]
   >([]);
+  const [clientErrors, setClientErrors] = useState<
+    Partial<Record<keyof Client | "cliente", string>>
+  >({});
+
   const handleSubmit = async () => {
     const newOrderErrors: Partial<
       Record<keyof Omit<Order, "_id" | "createdAt">, string>
     > = {};
+    const newClientErrors = { ...clientErrors };
+    const errorsCost: { nombre?: string; costo?: string }[] =
+      orderData.costos?.map((item) => {
+        return {
+          nombre: item.nombre === "" ? "Este campo es obligatorio." : undefined,
+          costo: item.costo === "" ? "Este campo es obligatorio." : undefined,
+        };
+      }) || [];
 
     Object.entries(orderData).forEach(([key, value]) => {
       if (
@@ -58,11 +63,32 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
       }
     });
 
-    if (Object.keys(newOrderErrors).length > 0) {
+    if (!clientSelected) {
+      newClientErrors.cliente = "Selecciona o crea un cliente.";
+    }
+    const hasCostErrors = errorsCost.some(
+      (error) => error.nombre || error.costo
+    );
+
+    if (
+      Object.keys(newOrderErrors).length > 0 ||
+      Object.keys(newClientErrors).length > 0 ||
+      hasCostErrors
+    ) {
+      setClientErrors(newClientErrors);
       setErrors(newOrderErrors);
+      setErrorsCost(errorsCost);
+
+      if (Object.keys(newOrderErrors).length > 0) {
+        setTabSelected(0);
+      } else if (hasCostErrors) {
+        setTabSelected(1);
+      }
+
       return;
     }
-
+    console.log("Created");
+    return;
     setCreatingOrder(true);
 
     try {
@@ -93,9 +119,7 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
       setCreatingOrder(false);
     }
   };
-  const [clientErrors, setClientErrors] = useState<
-    Partial<Record<keyof Client, string>>
-  >({});
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, id } = e.target;
     if (name.startsWith("description") || name.startsWith("price")) {
@@ -126,15 +150,6 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
 
         return newOrderData;
       });
-    } else if (Object.keys(clientData).includes(name)) {
-      setClientData({
-        ...clientData,
-        [name]: value,
-      });
-
-      if (value.trim() !== "") {
-        setClientErrors({ ...clientErrors, [name]: undefined });
-      }
     } else {
       setOrderData({
         ...orderData,
@@ -175,7 +190,13 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
             </div>
           </div>
           {tabSelected === 0 ? (
-            <OrderForm handleChange={handleChange} />
+            <OrderForm
+              creatingOrder={creatingOrder}
+              handleChange={handleChange}
+              orderData={orderData}
+              setErrors={setErrors}
+              errors={errors}
+            />
           ) : (
             <OrderCostForm
               setOrderData={setOrderData}
@@ -188,11 +209,11 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
           )}
         </div>
         <SetOrderClientForm
-          handleChange={handleChange}
-          clientData={clientData}
           setClientErrors={setClientErrors}
           clientErrors={clientErrors}
-          setClientData={setClientData}
+          setClientSelected={setClientSelected}
+          clientSelected={clientSelected}
+          errors={errors}
         />
       </div>
       <button

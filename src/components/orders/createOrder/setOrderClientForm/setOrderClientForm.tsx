@@ -2,25 +2,34 @@
 import Client from "@/models/client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import styles from "./styles.module.css";
+import Order from "@/models/order";
 
 export default function SetOrderClientForm({
-  clientData,
   setClientErrors,
-  handleChange,
   clientErrors,
-  setClientData,
+  setClientSelected,
+  clientSelected,
+  errors,
 }: {
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  clientData: Client;
   setClientErrors: Dispatch<
-    SetStateAction<Partial<Record<keyof Client, string>>>
+    SetStateAction<Partial<Record<keyof Client | "cliente", string>>>
   >;
-  clientErrors: Partial<Record<keyof Client, string>>;
-  setClientData: Dispatch<SetStateAction<Client>>;
+  clientErrors: Partial<Record<keyof Client | "cliente", string>>;
+  setClientSelected: Dispatch<SetStateAction<string | false>>;
+  clientSelected: string | false;
+  errors: {
+    [K in keyof Omit<Order, "_id" | "createdAt" | "cliente">]?: string;
+  };
 }) {
+  const [clientData, setClientData] = useState<Client>({
+    fullName: "",
+    numero: "",
+    correo: "",
+    direccion: "",
+    id: "",
+    notas: "",
+  });
   const [isHidden, setIsHidden] = useState(true); // Estado para controlar la visibilidad
-
-  const [clientSelected, setClientSelected] = useState(false);
 
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
   const [clientsArr, setClientsArr] = useState<Client[]>([]);
@@ -63,7 +72,7 @@ export default function SetOrderClientForm({
   const handleSetClient = (item: Client) => {
     setIsHidden(true);
     setClientData(item);
-    setClientSelected(true);
+    setClientSelected(item._id!);
   };
   const handleClearClient = () => {
     setClientSelected(false);
@@ -120,7 +129,7 @@ export default function SetOrderClientForm({
       if (response.ok) {
         console.log(`"Client created":`, result.client);
         setClientData(result.client);
-        setClientSelected(true);
+        setClientSelected(result.client._id);
         setCreatingClient(false);
         setIsHidden(true);
       } else {
@@ -132,6 +141,14 @@ export default function SetOrderClientForm({
       console.error("Error submitting form:", error);
       setCreatingClient(false);
     }
+  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setClientData((prevClientData) => ({
+      ...prevClientData,
+      [name]: value, // Actualiza el campo correspondiente con el valor del input
+    }));
   };
   return (
     <div className={styles.setOrderClientForm}>
@@ -179,6 +196,9 @@ export default function SetOrderClientForm({
         </>
       ) : (
         <div className={styles.inputGroup}>
+          {clientErrors.cliente && (
+            <p className={styles.errorText}>{clientErrors.cliente}</p>
+          )}
           <label htmlFor="fullName" className={styles.label}>
             Nombre completo:
           </label>
@@ -193,7 +213,9 @@ export default function SetOrderClientForm({
             value={clientData.fullName}
             onChange={handleChange}
             className={`${styles.input} ${
-              clientErrors.fullName ? styles.errorInput : ""
+              clientErrors.fullName || clientErrors.cliente
+                ? styles.errorInput
+                : ""
             }`}
             onFocus={() => {
               setClientErrors({});

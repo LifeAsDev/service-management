@@ -164,7 +164,6 @@ export default function OrderCostForm({
               </svg>
             </li>
           ))}
-
         <li onClick={addCost} className={styles.costoAddBtn}>
           Agregar Costo
         </li>

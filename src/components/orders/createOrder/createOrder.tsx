@@ -91,39 +91,82 @@ export default function CreateOrder({ id }: { id?: string }) {
     }
     setCreatingOrder(true);
 
-    try {
-      const data = new FormData();
+    if (!id) {
+      try {
+        const data = new FormData();
 
-      const serializedCosts = JSON.stringify(orderData.costos);
+        const serializedCosts = JSON.stringify(orderData.costos);
 
-      Object.entries(orderData).forEach(([key, value]) => {
-        if (key === "costos") {
-          data.append(key, serializedCosts);
+        Object.entries(orderData).forEach(([key, value]) => {
+          if (key === "costos") {
+            data.append(key, serializedCosts);
+          } else {
+            data.append(key, value as string);
+          }
+        });
+
+        if (clientSelected)
+          data.append("clientId", clientSelected._id as string);
+
+        const response = await fetch("/api/order", {
+          method: "POST",
+          body: data,
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          console.log("Order created:", result.order);
+          router.push(`/orders`);
         } else {
-          data.append(key, value as string);
+          console.error("Error:", result.message);
+          setCreatingOrder(false);
         }
-      });
-
-      if (clientSelected) data.append("clientId", clientSelected._id as string);
-
-      const response = await fetch("/api/order", {
-        method: "POST",
-        body: data,
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        console.log("Order created:", result.order);
-        /*         router.push(`/orders`);
-         */ setCreatingOrder(false);
-      } else {
-        console.error("Error:", result.message);
+      } catch (error) {
+        console.error("Error submitting form:", error);
         setCreatingOrder(false);
       }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      setCreatingOrder(false);
+    } else {
+      try {
+        const data = new FormData();
+
+        const serializedCosts = JSON.stringify(orderData.costos);
+
+        Object.entries(orderData).forEach(([key, value]) => {
+          if (key === "costos") {
+            data.append(key, serializedCosts);
+          } else {
+            data.append(key, value as string);
+          }
+        });
+
+        if (clientSelected) {
+          data.append("clientId", clientSelected._id as string);
+        }
+
+        // Asegúrate de agregar el `orderId` si está disponible en `orderData`
+        if (orderData._id) {
+          data.append("orderId", orderData._id);
+        }
+
+        const response = await fetch(`/api/order/${orderData._id}}`, {
+          method: "PATCH", // Cambia de POST a PATCH
+          body: data,
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          console.log("Order updated:", result.order);
+          router.push(`/orders`);
+        } else {
+          console.error("Error:", result.message);
+          setCreatingOrder(false);
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        setCreatingOrder(false);
+      }
     }
   };
 

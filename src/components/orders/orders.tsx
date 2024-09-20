@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import SearchInput from "@/components/searchInput/searchInput";
 import DropdownMenu from "@/components/clients/dropdownMenu/dropdownMenu";
 import DeleteOrder from "@/components/orders/deleteOrder/deleteOrder";
+import { useRouter } from "next/navigation";
 
 export default function Orders() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
@@ -21,6 +22,7 @@ export default function Orders() {
   const [confirmOrderDelete, setConfirmOrderDelete] = useState<Order | false>(
     false
   );
+  const router = useRouter();
 
   const fetchOrders = async () => {
     setFetchingMonitor(true);
@@ -261,7 +263,9 @@ export default function Orders() {
                               },
                               {
                                 text: "Editar",
-                                function: () => {},
+                                function: () => {
+                                  router.push(`/orders/edit/${item._id}`);
+                                },
                               },
                               {
                                 text: "Imprimir",

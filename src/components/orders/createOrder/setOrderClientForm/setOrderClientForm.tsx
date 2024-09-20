@@ -15,20 +15,22 @@ export default function SetOrderClientForm({
     SetStateAction<Partial<Record<keyof Client | "cliente", string>>>
   >;
   clientErrors: Partial<Record<keyof Client | "cliente", string>>;
-  setClientSelected: Dispatch<SetStateAction<string | false>>;
-  clientSelected: string | false;
+  setClientSelected: Dispatch<SetStateAction<Client | false>>;
+  clientSelected: Client | false;
   errors: {
     [K in keyof Omit<Order, "_id" | "createdAt" | "cliente">]?: string;
   };
 }) {
-  const [clientData, setClientData] = useState<Client>({
-    fullName: "",
-    numero: "",
-    correo: "",
-    direccion: "",
-    id: "",
-    notas: "",
-  });
+  const [clientData, setClientData] = useState<Client>(
+    clientSelected || {
+      fullName: "",
+      numero: "",
+      correo: "",
+      direccion: "",
+      id: "",
+      notas: "",
+    }
+  );
   const [isHidden, setIsHidden] = useState(true); // Estado para controlar la visibilidad
 
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
@@ -72,7 +74,7 @@ export default function SetOrderClientForm({
   const handleSetClient = (item: Client) => {
     setIsHidden(true);
     setClientData(item);
-    setClientSelected(item._id!);
+    setClientSelected(item);
   };
   const handleClearClient = () => {
     setClientSelected(false);
@@ -293,7 +295,7 @@ export default function SetOrderClientForm({
       >
         <div className={styles.inputGroup}>
           <label htmlFor="id" className={styles.label}>
-            ID:
+            RUT:
           </label>
           <input
             onBlur={() => {

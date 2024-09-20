@@ -11,7 +11,10 @@ export async function POST(req: Request) {
     const formData = await req.formData();
 
     const client = await Client.findById(formData.get("clientId"));
+    const costosRaw = formData.get("costos") as string | null;
 
+    // Si `costos` viene como un string JSON, lo parseamos.
+    const costos = costosRaw ? JSON.parse(costosRaw) : [];
     const orderData = {
       marca: formData.get("marca") as string,
       modelo: formData.get("modelo") as string,
@@ -20,6 +23,7 @@ export async function POST(req: Request) {
       numeroDeSerie: formData.get("numeroDeSerie") as string,
       contraseña: formData.get("contraseña") as string,
       clienteFullName: client.fullName,
+      costos,
     };
 
     const order = await Order.create(orderData);

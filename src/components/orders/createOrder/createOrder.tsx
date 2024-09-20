@@ -4,10 +4,11 @@ import styles from "./styles.module.css";
 import SetOrderClientForm from "@/components/orders/createOrder/setOrderClientForm/setOrderClientForm";
 import Order from "@/models/order";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OrderCostForm from "@/components/orders/createOrder/orderCostForm/orderCostForm";
 import Client from "@/models/client";
-export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
+
+export default function CreateOrder({ id }: { id?: string }) {
   const [orderData, setOrderData] = useState<Order>({
     marca: "",
     modelo: "",
@@ -23,7 +24,8 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
     numeroDeSerie: "",
     contraseña: "",
   });
-  const [clientSelected, setClientSelected] = useState<false | string>(false);
+  const [orderFetch, setOrderFetch] = useState(false);
+  const [clientSelected, setClientSelected] = useState<false | Client>(false);
   const [errors, setErrors] = useState<{
     [K in keyof Omit<Order, "_id" | "createdAt" | "cliente">]?: string;
   }>({});
@@ -91,10 +93,18 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
 
     try {
       const data = new FormData();
+
+      const serializedCosts = JSON.stringify(orderData.costos);
+
       Object.entries(orderData).forEach(([key, value]) => {
-        data.append(key, value as string);
+        if (key === "costos") {
+          data.append(key, serializedCosts);
+        } else {
+          data.append(key, value as string);
+        }
       });
-      data.append("clientId", clientSelected as string);
+
+      if (clientSelected) data.append("clientId", clientSelected._id as string);
 
       const response = await fetch("/api/order", {
         method: "POST",
@@ -105,7 +115,8 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
 
       if (response.ok) {
         console.log("Order created:", result.order);
-        router.push(`/orders`);
+        /*         router.push(`/orders`);
+         */ setCreatingOrder(false);
       } else {
         console.error("Error:", result.message);
         setCreatingOrder(false);
@@ -158,9 +169,43 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
     }
   };
 
+  useEffect(() => {
+    const fetchOrder = async () => {
+      if (!id) return; // Asegúrate de que exista el id
+
+      try {
+        // Realiza la petición a la API con el id
+        const res = await fetch(`/api/order/${id}`, {
+          method: "GET",
+        });
+
+        const resData = await res.json();
+
+        // Asegúrate de que se reciban datos válidos antes de actualizar el estado
+        if (res.ok) {
+          setOrderData(resData.order);
+          setOrderFetch(true);
+          if (resData.order.cliente) {
+            setClientSelected(resData.order.cliente);
+          }
+        } else {
+          router.push(`/orders`);
+        }
+      } catch (error) {
+        console.log(error);
+        router.push(`/orders`);
+      }
+    };
+
+    fetchOrder();
+  }, [id]);
+
+  if (id && !orderFetch) {
+    return <main className={styles.main}></main>;
+  }
   return (
     <main className={styles.main}>
-      <h2>Crear Orden</h2>
+      <h2>{id ? "Editar" : "Crear"} Orden</h2>
       <div className={styles.serviceBox}>
         <div className={styles.serviceLeftBox}>
           <div className={styles.tabsBox}>
@@ -218,7 +263,7 @@ export default function CreateOrder({ orderFetch }: { orderFetch?: Order }) {
         className={`${styles.button} ${creatingOrder && styles.creatingClient}`}
       >
         {!creatingOrder ? (
-          <>{orderFetch ? "Guardar" : "Crear"}</>
+          <>{id ? "Guardar" : "Crear"}</>
         ) : (
           <div className="loader"></div>
         )}

@@ -5,7 +5,7 @@ import styles from "./styles.module.css";
 export default function DropdownMenu({
   options,
 }: {
-  options: { text: string; function: () => void }[];
+  options: { text: string; function?: () => void; element?: JSX.Element }[];
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
@@ -135,11 +135,11 @@ export default function DropdownMenu({
                 <li
                   key={item.text}
                   onClick={() => {
-                    item.function();
+                    if (item.function) item.function();
                     toggleMenu();
                   }}
                 >
-                  {item.text}
+                  {item.element ? item.element : item.text}
                 </li>
               ))}
             </ul>

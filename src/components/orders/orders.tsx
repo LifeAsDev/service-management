@@ -263,9 +263,12 @@ export default function Orders() {
                               },
                               {
                                 text: "Editar",
-                                function: () => {
-                                  router.push(`/orders/edit/${item._id}`);
-                                },
+                                function: () => {},
+                                element: (
+                                  <Link href={`/orders/edit/${item._id}`}>
+                                    Editar
+                                  </Link>
+                                ),
                               },
                               {
                                 text: "Imprimir",

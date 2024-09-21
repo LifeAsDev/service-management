@@ -249,7 +249,12 @@ export default function Clients() {
                               },
                               {
                                 text: "Editar",
-                                function: () => editClient(item._id!),
+                                function: () => {},
+                                element: (
+                                  <Link href={`/clients/edit/${item._id}`}>
+                                    Editar
+                                  </Link>
+                                ),
                               },
                             ]}
                           />

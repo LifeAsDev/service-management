@@ -9,6 +9,7 @@ import SearchInput from "@/components/searchInput/searchInput";
 import DropdownMenu from "@/components/clients/dropdownMenu/dropdownMenu";
 import DeleteOrder from "@/components/orders/deleteOrder/deleteOrder";
 import { useRouter } from "next/navigation";
+import DropdownState from "@/components/orders/dropdownState/dropdownState";
 
 export default function Orders() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
@@ -281,7 +282,47 @@ export default function Orders() {
                       </td>
                       <td className={styles.td}>
                         <div>
-                          <p>{item.estado || "Sin Estado"}</p>
+                          <DropdownState
+                            options={[
+                              {
+                                text: "Asignada",
+                                function: () => {
+                                  // Lógica para asignar el estado "Asignada"
+                                },
+                              },
+                              {
+                                text: "Revisión",
+                                function: () => {
+                                  // Lógica para asignar el estado "Revisión"
+                                },
+                              },
+                              {
+                                text: "Reparada",
+                                function: () => {
+                                  // Lógica para asignar el estado "Reparada"
+                                },
+                              },
+                              {
+                                text: "Rechazada",
+                                function: () => {
+                                  // Lógica para asignar el estado "Rechazada"
+                                },
+                              },
+                              {
+                                text: "Sin Solución",
+                                function: () => {
+                                  // Lógica para asignar el estado "Sin Solución"
+                                },
+                              },
+                              {
+                                text: "Entregado",
+                                function: () => {
+                                  // Lógica para asignar el estado "Entregado"
+                                },
+                              },
+                            ]}
+                            stateSelected={item.estado || "Sin asignar"}
+                          />
                         </div>
                       </td>
                       <td className={styles.td}>

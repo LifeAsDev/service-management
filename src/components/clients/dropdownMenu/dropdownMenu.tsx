@@ -4,8 +4,10 @@ import styles from "./styles.module.css";
 
 export default function DropdownMenu({
   options,
+  dropdownHeight,
 }: {
   options: { text: string; function?: () => void; element?: JSX.Element }[];
+  dropdownHeight: number;
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
@@ -18,13 +20,13 @@ export default function DropdownMenu({
     if (!isMenuOpen && svgRef.current && options) {
       const rect = svgRef.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      const menuHeight = 120; // Aproximadamente la altura que ocupará el menú desplegable
+      const menuHeight = dropdownHeight; // Aproximadamente la altura que ocupará el menú desplegable
 
       // Determinar si el menú debería abrirse hacia arriba o hacia abajo
       if (rect.bottom + menuHeight > viewportHeight) {
         setOpenDirection("up");
         setMenuPosition({
-          top: rect.top + window.scrollY - menuHeight / 1.5, // Posicionarlo arriba del SVG
+          top: rect.top + window.scrollY - menuHeight / 1, // Posicionarlo arriba del SVG
           left: rect.left + window.scrollX,
         });
       } else {

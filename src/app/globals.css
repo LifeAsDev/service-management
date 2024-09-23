@@ -35,6 +35,13 @@
   --third-light-blue: #0068d8;
   --primary-yellow: #ffab3e;
   --secondary-yellow: #fd9916;
+  --color-asignada: #f28b82; /* Rojo claro coral */
+  --color-revision: #fff475; /* Amarillo suave pastel */
+  --color-reparada: #aecbfa; /* Azul cielo pastel */
+  --color-rechazada: #616161; /* Gris oscuro intermedio */
+  --color-sin-solucion: #9e9e9e; /* Gris claro */
+  --color-entregado: #d7aefb; /* Lila claro */
+  --color-sin-asignar: #b0bec5; /* Gris azulado suave */
 }
 
 main {

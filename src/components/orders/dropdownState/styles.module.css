@@ -2,6 +2,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  width: fit-content;
 }
 
 .svgIcon {
@@ -40,25 +41,35 @@
   background-color: var(--very-dark-grayish-blue-2);
 }
 
-.optionsBox svg {
-  height: 24px;
-  cursor: pointer;
-  transition: 0.1s;
-}
-.optionsBox svg:hover {
-  transform: scale(1.1);
-}
-
 .dropdownLabel {
   cursor: pointer;
-  padding: 4px 16px;
+  padding: 4px 8px;
   color: var(--light-grayish-blue);
   transition: 0.2s;
   border: 1px solid var(--light-grayish-blue);
-  width: 119px;
+  width: 142px;
   text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdownLabel svg {
+  width: 20px;
+  height: auto;
+  margin-bottom: 2px;
+  display: none;
 }
 
 .dropdownLabel:hover {
   background-color: var(--very-dark-grayish-blue-2);
+}
+
+.menuOpenUp {
+  border-radius: 0 0 4px 4px; /* Radio solo en la parte inferior cuando se abre hacia arriba */
+}
+
+.menuOpenDown {
+  border-radius: 4px 4px 0 0; /* Radio solo en la parte superior cuando se abre hacia abajo */
 }

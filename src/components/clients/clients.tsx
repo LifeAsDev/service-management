@@ -240,6 +240,7 @@ export default function Clients() {
                       <td className={styles.td}>
                         <div className={styles.fullNameBox}>
                           <DropdownMenu
+                            dropdownHeight={80}
                             options={[
                               {
                                 text: "Borrar",

@@ -132,6 +132,7 @@ export default function Orders() {
     siblingCount: 3,
     currentPage: page,
   });
+
   const fetchDeleteOrder = async () => {
     setFetchingMonitor(true);
     setOrdersArr([]);
@@ -150,6 +151,27 @@ export default function Orders() {
     } catch (error) {
       fetchOrders();
     }
+  };
+
+  const updateOrderState = (
+    orderId?: string,
+    newState?:
+      | "Asignada"
+      | "Revisión"
+      | "Reparada"
+      | "Rechazada"
+      | "Sin Solución"
+      | "Entregado"
+      | undefined
+  ) => {
+    if (orderId)
+      setOrdersArr((prevOrders) =>
+        prevOrders.map((order) => {
+          const result =
+            order._id === orderId ? { ...order, estado: newState } : order;
+          return result;
+        })
+      );
   };
 
   return (
@@ -255,6 +277,7 @@ export default function Orders() {
                       <td className={styles.td}>
                         <div className={styles.td1}>
                           <DropdownMenu
+                            dropdownHeight={120}
                             options={[
                               {
                                 text: "Borrar",
@@ -286,42 +309,131 @@ export default function Orders() {
                             options={[
                               {
                                 text: "Asignada",
-                                function: () => {
-                                  // Lógica para asignar el estado "Asignada"
-                                },
+                                function: () =>
+                                  updateOrderState(item._id, "Asignada"),
+                                element: (
+                                  <>
+                                    <div
+                                      className={styles.stateColorBox}
+                                      style={{
+                                        backgroundColor:
+                                          "var(--color-asignada)",
+                                      }}
+                                    ></div>
+                                    Asignada
+                                  </>
+                                ),
                               },
                               {
                                 text: "Revisión",
-                                function: () => {
-                                  // Lógica para asignar el estado "Revisión"
-                                },
+                                function: () =>
+                                  updateOrderState(item._id, "Revisión"),
+                                element: (
+                                  <>
+                                    <div
+                                      className={styles.stateColorBox}
+                                      style={{
+                                        backgroundColor:
+                                          "var(--color-revision)",
+                                      }}
+                                    ></div>
+                                    Revisión
+                                  </>
+                                ),
                               },
                               {
                                 text: "Reparada",
-                                function: () => {
-                                  // Lógica para asignar el estado "Reparada"
-                                },
+                                function: () =>
+                                  updateOrderState(item._id, "Reparada"),
+                                element: (
+                                  <>
+                                    <div
+                                      className={styles.stateColorBox}
+                                      style={{
+                                        backgroundColor:
+                                          "var(--color-reparada)",
+                                      }}
+                                    ></div>
+                                    Reparada
+                                  </>
+                                ),
                               },
                               {
                                 text: "Rechazada",
-                                function: () => {
-                                  // Lógica para asignar el estado "Rechazada"
-                                },
+                                function: () =>
+                                  updateOrderState(item._id, "Rechazada"),
+                                element: (
+                                  <>
+                                    <div
+                                      className={styles.stateColorBox}
+                                      style={{
+                                        backgroundColor:
+                                          "var(--color-rechazada)",
+                                      }}
+                                    ></div>
+                                    Rechazada
+                                  </>
+                                ),
                               },
                               {
                                 text: "Sin Solución",
-                                function: () => {
-                                  // Lógica para asignar el estado "Sin Solución"
-                                },
+                                function: () =>
+                                  updateOrderState(item._id, "Sin Solución"),
+                                element: (
+                                  <>
+                                    <div
+                                      className={styles.stateColorBox}
+                                      style={{
+                                        backgroundColor:
+                                          "var(--color-sin-solucion)",
+                                      }}
+                                    ></div>
+                                    Sin Solución
+                                  </>
+                                ),
                               },
                               {
                                 text: "Entregado",
-                                function: () => {
-                                  // Lógica para asignar el estado "Entregado"
-                                },
+                                function: () =>
+                                  updateOrderState(item._id, "Entregado"),
+                                element: (
+                                  <>
+                                    <div
+                                      className={styles.stateColorBox}
+                                      style={{
+                                        backgroundColor:
+                                          "var(--color-entregado)",
+                                      }}
+                                    ></div>
+                                    Entregado
+                                  </>
+                                ),
                               },
                             ]}
-                            stateSelected={item.estado || "Sin asignar"}
+                            stateSelected={
+                              <>
+                                <div
+                                  className={`${styles.stateColorBox} ${styles.stateSelectedColorBox}`}
+                                  style={{
+                                    backgroundColor:
+                                      item.estado === "Asignada"
+                                        ? "var(--color-asignada)"
+                                        : item.estado === "Revisión"
+                                        ? "var(--color-revision)"
+                                        : item.estado === "Reparada"
+                                        ? "var(--color-reparada)"
+                                        : item.estado === "Rechazada"
+                                        ? "var(--color-rechazada)"
+                                        : item.estado === "Sin Solución"
+                                        ? "var(--color-sin-solucion)"
+                                        : item.estado === undefined
+                                        ? "var(--color-sin-asignar)" // Color para Sin Asignar
+                                        : "var(--color-entregado)",
+                                  }}
+                                ></div>
+                                {item.estado || "Sin asignar"}
+                              </>
+                            }
                           />
                         </div>
                       </td>

@@ -289,7 +289,16 @@ export default function Orders() {
                                 text: "Editar",
                                 function: () => {},
                                 element: (
-                                  <Link href={`/orders/edit/${item._id}`}>
+                                  <Link
+                                    style={{
+                                      height: "40px",
+                                      display: "flex",
+                                      justifyContent: "flex-start",
+                                      alignItems: "center",
+                                      padding: "0 16px",
+                                    }}
+                                    href={`/orders/edit/${item._id}`}
+                                  >
                                     Editar
                                   </Link>
                                 ),

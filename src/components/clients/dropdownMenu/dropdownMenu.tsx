@@ -140,6 +140,7 @@ export default function DropdownMenu({
                     if (item.function) item.function();
                     toggleMenu();
                   }}
+                  className={item.element && styles.isElement}
                 >
                   {item.element ? item.element : item.text}
                 </li>

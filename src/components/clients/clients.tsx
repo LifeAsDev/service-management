@@ -252,7 +252,16 @@ export default function Clients() {
                                 text: "Editar",
                                 function: () => {},
                                 element: (
-                                  <Link href={`/clients/edit/${item._id}`}>
+                                  <Link
+                                    style={{
+                                      height: "40px",
+                                      display: "flex",
+                                      justifyContent: "flex-start",
+                                      alignItems: "center",
+                                      padding: "0 16px",
+                                    }}
+                                    href={`/clients/edit/${item._id}`}
+                                  >
                                     Editar
                                   </Link>
                                 ),

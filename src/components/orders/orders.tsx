@@ -23,6 +23,7 @@ export default function Orders() {
   const [confirmOrderDelete, setConfirmOrderDelete] = useState<Order | false>(
     false
   );
+  const [filterState, setFilterState] = useState("Asignada");
   const router = useRouter();
 
   const fetchOrders = async () => {
@@ -193,18 +194,138 @@ export default function Orders() {
         </Link>
       </div>
       <div className={styles.tableOutside}>
-        <SearchInput
-          input={keyword}
-          setInput={setKeyword}
-          action={() => {
-            if (page === 1) fetchOrders();
-            else {
-              setPage(1);
-              setPageCount(1);
+        <div className={styles.searchFilters}>
+          <SearchInput
+            input={keyword}
+            setInput={setKeyword}
+            action={() => {
+              if (page === 1) fetchOrders();
+              else {
+                setPage(1);
+                setPageCount(1);
+              }
+            }}
+            placeholder="Orden, Cliente, Modelo, Marca"
+          />
+          <DropdownState
+            options={[
+              {
+                text: "Asignada",
+                function: () => setFilterState("Asignada"),
+                element: (
+                  <>
+                    <div
+                      className={styles.stateColorBox}
+                      style={{
+                        backgroundColor: "var(--color-asignada)",
+                      }}
+                    ></div>
+                    Asignada
+                  </>
+                ),
+              },
+              {
+                text: "Revisión",
+                function: () => setFilterState("Revisión"),
+                element: (
+                  <>
+                    <div
+                      className={styles.stateColorBox}
+                      style={{
+                        backgroundColor: "var(--color-revision)",
+                      }}
+                    ></div>
+                    Revisión
+                  </>
+                ),
+              },
+              {
+                text: "Reparada",
+                function: () => setFilterState("Reparada"),
+                element: (
+                  <>
+                    <div
+                      className={styles.stateColorBox}
+                      style={{
+                        backgroundColor: "var(--color-reparada)",
+                      }}
+                    ></div>
+                    Reparada
+                  </>
+                ),
+              },
+              {
+                text: "Rechazada",
+                function: () => setFilterState("Rechazada"),
+                element: (
+                  <>
+                    <div
+                      className={styles.stateColorBox}
+                      style={{
+                        backgroundColor: "var(--color-rechazada)",
+                      }}
+                    ></div>
+                    Rechazada
+                  </>
+                ),
+              },
+              {
+                text: "Sin Solución",
+                function: () => setFilterState("Sin Solución"),
+                element: (
+                  <>
+                    <div
+                      className={styles.stateColorBox}
+                      style={{
+                        backgroundColor: "var(--color-sin-solucion)",
+                      }}
+                    ></div>
+                    Sin Solución
+                  </>
+                ),
+              },
+              {
+                text: "Entregado",
+                function: () => setFilterState("Entregado"),
+                element: (
+                  <>
+                    <div
+                      className={styles.stateColorBox}
+                      style={{
+                        backgroundColor: "var(--color-entregado)",
+                      }}
+                    ></div>
+                    Entregado
+                  </>
+                ),
+              },
+            ]}
+            stateSelected={
+              <>
+                <div
+                  className={`${styles.stateColorBox} ${styles.stateSelectedColorBox}`}
+                  style={{
+                    backgroundColor:
+                      filterState === "Asignada"
+                        ? "var(--color-asignada)"
+                        : filterState === "Revisión"
+                        ? "var(--color-revision)"
+                        : filterState === "Reparada"
+                        ? "var(--color-reparada)"
+                        : filterState === "Rechazada"
+                        ? "var(--color-rechazada)"
+                        : filterState === "Sin Solución"
+                        ? "var(--color-sin-solucion)"
+                        : filterState === undefined
+                        ? "var(--color-sin-asignar)" // Color para Sin Asignar
+                        : "var(--color-entregado)",
+                  }}
+                ></div>
+                {filterState || "Sin asignar"}
+              </>
             }
-          }}
-          placeholder="Orden, Cliente, Modelo, Marca"
-        />
+          />
+        </div>
         <div
           id="evaluationList"
           className={`${fetchingMonitor ? styles.hidden : ""} ${

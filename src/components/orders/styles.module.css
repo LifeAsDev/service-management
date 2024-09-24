@@ -160,3 +160,9 @@
 .stateSelectedColorBox {
   margin-bottom: 1px;
 }
+
+.searchFilters {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}

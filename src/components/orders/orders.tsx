@@ -25,7 +25,6 @@ export default function Orders() {
   );
   const [filterState, setFilterState] = useState("Asignada");
   const router = useRouter();
-
   const fetchOrders = async () => {
     setFetchingMonitor(true);
 
@@ -165,7 +164,7 @@ export default function Orders() {
       | "Entregado"
       | undefined
   ) => {
-    if (orderId)
+    if (orderId) {
       setOrdersArr((prevOrders) =>
         prevOrders.map((order) => {
           const result =
@@ -173,6 +172,21 @@ export default function Orders() {
           return result;
         })
       );
+      const fetchUpdateOrderState = async () => {
+        const data = new FormData();
+        data.append("state", newState!);
+
+        try {
+          const res = await fetch(`/api/order/${orderId}/state`, {
+            method: "PATCH",
+            body: data,
+          });
+
+          const resData = await res.json();
+        } catch (error) {}
+      };
+      fetchUpdateOrderState();
+    }
   };
 
   return (

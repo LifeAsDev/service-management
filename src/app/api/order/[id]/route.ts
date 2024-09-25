@@ -33,12 +33,16 @@ export async function GET(
     );
   }
 }
-export async function PATCH(req: Request) {
+export async function PATCH(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
   await connectMongoDB();
+  const { id } = params;
 
   try {
     const formData = await req.formData();
-    const orderId = formData.get("orderId") as string; // Obtener el ID de la orden para actualizar
+    const orderId = id;
     const client = await Client.findById(formData.get("clientId"));
     const costosRaw = formData.get("costos") as string | null;
 

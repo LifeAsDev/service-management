@@ -145,9 +145,6 @@ export default function CreateOrder({ id }: { id?: string }) {
         }
 
         // Asegúrate de agregar el `orderId` si está disponible en `orderData`
-        if (orderData._id) {
-          data.append("orderId", orderData._id);
-        }
 
         const response = await fetch(`/api/order/${orderData._id}}`, {
           method: "PATCH", // Cambia de POST a PATCH

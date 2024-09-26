@@ -23,7 +23,7 @@ export default function Orders() {
   const [confirmOrderDelete, setConfirmOrderDelete] = useState<Order | false>(
     false
   );
-  const [filterState, setFilterState] = useState("Asignada");
+  const [filterState, setFilterState] = useState("Todas");
   const router = useRouter();
   const fetchOrders = async () => {
     setFetchingMonitor(true);
@@ -33,7 +33,8 @@ export default function Orders() {
       searchParams.append("page", page.toString());
       searchParams.append("pageSize", pageSize.toString());
       searchParams.append("sortByLastDate", sortByLastDate.toString());
-      searchParams.append("keyword", keyword); // Añadir el keyword a los parámetros de búsqueda
+      searchParams.append("keyword", keyword);
+      searchParams.append("state", filterState);
 
       const res = await fetch(`/api/order?${searchParams.toString()}`, {
         method: "GET",
@@ -43,7 +44,8 @@ export default function Orders() {
       if (
         resData.keyword === keyword &&
         resData.page === page &&
-        resData.sortByLastDate === sortByLastDate
+        resData.sortByLastDate === sortByLastDate &&
+        resData.state === filterState
       ) {
         setOrdersArr(resData.orders);
         setTotalCount(resData.totalCount);
@@ -57,7 +59,7 @@ export default function Orders() {
 
   useEffect(() => {
     fetchOrders();
-  }, [page, sortByLastDate]);
+  }, [page, sortByLastDate, filterState]);
   useEffect(() => {
     fetchOrders();
   }, []);
@@ -224,6 +226,21 @@ export default function Orders() {
           <DropdownState
             options={[
               {
+                text: "Todas",
+                function: () => setFilterState("Todas"),
+                element: (
+                  <>
+                    <div
+                      className={styles.stateColorBox}
+                      style={{
+                        backgroundColor: "var(--primary-light-blue)",
+                      }}
+                    ></div>
+                    Todas
+                  </>
+                ),
+              },
+              {
                 text: "Asignada",
                 function: () => setFilterState("Asignada"),
                 element: (
@@ -320,7 +337,9 @@ export default function Orders() {
                   className={`${styles.stateColorBox} ${styles.stateSelectedColorBox}`}
                   style={{
                     backgroundColor:
-                      filterState === "Asignada"
+                      filterState === "Todas"
+                        ? "var(--primary-light-blue)"
+                        : filterState === "Asignada"
                         ? "var(--color-asignada)"
                         : filterState === "Revisión"
                         ? "var(--color-revision)"

@@ -51,12 +51,21 @@ export async function GET(req: Request) {
     let pageSize: number = parseInt(searchParams.get("pageSize") || "10", 10);
     let sortByLastDate: SortOrder =
       searchParams.get("sortByLastDate") === "true" ? -1 : 1;
+    const state = searchParams.get("state") as string;
 
     // Validaciones de los parámetros de paginación
     if (isNaN(page) || page < 1) page = 1;
     if (isNaN(pageSize) || pageSize < 1 || pageSize > 100) pageSize = 10;
+    const searchFilter: any[] = [];
 
-    const searchFilter: any[] = [
+    if (state !== "Todas") {
+      searchFilter.push({
+        $match: {
+          $or: [{ estado: { $regex: state, $options: "i" } }],
+        },
+      });
+    }
+    searchFilter.push(
       {
         $addFields: {
           tempOrderId: { $toString: "$_id" },
@@ -71,9 +80,8 @@ export async function GET(req: Request) {
             { tempOrderId: { $regex: keyword, $options: "i" } },
           ],
         },
-      },
-    ];
-
+      }
+    );
     // Calcular el número total de órdenes con el filtro aplicado usando agregación
     const totalCountResult = await Order.aggregate([
       ...searchFilter,
@@ -91,7 +99,7 @@ export async function GET(req: Request) {
       { $limit: pageSize },
     ]);
     const populatedOrders = await Order.populate(orders, { path: "cliente" });
-
+    console.log(populatedOrders.map((item) => item.estado));
     return NextResponse.json({
       orders: populatedOrders,
       totalCount,
@@ -100,6 +108,7 @@ export async function GET(req: Request) {
       message: "Orders fetched successfully",
       keyword,
       sortByLastDate: sortByLastDate === -1,
+      state,
     });
   } catch (error) {
     console.error("Error retrieving orders:", error);

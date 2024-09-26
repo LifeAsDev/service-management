@@ -26,7 +26,6 @@ export async function PATCH(
 
     // Guardar los cambios
     await order.save();
-    console.log(order);
     return NextResponse.json({
       order,
       message: "Order state updated successfully",

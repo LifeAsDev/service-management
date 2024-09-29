@@ -1,0 +1,80 @@
+@media print {
+  .printOrderMainBox {
+    margin: 0 0;
+  }
+}
+
+.printOrderMainBox {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  padding: 2em;
+}
+
+.business {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.business h2 {
+  color: var(--very-dark-grayish-blue-1);
+  font-size: 2em;
+  font-weight: 800;
+}
+.dataBox {
+  min-width: 20em;
+  height: fit-content;
+}
+
+.dataHeader {
+  background-color: black;
+  color: white;
+  width: 100%;
+  padding: 0.1em 0.5em;
+}
+
+.dataHeader span {
+  text-align: center;
+  width: 100%;
+  display: block;
+}
+.printOrderMainBox section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--light-grayish-blue);
+  padding-bottom: 1em;
+}
+
+.ul {
+  width: 100%;
+
+  color: black;
+  border: 1px solid var(--light-grayish-blue);
+}
+.ul span {
+  text-align: center;
+  width: 100%;
+  display: block;
+  font-weight: 600;
+}
+
+.section2 {
+  gap: 1em;
+}
+.section2 .dataBox {
+  margin: 0;
+  width: 50%;
+}
+.section2 li {
+  margin-left: 0.5em;
+  font-weight: 400;
+}
+
+.section2 li span {
+  text-align: left;
+  display: inline;
+  font-weight: 650;
+}

@@ -460,6 +460,20 @@ export default function Orders() {
                               {
                                 text: "Imprimir",
                                 function: () => {},
+                                element: (
+                                  <Link
+                                    style={{
+                                      height: "40px",
+                                      display: "flex",
+                                      justifyContent: "flex-start",
+                                      alignItems: "center",
+                                      padding: "0 16px",
+                                    }}
+                                    href={`/invoice/${item._id}`}
+                                  >
+                                    Imprimir
+                                  </Link>
+                                ),
                               },
                             ]}
                           />

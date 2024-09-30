@@ -30,9 +30,7 @@ export default function OrderCostForm({
 }) {
   const formatNumber = (num: number) => {
     const [integerPart, decimalPart] = num.toFixed(2).split(".");
-    return (
-      integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "." + decimalPart
-    );
+    return integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   const IVA_RATE = 0.19;

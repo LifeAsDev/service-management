@@ -1,8 +1,50 @@
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import styles from "./styles.module.css";
 import Image from "next/image";
-export default function PrintOrder() {
+import Order from "@/models/order";
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Los meses en JavaScript son 0-indexados
+  const year = date.getFullYear();
+
+  const hours = date.getHours() % 12 || 12;
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const seconds = date.getSeconds().toString().padStart(2, "0");
+  const ampm = date.getHours() >= 12 ? "PM" : "AM";
+
+  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
+}
+const formatNumber = (num: number) => {
+  const [integerPart, decimalPart] = num.toFixed(2).split(".");
+  return integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+export default function PrintOrder({ order }: { order: Order }) {
+  const IVA_RATE = 0.19;
+
+  // Dentro de tu componente
+  const costSummary = useMemo(() => {
+    if (!order.costos) return { cost: 0, iva: 0, totalCost: 0 };
+
+    // Sumar todos los 'costo' del array
+    const cost = order.costos.reduce((acc, curr) => {
+      const currentCost = parseFloat(curr.costo) || 0; // Asegurarse de que el costo sea un número
+      return acc + currentCost;
+    }, 0);
+
+    // Calcular IVA y total
+    const iva = cost * IVA_RATE;
+    const totalCost = cost + iva;
+
+    return {
+      cost: formatNumber(cost),
+      iva: formatNumber(iva),
+      totalCost: formatNumber(totalCost),
+    };
+  }, [order.costos]);
+
   const contentRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({ contentRef });
 
@@ -33,10 +75,10 @@ export default function PrintOrder() {
             </div>
             <ul className={styles.ul}>
               <li>
-                <span>ORD-0000183</span>
+                <span>#{order._id}</span>
               </li>
               <li>
-                <span>29/09/2024 11:45:53 AM</span>
+                <span>{formatDate(order.createdAt as unknown as string)}</span>
               </li>
             </ul>
           </div>
@@ -60,20 +102,19 @@ export default function PrintOrder() {
             <div className={styles.dataHeader}>Cliente</div>
             <ul className={styles.ul}>
               <li>
-                <span>Nombre:</span> Christian Calisto
+                <span>Nombre:</span> {order.cliente.fullName}
               </li>
               <li>
-                <span>Teléfono:</span> 950188602
+                <span>Teléfono:</span> {order.cliente.numero}
               </li>
               <li>
-                <span>Correo:</span> inversionescalisto@gmail.com
+                <span>Correo:</span> {order.cliente.correo}
               </li>
               <li>
-                <span>Numero de Identificación:</span> 12.222.749-9
+                <span>Numero de Identificación:</span> {order.cliente.id}
               </li>
               <li>
-                <span>Dirección:</span> Av Los Carrera 721 , Galería el sol,
-                local 42
+                <span>Dirección:</span> {order.cliente.direccion}
               </li>
             </ul>
           </div>
@@ -83,16 +124,16 @@ export default function PrintOrder() {
             <div className={styles.dataHeader}>Datos del equipo</div>
             <ul className={styles.ul}>
               <li>
-                <span>Marca:</span> Christian Calisto
+                <span>Marca:</span> {order.marca}
               </li>
               <li>
-                <span>Modelo:</span> 950188602
+                <span>Modelo:</span> {order.modelo}
               </li>
               <li>
-                <span>Tipo:</span> inversionescalisto@gmail.com
+                <span>Tipo:</span> {order.tipo}
               </li>
               <li>
-                <span>Numero de serie:</span> 12.222.749-9
+                <span>Numero de serie:</span> {order.numeroDeSerie}
               </li>
             </ul>
           </div>
@@ -106,10 +147,12 @@ export default function PrintOrder() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Reparacion</td>
-                  <td>$ 200</td>
-                </tr>
+                {order.costos?.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.nombre}</td>
+                    <td>$ {formatNumber(parseFloat(item.costo))}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -118,15 +161,17 @@ export default function PrintOrder() {
           <div className={styles.totalCostBox}>
             <div className={styles.costBox}>
               <div className={styles.costBoxLeft}>Subtotal</div>
-              <div className={styles.costBoxRight}>$ 230,121</div>
+              <div className={styles.costBoxRight}>$ {costSummary.cost}</div>
             </div>
             <div className={styles.costBox}>
               <div className={styles.costBoxLeft}>Impuesto%</div>
-              <div className={styles.costBoxRight}>$ 30,321</div>
+              <div className={styles.costBoxRight}>$ {costSummary.iva}</div>
             </div>
             <div className={styles.costBox}>
               <div className={styles.costBoxLeft}>TOTAL</div>
-              <div className={styles.costBoxRight}>$ 260,000</div>
+              <div className={styles.costBoxRight}>
+                ${costSummary.totalCost}
+              </div>
             </div>
           </div>
         </section>

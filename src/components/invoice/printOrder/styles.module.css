@@ -78,3 +78,80 @@
   display: inline;
   font-weight: 650;
 }
+
+.section3 li {
+  margin-left: 0.5em;
+  font-weight: 400;
+}
+
+.section3 li span {
+  text-align: left;
+  display: inline;
+  font-weight: 650;
+}
+.section3 {
+  gap: 1em;
+}
+
+.section3 .dataBox {
+  width: 50%;
+}
+
+.section3 .dataHeader {
+  text-align: center;
+}
+
+.section3 .dataBox:first-of-type .dataHeader {
+  text-align: left;
+}
+
+.section3 table {
+  border: 1px solid var(--light-grayish-blue);
+  color: black;
+  width: 100%;
+}
+.section3 thead {
+  border-bottom: 1px solid var(--light-grayish-blue);
+  color: black;
+  text-align: left;
+  padding-left: 0.5em;
+}
+
+.section3 td {
+  padding: 0.5em 0;
+}
+
+.section3 th:first-of-type,
+.section3 td:first-of-type {
+  padding-left: 0.5em;
+}
+
+.costBox {
+  display: flex;
+  flex-direction: row;
+  font-weight: 400;
+}
+
+.costBoxLeft {
+  background-color: black;
+  color: white;
+  width: 7em;
+  padding: 0 0.25em;
+}
+
+.costBoxRight {
+  color: black;
+  min-width: 7em;
+  border: 1px solid var(--light-grayish-blue);
+  text-align: right;
+  padding: 0 0.25em;
+}
+
+.totalCostBox {
+  margin-left: auto;
+}
+
+.printBtn {
+  width: fit-content;
+  margin-left: auto;
+}

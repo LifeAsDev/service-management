@@ -10,13 +10,13 @@ function formatDate(dateString: string): string {
   const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Los meses en JavaScript son 0-indexados
   const year = date.getFullYear();
 
-  const hours = date.getHours() % 12 || 12;
+  const hours = date.getHours().toString().padStart(2, "0");
   const minutes = date.getMinutes().toString().padStart(2, "0");
   const seconds = date.getSeconds().toString().padStart(2, "0");
-  const ampm = date.getHours() >= 12 ? "PM" : "AM";
 
-  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds} ${ampm}`;
+  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 }
+
 const formatNumber = (num: number) => {
   const [integerPart, decimalPart] = num.toFixed(2).split(".");
   return integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");

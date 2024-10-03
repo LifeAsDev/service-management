@@ -18,6 +18,6 @@ interface Order {
     | "Entregado";
   costos?: { nombre: string; costo: string; key?: string }[];
   clienteFullName?: string;
-  customId: string;
+  customId?: string;
 }
 export default Order;

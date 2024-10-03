@@ -23,6 +23,7 @@ async function connectMongoDB() {
   }
   try {
     cached.connection = await cached.promise;
+    await initializeCounter();
   } catch (e) {
     cached.promise = undefined;
     throw e;
@@ -31,3 +32,24 @@ async function connectMongoDB() {
 }
 
 export { connectMongoDB };
+import Counter from "@/schemas/counter";
+
+export async function initializeCounter() {
+  const counterId = "orderCustomId"; // ID único para el contador
+
+  // Verifica si el contador ya existe
+  const existingCounter = await Counter.findById(counterId);
+
+  if (!existingCounter) {
+    // Si no existe, crea uno nuevo
+    const newCounter = new Counter({
+      _id: counterId,
+      sequence_value: 0, // Inicia en 0
+    });
+
+    await newCounter.save(); // Guarda el nuevo contador
+    console.log("Counter initialized:", newCounter);
+  } else {
+    console.log("Counter initialized:", existingCounter);
+  }
+}

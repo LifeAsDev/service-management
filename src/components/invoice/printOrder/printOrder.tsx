@@ -75,7 +75,7 @@ export default function PrintOrder({ order }: { order: Order }) {
             </div>
             <ul className={styles.ul}>
               <li>
-                <span>#{order._id}</span>
+                <span>#{order.customId || "Null"}</span>
               </li>
               <li>
                 <span>{formatDate(order.createdAt as unknown as string)}</span>

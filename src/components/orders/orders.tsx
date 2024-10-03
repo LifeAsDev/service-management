@@ -477,7 +477,7 @@ export default function Orders() {
                               },
                             ]}
                           />
-                          <p>{item._id}</p>
+                          <p>{item.customId || "Null"}</p>
                         </div>
                       </td>
                       <td className={styles.td}>

@@ -1,6 +1,20 @@
-import { useMemo } from "react";
+"use client";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./styles.module.css";
+import order from "@/schemas/order";
+interface CountByState {
+  _id: string;
+  count: number;
+}
 export default function Home() {
+  const [orderStates, setOrderStates] = useState({
+    asignadas: 0,
+    revisiones: 0,
+    rechazadas: 0,
+    reparadas: 0,
+    sinSolucion: 0,
+    entregadas: 0,
+  });
   const todayDate = useMemo(() => {
     const today = new Date();
     const day = String(today.getDate()).padStart(2, "0");
@@ -8,6 +22,31 @@ export default function Home() {
     const year = String(today.getFullYear()).slice(-2); // Obtiene los últimos 2 dígitos del año
 
     return `${day}/${month}/${year}`;
+  }, []);
+
+  useEffect(() => {
+    const fetchOrderStates = async () => {
+      try {
+        const response = await fetch("/api/order/countByStatus"); // Ajusta la ruta según tu API
+        if (!response.ok) {
+          throw new Error("Error fetching data");
+        }
+        const data = await response.json();
+        console.log({ data });
+        setOrderStates({
+          asignadas: data.asignadas,
+          revisiones: data.revisiones,
+          rechazadas: data.rechazadas,
+          reparadas: data.reparadas,
+          sinSolucion: data.sinSolucion,
+          entregadas: data.entregadas,
+        });
+      } catch (error) {
+        console.error("Error fetching order states:", error);
+      }
+    };
+
+    fetchOrderStates();
   }, []);
 
   return (
@@ -45,7 +84,7 @@ export default function Home() {
               ></path>{" "}
             </g>
           </svg>
-          <p>2 Asignadas</p>
+          <p>{orderStates.asignadas} Asignadas</p>
         </div>
         <div className={styles.orderState}>
           <svg
@@ -98,8 +137,7 @@ export default function Home() {
               ></path>
             </g>
           </svg>
-
-          <p>2 Revisiones</p>
+          <p>{orderStates.revisiones} Revisiones</p>
         </div>
         <div className={styles.orderState}>
           <svg
@@ -124,7 +162,7 @@ export default function Home() {
               <path d="M20.71,12.29c-0.39-0.39-1.02-0.39-1.41,0L18,13.59l-1.29-1.29c-0.39-0.39-1.02-0.39-1.41,0s-0.39,1.02,0,1.41L16.59,15 l-1.29,1.29c-0.39,0.39-0.39,1.02,0,1.41s1.02,0.39,1.41,0L18,16.41l1.29,1.29C19.49,17.9,19.74,18,20,18s0.51-0.1,0.71-0.29 c0.39-0.39,0.39-1.02,0-1.41L19.41,15l1.29-1.29C21.1,13.32,21.1,12.68,20.71,12.29z"></path>
             </g>
           </svg>
-          <p>2 Rechazadas</p>
+          <p>{orderStates.rechazadas} Rechazadas</p>
         </div>
         <div className={styles.orderState}>
           <svg
@@ -149,7 +187,7 @@ export default function Home() {
               <path d="M8,19h6c0.55,0,1-0.45,1-1s-0.45-1-1-1H8c-0.55,0-1,0.45-1,1S7.45,19,8,19z"></path>
             </g>
           </svg>
-          <p>2 Reparadas</p>
+          <p>{orderStates.reparadas} Reparadas</p>
         </div>
         <div className={styles.orderState}>
           <svg
@@ -164,17 +202,16 @@ export default function Home() {
               strokeLinejoin="round"
             ></g>
             <g id="SVGRepo_iconCarrier">
-              {" "}
               <path
                 d="M15 16L20 21M20 16L15 21M11 14C7.13401 14 4 17.134 4 21H11M15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z"
                 stroke="#ffffff"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-              ></path>{" "}
+              ></path>
             </g>
           </svg>
-          <p>2 Sin Solucion</p>
+          <p>{orderStates.sinSolucion} Sin Solucion</p>
         </div>
         <div className={styles.orderState}>
           <svg
@@ -189,17 +226,16 @@ export default function Home() {
               strokeLinejoin="round"
             ></g>
             <g id="SVGRepo_iconCarrier">
-              {" "}
               <path
                 d="M14.9999 15.2547C13.8661 14.4638 12.4872 14 10.9999 14C7.40399 14 4.44136 16.7114 4.04498 20.2013C4.01693 20.4483 4.0029 20.5718 4.05221 20.6911C4.09256 20.7886 4.1799 20.8864 4.2723 20.9375C4.38522 21 4.52346 21 4.79992 21H9.94465M13.9999 19.2857L15.7999 21L19.9999 17M14.9999 7C14.9999 9.20914 13.2091 11 10.9999 11C8.79078 11 6.99992 9.20914 6.99992 7C6.99992 4.79086 8.79078 3 10.9999 3C13.2091 3 14.9999 4.79086 14.9999 7Z"
                 stroke="#ffffff"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-              ></path>{" "}
+              ></path>
             </g>
           </svg>
-          <p>2 Entregado</p>
+          <p>{orderStates.entregadas} Entregado</p>
         </div>
       </div>
     </main>

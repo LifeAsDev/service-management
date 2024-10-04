@@ -1,8 +1,13 @@
 .mainWrapper {
   padding-left: 15em;
   transition: 0.1s;
+  padding-top: 5em;
 }
 
 .mainWrapper.close {
   padding-left: 4em;
+}
+
+.mainWrapper.inLoginPage {
+  padding: 0;
 }

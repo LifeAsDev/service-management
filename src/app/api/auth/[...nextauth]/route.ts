@@ -74,6 +74,7 @@ const handler = NextAuth({
         );
 
         if (isPasswordValid) {
+          console.log({ user });
           return { id: user.id }; // Si la contraseña es válida, retorna el ID del usuario
         } else {
           console.log("Invalid Password");
@@ -84,8 +85,8 @@ const handler = NextAuth({
   ],
 
   pages: {
-    signIn: "/",
-    error: "/",
+    signIn: "/login",
+    error: "/login",
   },
 
   session: {

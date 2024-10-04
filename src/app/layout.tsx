@@ -5,6 +5,7 @@ import Header from "@/components/header/header";
 import Aside from "@/components/header/aside/aside";
 import { OnboardingProvider } from "@/lib/context";
 import MainWrapper from "@/components/mainWrapper/mainWrapper";
+import { NextAuthProvider } from "@/providers/nextAuthProvider";
 
 const josefinSans = Josefin_Sans({ subsets: ["latin"] });
 
@@ -21,11 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={josefinSans.className}>
-        <OnboardingProvider>
-          <Header />
-          <Aside />
-          <MainWrapper>{children}</MainWrapper>
-        </OnboardingProvider>
+        <NextAuthProvider>
+          <OnboardingProvider>
+            <Header />
+            <Aside />
+            <MainWrapper>{children}</MainWrapper>
+          </OnboardingProvider>
+        </NextAuthProvider>
       </body>
     </html>
   );

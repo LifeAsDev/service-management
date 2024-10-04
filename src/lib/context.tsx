@@ -1,6 +1,6 @@
 "use client";
-/* import { signOut, useSession } from "next-auth/react";
- */ import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import React from "react";
 
 const OnboardingContext = React.createContext<any>(undefined);
@@ -11,16 +11,13 @@ export const OnboardingProvider = ({
   children: React.ReactNode;
 }) => {
   const [asideOpen, setAsideOpen] = useState(false);
-  /*   const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
 
-  useEffect(() => {
-    if (session?.signOutNextAuth) signOut();
-  }, [session]); */
   return (
     <OnboardingContext.Provider
       value={{
-        /*     status,
-        session, */
+        status,
+        session,
         asideOpen,
         setAsideOpen,
       }}

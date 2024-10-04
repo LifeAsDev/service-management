@@ -3,6 +3,7 @@ import SearchInput from "@/components/searchInput/searchInput";
 import styles from "./styles.module.css";
 import { useOnboardingContext } from "@/lib/context";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 export default function Header() {
   const { setAsideOpen } = useOnboardingContext();
@@ -69,7 +70,14 @@ export default function Header() {
           </svg>
           <ul className={styles.userOptions}>
             <li className={styles.userOption}>Perfil</li>
-            <li className={styles.userOption}>Salir</li>
+            <li
+              onClick={() => {
+                signOut();
+              }}
+              className={`${styles.userOption} ${styles.red}`}
+            >
+              Salir
+            </li>
           </ul>
         </div>
       </header>

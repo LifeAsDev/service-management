@@ -72,3 +72,8 @@
 .userBox:hover svg {
   transform: rotate(0);
 }
+
+.red {
+  color: var(--primary-red);
+  font-weight: 600;
+}

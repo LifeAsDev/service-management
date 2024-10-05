@@ -6,9 +6,8 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 
 export default function Header() {
-  const { setAsideOpen } = useOnboardingContext();
+  const { setAsideOpen, session } = useOnboardingContext();
   const currentPage = usePathname();
-
   if (currentPage !== "/login" && !currentPage.startsWith("/api"))
     return (
       <header className={styles.header}>
@@ -46,7 +45,7 @@ export default function Header() {
         <SearchInput />
       </div> */}
         <div className={`${styles.userBox} ${styles.headerItem}`}>
-          Alan Rodriguez
+          {session && session.username}{" "}
           <svg
             viewBox="0 0 24 24"
             fill="none"

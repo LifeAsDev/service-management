@@ -1,12 +1,11 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import styles from "./styles.module.css";
-import order from "@/schemas/order";
-interface CountByState {
-  _id: string;
-  count: number;
-}
+import { useOnboardingContext } from "@/lib/context";
+
 export default function Home() {
+  const { session } = useOnboardingContext();
+
   const [orderStates, setOrderStates] = useState({
     asignadas: 0,
     revisiones: 0,
@@ -52,7 +51,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <p className={styles.topInfo}>{todayDate}</p>
-      <p className={styles.topInfo}>Saludos, Alan Rodriguez</p>
+      <p className={styles.topInfo}>Saludos, {session && session.username}</p>
       <div className={styles.orderStatesBox}>
         <div className={styles.orderState}>
           <svg

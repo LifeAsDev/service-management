@@ -45,7 +45,7 @@ export default function Header() {
         <SearchInput />
       </div> */}
         <div className={`${styles.userBox} ${styles.headerItem}`}>
-          {session && session.username}{" "}
+          {session && session.username}
           <svg
             viewBox="0 0 24 24"
             fill="none"

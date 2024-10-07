@@ -72,7 +72,7 @@ export default function Login() {
           />
         </div>
         {errorSignIn && (
-          <p className={styles.error}>Credenciales incorrectas </p>
+          <p className={styles.error}>Username/Contraseña incorrecto.</p>
         )}
         <button
           className={styles.loginButton}

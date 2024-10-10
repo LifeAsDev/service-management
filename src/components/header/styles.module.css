@@ -57,6 +57,8 @@
 
 .userOption {
   padding: 0.5em 1em;
+  height: 40px;
+  display: block;
 }
 .userOption:hover {
   background-color: var(--very-dark-blue);

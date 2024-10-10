@@ -47,7 +47,7 @@ export default function Login() {
               setUsername(e.target.value);
               setErrorSignIn(false);
             }}
-            placeholder="Enter your username"
+            placeholder="username"
             disabled={loadingSignIn} // Deshabilita el input mientras carga
             onFocus={() => {
               setErrorSignIn(false);
@@ -64,7 +64,7 @@ export default function Login() {
               setPassword(e.target.value);
               setErrorSignIn(false);
             }}
-            placeholder="Enter your password"
+            placeholder="contraseña"
             disabled={loadingSignIn} // Deshabilita el input mientras carga
             onFocus={() => {
               setErrorSignIn(false);

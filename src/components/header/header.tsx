@@ -4,6 +4,7 @@ import styles from "./styles.module.css";
 import { useOnboardingContext } from "@/lib/context";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 
 export default function Header() {
   const { setAsideOpen, session } = useOnboardingContext();
@@ -68,7 +69,11 @@ export default function Header() {
             </g>
           </svg>
           <ul className={styles.userOptions}>
-            <li className={styles.userOption}>Perfil</li>
+            <li>
+              <Link className={styles.userOption} href={"/profile"}>
+                Perfil
+              </Link>
+            </li>
             <li
               onClick={() => {
                 signOut();

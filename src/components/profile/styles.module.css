@@ -3,6 +3,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .main h1 {
   text-align: center;
   font-size: 1.5em;
@@ -18,18 +19,40 @@
   padding-bottom: 1em;
   flex-direction: column;
   min-width: 25em;
+  gap: 1em;
 }
 
-.inputGroup {
-  margin-bottom: 15px;
+.inputGroup > label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.1em;
 }
 
-.main input {
+.inputGroup input[type="radio"] {
+  margin-right: 0.5em;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 1em; /* Espacio entre opciones */
+}
+
+.radioGroup label {
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.main input[type="text"],
+.main input[type="password"],
+.main input[type="radio"] {
   width: 100%;
-  padding: 8px;
   margin-top: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+}
+
+.main input[type="radio"] {
+  margin: 0;
 }
 
 .loginButton {
@@ -40,7 +63,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.1s;
-  margin-top: 0.75em;
+  margin-top: 0.3em;
 }
 
 .loginButton:hover {

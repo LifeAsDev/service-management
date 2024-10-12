@@ -8,6 +8,7 @@ export default function Profile() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [userFetch, setUserFetch] = useState(false);
+  const [role, setRole] = useState<string>("admin");
   const router = useRouter();
   const { session } = useOnboardingContext();
 
@@ -25,6 +26,9 @@ export default function Profile() {
 
         const resData = await res.json();
         setUsername(resData.user.username);
+        if (resData.user.role) {
+          setRole(resData.user.role);
+        }
         setUserFetch(true);
       } catch (error) {
         router.push(`/`);
@@ -34,6 +38,10 @@ export default function Profile() {
       fetchOrders();
     }
   }, [userFetch, session]);
+
+  const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRole(event.target.value);
+  };
 
   if (userFetch)
     return (
@@ -80,6 +88,32 @@ export default function Profile() {
               autoComplete="new-password"
             />
           </div>
+          <div className={styles.inputGroup}>
+            <label>Rol</label>
+            <div className={styles.radioGroup}>
+              <label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="admin"
+                  checked={role === "admin"}
+                  onChange={handleRoleChange}
+                />
+                Admin
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="employee"
+                  checked={role === "employee"}
+                  onChange={handleRoleChange}
+                />
+                Empleado
+              </label>
+            </div>
+          </div>
+
           {/*  {errorSignIn && (
           <p className={styles.error}>Username/Contraseña incorrecto.</p>
         )} */}

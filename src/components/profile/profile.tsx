@@ -8,12 +8,14 @@ export default function Profile() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [userFetch, setUserFetch] = useState(false);
-  const [role, setRole] = useState<string>("admin");
+  const [role, setRole] = useState<string>("Admin");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { session } = useOnboardingContext();
 
   useEffect(() => {
-    const fetchOrders = async () => {
+    const fetchUser = async () => {
       try {
         const searchParams = new URLSearchParams();
 
@@ -29,18 +31,47 @@ export default function Profile() {
         if (resData.user.role) {
           setRole(resData.user.role);
         }
+        console.log(resData.user.role);
         setUserFetch(true);
       } catch (error) {
         router.push(`/`);
       }
     };
     if (!userFetch && session && session._id) {
-      fetchOrders();
+      fetchUser();
     }
   }, [userFetch, session]);
 
   const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRole(event.target.value);
+  };
+
+  const handleUpdate = async () => {
+    setLoading(true);
+    setError(null);
+    const data = new FormData();
+    data.append("username", username);
+    data.append("password", password);
+    data.append("role", role);
+
+    try {
+      const res = await fetch(`/api/user/${session._id}`, {
+        method: "PATCH",
+        body: data,
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Error al actualizar el perfil");
+      }
+
+      const updatedUser = await res.json();
+      setError("Ok");
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (userFetch)
@@ -54,17 +85,8 @@ export default function Profile() {
               type="text"
               id="update-username"
               value={username}
-              onChange={(e) => {
-                setUsername(e.target.value);
-                /*               setErrorSignIn(false);
-                 */
-              }}
+              onChange={(e) => setUsername(e.target.value)}
               placeholder="username"
-              /*             disabled={loadingSignIn} // Deshabilita el input mientras carga
-               */ onFocus={() => {
-                /*               setErrorSignIn(false);
-                 */
-              }}
               autoComplete="new-password"
             />
           </div>
@@ -74,17 +96,8 @@ export default function Profile() {
               type="password"
               id="update-password"
               value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                /*               setErrorSignIn(false);
-                 */
-              }}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="contraseña"
-              /*             disabled={loadingSignIn} // Deshabilita el input mientras carga
-               */ onFocus={() => {
-                /*               setErrorSignIn(false);
-                 */
-              }}
               autoComplete="new-password"
             />
           </div>
@@ -93,10 +106,11 @@ export default function Profile() {
             <div className={styles.radioGroup}>
               <label>
                 <input
+                  disabled={role === "Empleado"}
                   type="radio"
                   name="role"
-                  value="admin"
-                  checked={role === "admin"}
+                  value="Admin"
+                  checked={role === "Admin"}
                   onChange={handleRoleChange}
                 />
                 Admin
@@ -105,27 +119,25 @@ export default function Profile() {
                 <input
                   type="radio"
                   name="role"
-                  value="employee"
-                  checked={role === "employee"}
+                  value="Empleado"
+                  checked={role === "Empleado"}
                   onChange={handleRoleChange}
                 />
                 Empleado
               </label>
             </div>
           </div>
-
-          {/*  {errorSignIn && (
-          <p className={styles.error}>Username/Contraseña incorrecto.</p>
-        )} */}
           <button
             className={styles.loginButton}
-            /*     onClick={handleLogin}
-          disabled={loadingSignIn} // Deshabilita el botón mientras carga */
+            onClick={handleUpdate}
+            disabled={loading}
           >
-            {/*           {loadingSignIn ? <div className={`loader`}></div> : "Iniciar Sesión"}
-             */}
-            Actualizar
+            {loading ? <div className={`loader`}></div> : "Actualizar"}
           </button>
+          {error && error !== "Ok" && <p className={styles.error}>{error}</p>}{" "}
+          {error === "Ok" && (
+            <p className={styles.good}>Actualizado correctamente</p>
+          )}
         </div>
       </main>
     );

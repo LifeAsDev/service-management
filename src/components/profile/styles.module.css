@@ -73,3 +73,6 @@
 .error {
   color: red;
 }
+.good {
+  color: var(--primary-green);
+}

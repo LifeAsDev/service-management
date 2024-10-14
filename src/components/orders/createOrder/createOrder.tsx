@@ -208,6 +208,22 @@ export default function CreateOrder({ id }: { id?: string }) {
       }
     }
   };
+  const fetchDeleteOrder = async () => {
+    try {
+      const searchParams = new URLSearchParams();
+
+      searchParams.append("id", id!);
+
+      const res = await fetch(`/api/order?${searchParams.toString()}`, {
+        method: "DELETE",
+      });
+
+      const resData = await res.json();
+      router.push(`/orders`);
+    } catch (error) {
+      router.push(`/orders`);
+    }
+  };
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -308,6 +324,15 @@ export default function CreateOrder({ id }: { id?: string }) {
           <div className="loader"></div>
         )}
       </button>
+      {id && (
+        <button
+          disabled={creatingOrder}
+          onClick={fetchDeleteOrder}
+          className={`${styles.button} ${styles.deleteBtn}`}
+        >
+          Borrar
+        </button>
+      )}
     </main>
   );
 }

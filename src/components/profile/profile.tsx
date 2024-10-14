@@ -13,6 +13,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { session } = useOnboardingContext();
+  const [disableAdmin, setDisableAdmin] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -30,6 +31,9 @@ export default function Profile() {
         setUsername(resData.user.username);
         if (resData.user.role) {
           setRole(resData.user.role);
+          if (resData.user.role === "Admin") {
+            setDisableAdmin(false);
+          }
         }
         console.log(resData.user.role);
         setUserFetch(true);
@@ -106,7 +110,7 @@ export default function Profile() {
             <div className={styles.radioGroup}>
               <label>
                 <input
-                  disabled={role === "Empleado"}
+                  disabled={disableAdmin}
                   type="radio"
                   name="role"
                   value="Admin"
@@ -117,6 +121,7 @@ export default function Profile() {
               </label>
               <label>
                 <input
+                  disabled={disableAdmin}
                   type="radio"
                   name="role"
                   value="Empleado"

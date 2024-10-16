@@ -10,6 +10,8 @@ import DropdownMenu from "@/components/clients/dropdownMenu/dropdownMenu";
 import DeleteOrder from "@/components/orders/deleteOrder/deleteOrder";
 import { useRouter } from "next/navigation";
 import DropdownState from "@/components/orders/dropdownState/dropdownState";
+import { createPortal } from "react-dom";
+import ClientLink from "@/components/orders/clientLink/clientLink";
 
 export default function Orders() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
@@ -620,8 +622,8 @@ export default function Orders() {
                         </div>
                       </td>
                       <td className={styles.td}>
-                        <div>
-                          <p>{item.cliente?.fullName || "Sin Cliente"}</p>
+                        <div className={styles.clientLink}>
+                          <ClientLink cliente={item.cliente} />
                         </div>
                       </td>
                       <td className={styles.td}>

@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import Chart from "chart.js/auto";
 import styles from "./styles.module.css";
-const BarChart = () => {
+const BarChart = ({ data }: { data: number[] }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const chartRef = useRef<Chart | null>(null); // Ref para mantener la instancia del gráfico
 
@@ -13,7 +13,7 @@ const BarChart = () => {
         chartRef.current.destroy(); // Destruir el gráfico existente antes de crear uno nuevo
       }
 
-      if (ctx) {
+      if (ctx && data) {
         chartRef.current = new Chart(ctx, {
           type: "bar",
           data: {
@@ -34,7 +34,7 @@ const BarChart = () => {
             datasets: [
               {
                 label: "Ganancias (CLP)",
-                data: [
+                data: data || [
                   500000, 700000, 300000, 800000, 1000000, 1500000, 1000000,
                   900000, 1100000, 1300000, 1700000, 1400000,
                 ], // Datos de ganancias por mes en pesos chilenos
@@ -66,7 +66,7 @@ const BarChart = () => {
         chartRef.current.destroy();
       }
     };
-  }, []);
+  }, [data]);
   return (
     <div>
       <canvas className={styles.canvas} ref={canvasRef}></canvas>

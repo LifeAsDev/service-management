@@ -1,7 +1,14 @@
 import { useRef, useEffect } from "react";
 import Chart from "chart.js/auto";
 import styles from "./styles.module.css";
-const BarChart = ({ data }: { data: number[] }) => {
+
+interface BarChartProps {
+  data: number[]; // Array de datos: si es anual, será un array de 12 meses; si es mensual, será un array de 30 o 31 días.
+  isAnnual: boolean; // Prop para diferenciar si es gráfico anual o mensual
+  monthDays?: number; // Número de días del mes si es mensual
+}
+
+const BarChart = ({ data, isAnnual, monthDays }: BarChartProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const chartRef = useRef<Chart | null>(null); // Ref para mantener la instancia del gráfico
 
@@ -14,10 +21,9 @@ const BarChart = ({ data }: { data: number[] }) => {
       }
 
       if (ctx && data) {
-        chartRef.current = new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: [
+        // Etiquetas para los gráficos
+        const labels = isAnnual
+          ? [
               "Enero",
               "Febrero",
               "Marzo",
@@ -30,14 +36,19 @@ const BarChart = ({ data }: { data: number[] }) => {
               "Octubre",
               "Noviembre",
               "Diciembre",
-            ],
+            ]
+          : Array.from({ length: monthDays || 30 }, (_, i) => `Día ${i + 1}`); // Etiquetas para los días del mes
+
+        chartRef.current = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: labels, // Etiquetas dinámicas según sea anual o mensual
             datasets: [
               {
-                label: "Ganancias (CLP)",
-                data: data || [
-                  500000, 700000, 300000, 800000, 1000000, 1500000, 1000000,
-                  900000, 1100000, 1300000, 1700000, 1400000,
-                ], // Datos de ganancias por mes en pesos chilenos
+                label: isAnnual
+                  ? "Ganancias Mensuales (CLP)"
+                  : "Ganancias Diarias (CLP)",
+                data: data, // Los datos se pasan desde el componente padre
                 backgroundColor: "rgba(75, 192, 192, 0.2)", // Color de las barras
                 borderColor: "rgba(75, 192, 192, 1)", // Color del borde de las barras
                 borderWidth: 1,
@@ -55,6 +66,8 @@ const BarChart = ({ data }: { data: number[] }) => {
                 },
               },
             },
+            maintainAspectRatio: false, // Permitir que el gráfico mantenga su aspecto al cambiar de tamaño
+            responsive: true, // Hacer que el gráfico sea responsivo
           },
         });
       }
@@ -66,7 +79,8 @@ const BarChart = ({ data }: { data: number[] }) => {
         chartRef.current.destroy();
       }
     };
-  }, [data]);
+  }, [data, isAnnual, monthDays]);
+
   return (
     <div>
       <canvas className={styles.canvas} ref={canvasRef}></canvas>

@@ -2,6 +2,7 @@ import { RefObject, useMemo, useRef } from "react";
 import styles from "./styles.module.css";
 import Image from "next/image";
 import Order from "@/models/order";
+
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
 
@@ -20,7 +21,7 @@ const formatNumber = (num: number) => {
   const [integerPart, decimalPart] = num.toFixed(2).split(".");
   return integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
-export default function PrintOrder({ order }: { order: Order }) {
+export default function TermicoPriunt({ order }: { order: Order }) {
   const IVA_RATE = 0.19;
 
   // Dentro de tu componente

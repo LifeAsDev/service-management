@@ -1,6 +1,22 @@
 .main {
-  padding: 3em 2em;
+  padding: 2em 2em;
   gap: 1em;
   display: flex;
   flex-direction: column;
+}
+
+.main .printBtn {
+  width: fit-content;
+}
+
+.printOptionsBox {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  justify-content: flex-end;
+}
+
+.main select {
+  height: 39px;
+  color: var(--white);
 }

@@ -72,7 +72,17 @@ button {
   height: 39px;
   min-width: 105px;
 }
-
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select {
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  background-color: var(--very-dark-desaturated-blue);
+  outline: none;
+}
 button:hover {
   background-color: var(--very-dark-grayish-blue-1);
 }
@@ -98,18 +108,6 @@ button:hover {
   }
 }
 
-input[type="text"],
-input[type="password"],
-input[type="number"],
-select {
-  padding: 4px 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 100%;
-  background-color: var(--very-dark-desaturated-blue);
-  outline: none;
-}
-
 input[type="text"]:focus,
 input[type="password"]:focus {
   border-color: var(--primary-yellow); /* Un buen contraste */
@@ -125,4 +123,9 @@ h3 {
   body {
     padding: 0 0;
   }
+}
+
+select {
+  width: fit-content;
+  height: 34px;
 }

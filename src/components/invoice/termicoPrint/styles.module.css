@@ -1,0 +1,117 @@
+@media print {
+  .printOrderMainBox {
+    margin: 0;
+    padding: 0;
+    width: 80mm; /* Ajusta el ancho como una hoja térmica */
+    height: auto;
+    border: 1px solid #000; /* Borde negro para la hoja térmica */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.printOrderMainBox {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  padding: 1em; /* Reduce el padding para dar más espacio */
+  width: 559.37007874px;
+  margin: auto;
+  box-sizing: border-box;
+}
+
+.business {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; /* Centra el contenido */
+  height: 3em;
+  margin-bottom: 1em;
+}
+
+.business h2 {
+  color: black; /* Cambia a negro para mayor contraste */
+  font-size: 1.5em; /* Tamaño más pequeño para el encabezado */
+  font-weight: 800;
+  margin: 0; /* Elimina el margen para que se vea más limpio */
+}
+
+.dataBox {
+  min-width: 20em;
+  height: fit-content;
+}
+
+.dataHeader {
+  background-color: black;
+  color: white;
+  width: 100%;
+  padding: 0.2em; /* Ajusta el padding */
+}
+
+.dataHeader span {
+  text-align: center;
+  width: 100%;
+  display: block;
+}
+
+.printOrderMainBox section {
+  display: flex;
+  flex-direction: column; /* Cambia a columna para apilar secciones */
+  border-bottom: 1px dashed var(--light-grayish-blue); /* Cambia el borde a líneas punteadas */
+  padding: 0.5em 0;
+}
+
+.ul {
+  width: 100%;
+  color: black;
+  border: none; /* Elimina el borde */
+}
+
+.ul span {
+  text-align: left; /* Cambia el texto a la izquierda */
+  width: auto; /* Cambia el ancho a automático */
+  display: inline; /* Cambia a inline */
+  font-weight: 600;
+}
+
+.section2,
+.section3 {
+  display: flex;
+  justify-content: space-between; /* Espaciado entre secciones */
+  gap: 1em;
+}
+
+.section2 .dataBox,
+.section3 .dataBox {
+  width: 100%; /* Ajusta el ancho para que quepan en la fila */
+}
+
+.section3 table {
+  border-collapse: collapse; /* Elimina el espacio entre celdas */
+  width: 100%;
+}
+
+.section3 th,
+.section3 td {
+  border: 1px solid var(--light-grayish-blue); /* Añade bordes a la tabla */
+  color: black;
+}
+
+.costBox {
+  display: flex;
+  justify-content: space-between; /* Alinea costo y subtotal */
+  font-weight: 400;
+}
+
+.costBoxLeft {
+  color: black;
+}
+
+.costBoxRight {
+  color: black;
+  text-align: right; /* Alinea a la derecha */
+}
+
+.totalCostBox {
+  margin-top: 1em; /* Añade espacio entre la tabla y el total */
+}

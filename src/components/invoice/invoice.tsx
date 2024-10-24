@@ -2,8 +2,10 @@
 import PrintOrder from "@/components/invoice/printOrder/printOrder";
 import styles from "./styles.module.css";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Order from "@/models/order";
+import { useReactToPrint } from "react-to-print";
+import TermicoPrint from "@/components/invoice/termicoPrint/termicoPrint";
 
 export default function Invoice({ id }: { id: string }) {
   const [orderData, setOrderData] = useState<Order>({
@@ -22,7 +24,8 @@ export default function Invoice({ id }: { id: string }) {
     contraseña: "",
   });
   const [orderFetch, setOrderFetch] = useState(false);
-
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [printType, setPrintType] = useState("Estandar");
   const router = useRouter();
 
   useEffect(() => {
@@ -52,6 +55,9 @@ export default function Invoice({ id }: { id: string }) {
 
     fetchOrder();
   }, [id]);
+  const handlePrint = useReactToPrint({
+    contentRef,
+  });
 
   if (id && !orderFetch) {
     return <main className={styles.main}></main>;
@@ -59,7 +65,32 @@ export default function Invoice({ id }: { id: string }) {
 
   return (
     <main className={styles.main}>
-      <PrintOrder order={orderData} />
+      <div className={styles.printOptionsBox}>
+        <select
+          value={printType}
+          onChange={(e) => setPrintType(e.target.value)}
+        >
+          <option value={"Estandar"}>Estandar</option>
+          <option value={"Termico"}>Termico</option>
+          <option value={"Sticker"}>Sticker</option>
+        </select>
+        <button
+          onClick={() => {
+            handlePrint();
+          }}
+          className={styles.printBtn}
+        >
+          Imprimir
+        </button>
+      </div>
+
+      <div ref={contentRef}>
+        {printType === "Estandar" ? (
+          <PrintOrder order={orderData} />
+        ) : (
+          <TermicoPrint order={orderData} />
+        )}
+      </div>
     </main>
   );
 }

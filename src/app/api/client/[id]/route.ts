@@ -1,6 +1,6 @@
 import { connectMongoDB } from "@/lib/mongodb";
 import { NextResponse } from "next/server";
-import Client from "@/schemas/client"; // Import the Client model
+import Attribute from "@/schemas/attribute"; // Importa el modelo Attribute
 
 export async function GET(
   req: Request,
@@ -10,28 +10,29 @@ export async function GET(
   const { id } = params; // Obtenemos el id de los parámetros
 
   try {
-    // Buscamos el cliente por su id
-    const client = await Client.findById(id);
+    // Buscamos el atributo por su id
+    const attribute = await Attribute.findById(id);
 
-    if (!client) {
+    if (!attribute) {
       return NextResponse.json(
-        { message: "Cliente no encontrado" },
+        { message: "Atributo no encontrado" },
         { status: 404 }
       );
     }
 
     return NextResponse.json({
-      client,
-      message: "Cliente encontrado",
+      attribute,
+      message: "Atributo encontrado",
     });
   } catch (error) {
-    console.error("Error al obtener el cliente:", error);
+    console.error("Error al obtener el atributo:", error);
     return NextResponse.json(
-      { message: "Error al obtener el cliente" },
+      { message: "Error al obtener el atributo" },
       { status: 500 }
     );
   }
 }
+
 export async function PATCH(
   req: Request,
   { params }: { params: { id: string } }
@@ -41,37 +42,37 @@ export async function PATCH(
 
   try {
     const formData = await req.formData();
-    const clientData = {
-      fullName: formData.get("fullName") as string,
-      numero: formData.get("numero") as string,
-      correo: formData.get("correo") as string,
-      direccion: formData.get("direccion") as string,
-      notas: formData.get("notas") as string,
-      id: formData.get("id") as string,
+    const attributeData = {
+      name: formData.get("name") as string,
+      inputType: formData.get("inputType") as string,
     };
 
-    // Buscar el cliente por su id y actualizarlo
-    const updatedClient = await Client.findByIdAndUpdate(id, clientData, {
-      new: true, // Devolver el documento actualizado
-      runValidators: true, // Validar los datos antes de la actualización
-    });
+    // Buscar el atributo por su id y actualizarlo
+    const updatedAttribute = await Attribute.findByIdAndUpdate(
+      id,
+      attributeData,
+      {
+        new: true, // Devolver el documento actualizado
+        runValidators: true, // Validar los datos antes de la actualización
+      }
+    );
 
-    // Si no se encuentra el cliente, devolver un error 404
-    if (!updatedClient) {
+    // Si no se encuentra el atributo, devolver un error 404
+    if (!updatedAttribute) {
       return NextResponse.json(
-        { message: "Client not found" },
+        { message: "Atributo no encontrado" },
         { status: 404 }
       );
     }
 
     return NextResponse.json({
-      client: updatedClient,
-      message: "Client updated successfully",
+      attribute: updatedAttribute,
+      message: "Atributo actualizado exitosamente",
     });
   } catch (error) {
-    console.error("Error updating client:", error);
+    console.error("Error al actualizar el atributo:", error);
     return NextResponse.json(
-      { message: "Error updating client" },
+      { message: "Error al actualizar el atributo" },
       { status: 500 }
     );
   }

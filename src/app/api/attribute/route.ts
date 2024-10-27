@@ -1,5 +1,5 @@
 import Attribute from "@/schemas/attribute";
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { Schema, SortOrder, Types } from "mongoose";
 import { connectMongoDB } from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 
@@ -51,6 +51,8 @@ export async function GET(req: Request) {
     const keyword = searchParams.get("keyword") as string;
     let page = parseInt(searchParams.get("page") || "1", 10);
     const pageSize = parseInt(searchParams.get("pageSize") || "3", 10);
+    let sortByLastDate: SortOrder =
+      searchParams.get("sortByLastDate") === "true" ? -1 : 1;
 
     let aggregatePipeline: any[] = [];
     if (keyword !== "") {
@@ -60,12 +62,15 @@ export async function GET(req: Request) {
         },
       });
     }
-    aggregatePipeline.push({
-      $facet: {
-        metadata: [{ $count: "totalCount" }],
-        data: [{ $skip: (page - 1) * pageSize }, { $limit: pageSize }],
-      },
-    });
+    aggregatePipeline.push(
+      { $sort: { createdAt: sortByLastDate } },
+      {
+        $facet: {
+          metadata: [{ $count: "totalCount" }],
+          data: [{ $skip: (page - 1) * pageSize }, { $limit: pageSize }],
+        },
+      }
+    );
 
     const attributesData = await Attribute.aggregate(aggregatePipeline);
     const attributes = attributesData[0].data;
@@ -76,6 +81,7 @@ export async function GET(req: Request) {
       keyword,
       totalCount,
       message: "Attributes",
+      sortByLastDate: sortByLastDate === -1,
       page,
     });
   } catch (error) {

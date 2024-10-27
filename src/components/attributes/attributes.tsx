@@ -1,24 +1,25 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
-import Client from "@/models/client";
 import Link from "next/link";
 import SearchInput from "@/components/searchInput/searchInput";
 import { useMemo } from "react";
 import DropdownMenu from "@/components/clients/dropdownMenu/dropdownMenu";
-import DeleteClient from "@/components/clients/deleteClient/deleteClient";
 import { useRouter } from "next/navigation";
+import Attribute from "@/models/attribute";
+import DeleteAttribute from "@/components/attributes/deleteAttribute/deleteAttribute";
+import { formatDate } from "@/lib/calculationFunctions";
 
 export default function Attributes() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
-  const [clientsArr, setClientsArr] = useState<Client[]>([]);
+  const [attributesArr, setAttributesArr] = useState<Attribute[]>([]);
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalCount, setTotalCount] = useState(0);
-  const [confirmClientDelete, setConfirmClientDelete] = useState<
-    Client | false
+  const [confirmAttributeDelete, setConfirmAttributeDelete] = useState<
+    Attribute | false
   >(false);
   const router = useRouter();
   const [sortByLastDate, setSortByLastDate] = useState(true);
@@ -32,22 +33,27 @@ export default function Attributes() {
       searchParams.append("keyword", keyword);
       searchParams.append("page", page.toString());
       searchParams.append("pageSize", pageSize.toString());
+      searchParams.append("sortByLastDate", sortByLastDate.toString());
 
-      const res = await fetch(`/api/client?${searchParams.toString()}`, {
+      const res = await fetch(`/api/attribute?${searchParams.toString()}`, {
         method: "GET",
       });
 
       const resData = await res.json();
-      if (resData.keyword === keyword && resData.page === page) {
+      if (
+        resData.keyword === keyword &&
+        resData.page === page &&
+        resData.sortByLastDate === sortByLastDate
+      ) {
         setPageCount(Math.ceil(resData.totalCount / pageSize));
         setTotalCount(resData.totalCount);
 
         setFetchingMonitor(false);
-        setClientsArr(resData.clients);
+        setAttributesArr(resData.attributes);
       }
     } catch (error) {
       setFetchingMonitor(false);
-      setClientsArr([]);
+      setAttributesArr([]);
     }
   };
   useEffect(() => {
@@ -60,14 +66,14 @@ export default function Attributes() {
 
   const fetchDeleteClient = async () => {
     setFetchingMonitor(true);
-    setClientsArr([]);
+    setAttributesArr([]);
 
     try {
       const searchParams = new URLSearchParams();
 
-      searchParams.append("id", (confirmClientDelete as Client)._id!);
+      searchParams.append("id", (confirmAttributeDelete as Attribute)._id!);
 
-      const res = await fetch(`/api/client?${searchParams.toString()}`, {
+      const res = await fetch(`/api/attribute?${searchParams.toString()}`, {
         method: "DELETE",
       });
 
@@ -77,10 +83,7 @@ export default function Attributes() {
       fetchClients();
     }
   };
-  const editClient = (clientId: string) => {
-    // Redirigir a /clients/edit
-    router.push(`/clients/edit/${clientId}`);
-  };
+
   const usePagination = ({
     totalCount,
     pageSize,
@@ -181,19 +184,19 @@ export default function Attributes() {
 
   return (
     <main className={styles.main}>
-      {confirmClientDelete && (
-        <DeleteClient
+      {confirmAttributeDelete && (
+        <DeleteAttribute
           handleSubmit={() => {
-            setConfirmClientDelete(false);
+            setConfirmAttributeDelete(false);
             fetchDeleteClient();
           }}
-          clientData={confirmClientDelete}
-          cancel={() => setConfirmClientDelete(false)}
+          attributeData={confirmAttributeDelete}
+          cancel={() => setConfirmAttributeDelete(false)}
         />
       )}
       <div className={styles.top}>
         <h3>Entradas</h3>
-        <Link className={styles.addOrderBtn} href={"/clients/create"}>
+        <Link className={styles.addOrderBtn} href={"/attributes/create"}>
           <button>Crear Entrada</button>
         </Link>
       </div>
@@ -208,7 +211,7 @@ export default function Attributes() {
               setPageCount(1);
             }
           }}
-          placeholder="Nombre, ID, Correo"
+          placeholder="Nombre, Entrada"
         />
         <div
           id="evaluationList"
@@ -270,7 +273,7 @@ export default function Attributes() {
             <tbody id="evaluationListBody" className={styles.tbody}>
               {fetchingMonitor
                 ? null
-                : clientsArr.map((item, i) => (
+                : attributesArr.map((item, i) => (
                     <tr key={`${item._id}`} className={styles.tr}>
                       <td className={styles.td}>
                         <div className={styles.fullNameBox}>
@@ -280,7 +283,7 @@ export default function Attributes() {
                               {
                                 text: "Borrar",
                                 function: () => {
-                                  setConfirmClientDelete(item);
+                                  setConfirmAttributeDelete(item);
                                 },
                               },
                               {
@@ -303,17 +306,17 @@ export default function Attributes() {
                               },
                             ]}
                           />
-                          <p>{item.fullName}</p>
+                          <p>{item.name}</p>
                         </div>
                       </td>
                       <td className={styles.td}>
                         <div>
-                          <p>{item.id}</p>
+                          <p>{item.inputType}</p>
                         </div>
                       </td>
                       <td className={styles.td}>
                         <div>
-                          <p>{item.correo}</p>
+                          <p>{formatDate(item.createdAt)}</p>
                         </div>
                       </td>
                     </tr>

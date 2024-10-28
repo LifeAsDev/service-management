@@ -38,7 +38,7 @@
   background-color: #0056b3;
 }
 .errorInput {
-  border-color: red;
+  border-color: red !important;
 }
 
 .errorText {

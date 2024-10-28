@@ -58,7 +58,7 @@ export default function Attributes() {
   };
   useEffect(() => {
     fetchClients();
-  }, [page]);
+  }, [page, sortByLastDate]);
 
   useEffect(() => {
     fetchClients();

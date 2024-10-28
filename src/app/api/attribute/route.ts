@@ -53,12 +53,20 @@ export async function GET(req: Request) {
     const pageSize = parseInt(searchParams.get("pageSize") || "3", 10);
     let sortByLastDate: SortOrder =
       searchParams.get("sortByLastDate") === "true" ? -1 : 1;
+    const inputType = searchParams.get("inputType") as string;
 
     let aggregatePipeline: any[] = [];
     if (keyword !== "") {
       aggregatePipeline.push({
         $match: {
           name: { $regex: keyword, $options: "i" },
+        },
+      });
+    }
+    if (inputType && inputType !== "Todos") {
+      aggregatePipeline.push({
+        $match: {
+          inputType: inputType,
         },
       });
     }
@@ -83,6 +91,7 @@ export async function GET(req: Request) {
       message: "Attributes",
       sortByLastDate: sortByLastDate === -1,
       page,
+      inputType,
     });
   } catch (error) {
     console.error("Error retrieving attributes:", error);

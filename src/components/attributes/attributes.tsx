@@ -6,7 +6,10 @@ import SearchInput from "@/components/searchInput/searchInput";
 import { useMemo } from "react";
 import DropdownMenu from "@/components/clients/dropdownMenu/dropdownMenu";
 import { useRouter } from "next/navigation";
-import Attribute from "@/models/attribute";
+import Attribute, {
+  InputTypeOptions,
+  InputTypeOptionsType,
+} from "@/models/attribute";
 import DeleteAttribute from "@/components/attributes/deleteAttribute/deleteAttribute";
 import { formatDate } from "@/lib/calculationFunctions";
 
@@ -23,6 +26,9 @@ export default function Attributes() {
   >(false);
   const router = useRouter();
   const [sortByLastDate, setSortByLastDate] = useState(true);
+  const [filterByInputType, setFilterByInputType] = useState<
+    InputTypeOptionsType | "Todos"
+  >("Todos");
 
   const fetchClients = async () => {
     setFetchingMonitor(true);
@@ -34,6 +40,7 @@ export default function Attributes() {
       searchParams.append("page", page.toString());
       searchParams.append("pageSize", pageSize.toString());
       searchParams.append("sortByLastDate", sortByLastDate.toString());
+      searchParams.append("inputType", filterByInputType);
 
       const res = await fetch(`/api/attribute?${searchParams.toString()}`, {
         method: "GET",
@@ -43,7 +50,8 @@ export default function Attributes() {
       if (
         resData.keyword === keyword &&
         resData.page === page &&
-        resData.sortByLastDate === sortByLastDate
+        resData.sortByLastDate === sortByLastDate &&
+        resData.inputType === filterByInputType
       ) {
         setPageCount(Math.ceil(resData.totalCount / pageSize));
         setTotalCount(resData.totalCount);
@@ -201,18 +209,37 @@ export default function Attributes() {
         </Link>
       </div>
       <div className={styles.tableOutside}>
-        <SearchInput
-          input={keyword}
-          setInput={setKeyword}
-          action={() => {
-            if (page === 1) fetchClients();
-            else {
-              setPage(1);
-              setPageCount(1);
+        <div className={styles.searchFilters}>
+          <SearchInput
+            input={keyword}
+            setInput={setKeyword}
+            action={() => {
+              if (page === 1) fetchClients();
+              else {
+                setPage(1);
+                setPageCount(1);
+              }
+            }}
+            placeholder="Nombre"
+          />
+          <select
+            name="inputType"
+            value={filterByInputType}
+            onChange={(e) =>
+              setFilterByInputType(
+                e.target.value as InputTypeOptionsType | "Todos"
+              )
             }
-          }}
-          placeholder="Nombre, Entrada"
-        />
+          >
+            <option value="Todos">Todos</option>
+            {InputTypeOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div
           id="evaluationList"
           className={`${fetchingMonitor ? styles.hidden : ""} ${

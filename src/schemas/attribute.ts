@@ -1,4 +1,4 @@
-import Attribute from "@/models/attribute";
+import Attribute, { InputTypeOptions } from "@/models/attribute";
 import Counter from "@/schemas/counter";
 import mongoose, { Schema, Types, models } from "mongoose";
 
@@ -9,7 +9,7 @@ const attributeSchema = new Schema<Attribute>(
     },
     inputType: {
       type: String,
-      enum: ["Marca", "Modelo", "Tipo"],
+      enum: Object.values(InputTypeOptions),
     },
   },
   { timestamps: true }

@@ -1,0 +1,67 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  margin: 0 auto;
+  padding: 2em 1em;
+  margin-top: 0.9em;
+  margin-bottom: 3em;
+  border-radius: 8px;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.45);
+  background-color: var(--very-dark-desaturated-blue);
+  display: flex;
+  padding-bottom: 1em;
+}
+
+.inputGroup {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.label {
+  font-weight: 500;
+  display: block;
+}
+
+.button {
+  color: white;
+  background-color: #007bff;
+  border: none;
+  cursor: pointer;
+  margin-top: 0.5em;
+  position: absolute;
+  right: 2em;
+  top: 0.5em;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+.errorInput {
+  border-color: red;
+}
+
+.errorText {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+  position: absolute;
+  right: 0;
+}
+
+.input:focus {
+  border-color: white;
+}
+
+.button.creatingClient {
+  background-color: var(--grey-disabled);
+  cursor: default;
+}
+
+.errorSelect {
+  border-color: red;
+}
+
+.form select {
+  width: 100%;
+}

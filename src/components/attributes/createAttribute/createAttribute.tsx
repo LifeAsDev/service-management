@@ -40,7 +40,7 @@ export default function CreateAttribute({ id }: { id?: string }) {
 
         // Asegúrate de que se reciban datos válidos antes de actualizar el estado
         if (res.ok) {
-          setAttributeFetch(resData.client);
+          setAttributeFetch(resData.attribute);
         } else {
           router.push(`/attributes`);
         }

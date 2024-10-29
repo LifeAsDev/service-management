@@ -38,8 +38,7 @@ export default function AttributeForm({
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    console.log({ attributeData });
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: Partial<Record<keyof Omit<Attribute, "_id">, string>> = {};
     Object.entries(attributeData).forEach(([key, value]) => {
@@ -64,30 +63,33 @@ export default function AttributeForm({
       ? `/api/attribute/${attributeFetch._id}`
       : "/api/attribute";
 
-    try {
-      const data = new FormData();
-      Object.entries(attributeData).forEach(([key, value]) => {
-        data.append(key, value);
-      });
+    const fetchSubmit = async () => {
+      try {
+        const data = new FormData();
+        Object.entries(attributeData).forEach(([key, value]) => {
+          data.append(key, value);
+        });
 
-      // Hacer la solicitud con POST o PATCH
-      const response = await fetch(endpoint, {
-        method,
-        body: data,
-      });
+        // Hacer la solicitud con POST o PATCH
+        const response = await fetch(endpoint, {
+          method,
+          body: data,
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (response.ok) {
-        router.push(`/attributes`);
-      } else {
-        console.error("Error:", result.message);
-        setCreatingAttribute(false);
-        setErrors(result.errors);
+        if (response.ok) {
+          router.push(`/attributes`);
+        } else {
+          console.error("Error:", result.message);
+          setCreatingAttribute(false);
+          setErrors(result.errors);
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
       }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
+    };
+    fetchSubmit();
   };
 
   return (

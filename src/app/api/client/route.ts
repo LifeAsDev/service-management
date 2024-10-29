@@ -54,15 +54,23 @@ export async function GET(req: Request) {
 
     let aggregatePipeline: any[] = [];
     if (keyword !== "") {
-      aggregatePipeline.push({
-        $match: {
-          $or: [
-            { fullName: { $regex: keyword, $options: "i" } },
-            { id: { $regex: keyword, $options: "i" } },
-            { correo: { $regex: keyword, $options: "i" } },
-          ],
+      aggregatePipeline.push(
+        {
+          $addFields: {
+            idString: { $toString: "$_id" }, // Convertimos `_id` a string
+          },
         },
-      });
+        {
+          $match: {
+            $or: [
+              { fullName: { $regex: keyword, $options: "i" } },
+              { id: { $regex: keyword, $options: "i" } },
+              { correo: { $regex: keyword, $options: "i" } },
+              { idString: { $regex: keyword, $options: "i" } }, // Buscamos por el `_id` convertido
+            ],
+          },
+        }
+      );
     }
     aggregatePipeline.push({
       $facet: {
@@ -75,6 +83,7 @@ export async function GET(req: Request) {
     const clients = clientsData[0].data;
     const totalCount = clientsData[0].metadata[0]?.totalCount ?? 0;
 
+    console.log({ clients });
     return NextResponse.json({
       clients,
       keyword,

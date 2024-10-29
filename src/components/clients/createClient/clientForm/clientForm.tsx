@@ -34,7 +34,7 @@ export default function ClientForm({ clientFetch }: { clientFetch?: Client }) {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: Partial<Record<keyof Omit<Client, "_id">, string>> = {};
     Object.entries(clientData).forEach(([key, value]) => {
@@ -61,34 +61,37 @@ export default function ClientForm({ clientFetch }: { clientFetch?: Client }) {
       ? `/api/client/${clientFetch._id}`
       : "/api/client";
 
-    try {
-      const data = new FormData();
-      Object.entries(clientData).forEach(([key, value]) => {
-        data.append(key, value);
-      });
+    const fetchSubmit = async () => {
+      try {
+        const data = new FormData();
+        Object.entries(clientData).forEach(([key, value]) => {
+          data.append(key, value);
+        });
 
-      // Hacer la solicitud con POST o PATCH
-      const response = await fetch(endpoint, {
-        method,
-        body: data,
-      });
+        // Hacer la solicitud con POST o PATCH
+        const response = await fetch(endpoint, {
+          method,
+          body: data,
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (response.ok) {
-        router.push(`/clients`); // Redirige después de la creación/edición
-        console.log(
-          `${clientFetch ? "Client updated" : "Client created"}:`,
-          result.client
-        );
-      } else {
-        console.error("Error:", result.message);
-        setCreatingClient(false);
-        setErrors(result.errors);
+        if (response.ok) {
+          router.push(`/clients`); // Redirige después de la creación/edición
+          console.log(
+            `${clientFetch ? "Client updated" : "Client created"}:`,
+            result.client
+          );
+        } else {
+          console.error("Error:", result.message);
+          setCreatingClient(false);
+          setErrors(result.errors);
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
       }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
+    };
+    fetchSubmit();
   };
 
   return (

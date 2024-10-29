@@ -9,28 +9,31 @@ export default function Login() {
   const [loadingSignIn, setLoadingSignIn] = useState(false);
   const [errorSignIn, setErrorSignIn] = useState(false);
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     setErrorSignIn(false);
     setLoadingSignIn(true);
 
-    try {
-      const res = await signIn("credentials", {
-        password: password,
-        username: username,
-        redirect: false,
-      });
+    const fetchLogin = async () => {
+      try {
+        const res = await signIn("credentials", {
+          password: password,
+          username: username,
+          redirect: false,
+        });
 
-      if (res?.ok) {
-        console.log("yo");
-        window.location.reload(); // Recarga la página en caso de éxito
-      } else {
+        if (res?.ok) {
+          console.log("yo");
+          window.location.reload(); // Recarga la página en caso de éxito
+        } else {
+          setErrorSignIn(true); // Muestra error en caso de fallo
+          setLoadingSignIn(false);
+        }
+      } catch (error) {
         setErrorSignIn(true); // Muestra error en caso de fallo
         setLoadingSignIn(false);
       }
-    } catch (error) {
-      setErrorSignIn(true); // Muestra error en caso de fallo
-      setLoadingSignIn(false);
-    }
+    };
+    fetchLogin();
   };
 
   return (

@@ -85,3 +85,27 @@
 .infoSearchFetch {
   text-align: center;
 }
+
+.suggestions {
+  position: absolute;
+  background-color: var(--very-dark-grayish-blue-1);
+  border-radius: 4px;
+  z-index: 1000;
+  max-height: 150px;
+  overflow-y: auto;
+  width: 100%;
+  min-height: 20px;
+}
+
+.suggestionItem {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.suggestionItem:hover {
+  background-color: var(--very-dark-grayish-blue-2);
+}
+
+.activeSuggestion {
+  background-color: var(--very-dark-grayish-blue-2);
+}

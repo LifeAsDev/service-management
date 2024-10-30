@@ -2,7 +2,7 @@ import { connectMongoDB } from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 import Order from "@/schemas/order";
 import Client from "@/schemas/client";
-import { addAttribute } from "@/app/api/order/route";
+import { addAttribute } from "@/lib/mongooseFunctions";
 
 export async function GET(
   req: Request,

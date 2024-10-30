@@ -2,6 +2,7 @@ import { connectMongoDB } from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 import Order from "@/schemas/order";
 import Client from "@/schemas/client";
+import { addAttribute } from "@/app/api/order/route";
 
 export async function GET(
   req: Request,
@@ -55,7 +56,12 @@ export async function PATCH(
     if (!order) {
       return NextResponse.json({ message: "Order not found" }, { status: 404 });
     }
-
+    const marca = formData.get("marca") as string;
+    const modelo = formData.get("modelo") as string;
+    const tipo = formData.get("tipo") as string;
+    addAttribute(marca, "Marca");
+    addAttribute(modelo, "Modelo");
+    addAttribute(tipo, "Tipo");
     // Actualizar los campos de la orden con los datos proporcionados
     order.marca = (formData.get("marca") as string) || order.marca;
     order.modelo = (formData.get("modelo") as string) || order.modelo;

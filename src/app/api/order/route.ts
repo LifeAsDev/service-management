@@ -13,12 +13,20 @@ export async function POST(req: Request) {
     const client = await Client.findById(formData.get("clientId"));
     const costosRaw = formData.get("costos") as string | null;
 
+    const marca = formData.get("marca") as string;
+    const modelo = formData.get("modelo") as string;
+    const tipo = formData.get("tipo") as string;
+
+    addAttribute(marca, "Marca");
+    addAttribute(modelo, "Modelo");
+    addAttribute(tipo, "Tipo");
+
     // Si `costos` viene como un string JSON, lo parseamos.
     const costos = costosRaw ? JSON.parse(costosRaw) : [];
     const orderData = {
-      marca: formData.get("marca") as string,
-      modelo: formData.get("modelo") as string,
-      tipo: formData.get("tipo") as string,
+      marca,
+      modelo,
+      tipo,
       cliente: client._id, // Relación con el cliente
       numeroDeSerie: formData.get("numeroDeSerie") as string,
       contraseña: formData.get("contraseña") as string,
@@ -148,5 +156,28 @@ export async function DELETE(req: Request) {
       { message: "Error deleting order" },
       { status: 500 }
     );
+  }
+}
+
+import Attribute from "@/schemas/attribute";
+
+export async function addAttribute(name: string, inputType?: string) {
+  await connectMongoDB();
+
+  try {
+    // Verificar si el atributo ya existe
+    const existingAttribute = await Attribute.findOne({ name, inputType });
+    if (existingAttribute) {
+      return { message: "El atributo ya existe", status: 409 };
+    }
+
+    // Si no existe, creamos el atributo
+    const newAttribute = new Attribute({ name, inputType });
+    await newAttribute.save();
+
+    return { newAttribute, message: "Atributo creado exitosamente" };
+  } catch (error) {
+    console.error("Error creando atributo:", error);
+    return { message: "Error al crear atributo", status: 500 };
   }
 }

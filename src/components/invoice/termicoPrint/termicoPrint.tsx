@@ -21,7 +21,7 @@ const formatNumber = (num: number) => {
   const [integerPart, decimalPart] = num.toFixed(2).split(".");
   return integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
-export default function TermicoPriunt({ order }: { order: Order }) {
+export default function TermicoPrint({ order }: { order: Order }) {
   const IVA_RATE = 0.19;
 
   // Dentro de tu componente

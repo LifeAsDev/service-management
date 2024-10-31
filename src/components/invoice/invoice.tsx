@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from "react";
 import Order from "@/models/order";
 import { useReactToPrint } from "react-to-print";
 import TermicoPrint from "@/components/invoice/termicoPrint/termicoPrint";
+import StickerPrint from "@/components/invoice/stickerPrint/stickerPrint";
 
 export default function Invoice({ id }: { id: string }) {
   const [orderData, setOrderData] = useState<Order>({
@@ -87,6 +88,8 @@ export default function Invoice({ id }: { id: string }) {
       <div ref={contentRef}>
         {printType === "Estandar" ? (
           <PrintOrder order={orderData} />
+        ) : printType === "Sticker" ? (
+          <StickerPrint order={orderData} />
         ) : (
           <TermicoPrint order={orderData} />
         )}

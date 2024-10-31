@@ -211,7 +211,6 @@ export default function Clients() {
             placeholder="Nombre, ID, Correo"
           />
         </div>
-
         <div
           id="evaluationList"
           className={`${fetchingMonitor ? styles.hidden : ""} ${
@@ -274,7 +273,7 @@ export default function Clients() {
                           <p>{item.fullName}</p>
                         </div>
                       </td>
-                      <td className={styles.td}>
+                      <td className={`${styles.td} ${styles.rut}`}>
                         <div>
                           <p>{item.id}</p>
                         </div>

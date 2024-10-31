@@ -168,3 +168,7 @@
   flex-direction: row;
   gap: 1em;
 }
+.rut p {
+  word-break: keep-all;
+  white-space: nowrap;
+}

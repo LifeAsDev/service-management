@@ -159,6 +159,11 @@
   gap: 1em;
 }
 
+.td1 p {
+  word-break: keep-all;
+  white-space: nowrap;
+}
+
 .stateColorBox {
   width: 15px;
   height: 15px;

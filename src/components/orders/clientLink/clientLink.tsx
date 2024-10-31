@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import styles from "./styles.module.css"; // Asegúrate de crear este archivo CSS
 import Client from "@/models/client";
-import { comma } from "postcss/lib/list";
 
 const ClientLink = ({ cliente }: { cliente: Client }) => {
   const [isHovering, setIsHovering] = useState(false);

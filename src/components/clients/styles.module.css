@@ -162,3 +162,9 @@
   flex-direction: row;
   gap: 1em;
 }
+
+.searchFilters {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}

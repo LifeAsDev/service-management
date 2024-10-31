@@ -197,18 +197,21 @@ export default function Clients() {
         </Link>
       </div>
       <div className={styles.tableOutside}>
-        <SearchInput
-          input={keyword}
-          setInput={setKeyword}
-          action={() => {
-            if (page === 1) fetchClients();
-            else {
-              setPage(1);
-              setPageCount(1);
-            }
-          }}
-          placeholder="Nombre, ID, Correo"
-        />
+        <div className={styles.searchFilters}>
+          <SearchInput
+            input={keyword}
+            setInput={setKeyword}
+            action={() => {
+              if (page === 1) fetchClients();
+              else {
+                setPage(1);
+                setPageCount(1);
+              }
+            }}
+            placeholder="Nombre, ID, Correo"
+          />
+        </div>
+
         <div
           id="evaluationList"
           className={`${fetchingMonitor ? styles.hidden : ""} ${

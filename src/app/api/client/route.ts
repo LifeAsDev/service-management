@@ -72,12 +72,15 @@ export async function GET(req: Request) {
         }
       );
     }
-    aggregatePipeline.push({
-      $facet: {
-        metadata: [{ $count: "totalCount" }],
-        data: [{ $skip: (page - 1) * pageSize }, { $limit: pageSize }],
+    aggregatePipeline.push([
+      { $sort: { createdAt: -1 } },
+      {
+        $facet: {
+          metadata: [{ $count: "totalCount" }],
+          data: [{ $skip: (page - 1) * pageSize }, { $limit: pageSize }],
+        },
       },
-    });
+    ]);
 
     const clientsData = await Client.aggregate(aggregatePipeline);
     const clients = clientsData[0].data;

@@ -120,7 +120,7 @@
 .clientSelectedUl {
   display: flex;
   flex-direction: column;
-  gap: 0.25em;
+  gap: 1em;
 }
 .clientSelectedUl li {
   display: flex;
@@ -130,10 +130,13 @@
 
 .clientLabel {
   font-weight: 600;
+  text-align: center;
 }
 
 .clientData {
   font-weight: 400;
+  width: 200px;
+  text-align: right;
 }
 
 .closeBtn {

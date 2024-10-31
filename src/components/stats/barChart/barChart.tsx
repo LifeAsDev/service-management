@@ -6,9 +6,10 @@ interface BarChartProps {
   data: number[]; // Array de datos: si es anual, será un array de 12 meses; si es mensual, será un array de 30 o 31 días.
   isAnnual: boolean; // Prop para diferenciar si es gráfico anual o mensual
   monthDays?: number; // Número de días del mes si es mensual
+  data2: number[];
 }
 
-const BarChart = ({ data, isAnnual, monthDays }: BarChartProps) => {
+const BarChart = ({ data, isAnnual, monthDays, data2 }: BarChartProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const chartRef = useRef<Chart | null>(null); // Ref para mantener la instancia del gráfico
 
@@ -44,6 +45,13 @@ const BarChart = ({ data, isAnnual, monthDays }: BarChartProps) => {
           data: {
             labels: labels, // Etiquetas dinámicas según sea anual o mensual
             datasets: [
+              {
+                label: "Ganancias Pendientes (CLP)",
+                data: data2, // Los datos se pasan desde el componente padre
+                backgroundColor: "rgba(255, 159, 64, 0.2)", // Color de fondo de las barras para pendientes
+                borderColor: "rgba(255, 159, 64, 1)", // Color del borde de las barras para pendientes
+                borderWidth: 1,
+              },
               {
                 label: isAnnual
                   ? "Ganancias Mensuales (CLP)"

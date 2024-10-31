@@ -12,6 +12,7 @@ export default function Stats() {
   const getDaysInMonth = (year: number, month: number) => {
     return new Date(year, month, 0).getDate(); // Devuelve el último día del mes
   };
+  const [data2, setData2] = useState<number[]>([]);
 
   const monthDays = month !== null ? getDaysInMonth(year, month) : 30; // Asume 30 días para la vista anual
 
@@ -47,7 +48,9 @@ export default function Stats() {
         }
 
         const result = await response.json();
-        setData(result.gananciasMensuales);
+        setData(result.gananciasMensualesEntregado);
+        setData2(result.gananciasMensualesOtros);
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching monthly costs:", error);
@@ -101,9 +104,13 @@ export default function Stats() {
           </div>
         )}
       </div>
-
       {!loading && (
-        <BarChart isAnnual={isAnnual} data={data} monthDays={monthDays} />
+        <BarChart
+          isAnnual={isAnnual}
+          data={data}
+          monthDays={monthDays}
+          data2={data2}
+        />
       )}
     </main>
   );

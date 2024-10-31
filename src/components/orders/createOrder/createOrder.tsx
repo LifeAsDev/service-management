@@ -118,7 +118,9 @@ export default function CreateOrder({ id }: { id?: string }) {
 
           if (response.ok) {
             console.log("Order created:", result.order);
-            router.push(`/orders`);
+            router.push(`/invoice/${id}`);
+
+            router.push(`/invoice/${result.order._id}`);
           } else {
             console.error("Error:", result.message);
             setCreatingOrder(false);
@@ -156,7 +158,7 @@ export default function CreateOrder({ id }: { id?: string }) {
 
           if (response.ok) {
             console.log("Order updated:", result.order);
-            router.push(`/orders`);
+            router.push(`/invoice/${id}`);
           } else {
             console.error("Error:", result.message);
             setCreatingOrder(false);

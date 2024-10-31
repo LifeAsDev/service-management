@@ -147,7 +147,7 @@ export default function ClientForm({ clientFetch }: { clientFetch?: Client }) {
         </div>
         <div className={styles.inputGroup}>
           <label htmlFor="numero" className={styles.label}>
-            Número:
+            Número de telefono:
           </label>
           <input
             type="text"

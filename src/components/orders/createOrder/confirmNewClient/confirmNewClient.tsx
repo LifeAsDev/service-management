@@ -31,7 +31,7 @@ export default function ConfirmNewClient({
           </div>
           <div className={styles.inputGroup}>
             <label htmlFor="numero" className={styles.label}>
-              Número:
+              Número de telefono:
             </label>
             <p>{clientData.numero}</p>
           </div>

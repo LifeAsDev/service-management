@@ -59,7 +59,7 @@ const ClientLink = ({ cliente }: { cliente: Client }) => {
               <strong>Nombre:</strong> {cliente.fullName}
             </p>
             <p>
-              <strong>Número:</strong> {cliente.numero}
+              <strong>Número de telefono:</strong> {cliente.numero}
             </p>
             <p>
               <strong>Correo:</strong> {cliente.correo}

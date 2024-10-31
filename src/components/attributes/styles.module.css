@@ -158,3 +158,11 @@
   flex-direction: row;
   gap: 1em;
 }
+.tableBox td > div {
+  padding: 0.1em 0;
+  padding-right: 1em;
+  min-height: 3em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

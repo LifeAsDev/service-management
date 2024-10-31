@@ -47,7 +47,6 @@
 }
 
 .tr {
-  height: 3em;
   border-bottom: 1px solid var(--light-grayish-blue);
 }
 
@@ -57,16 +56,29 @@
   position: sticky;
   top: 0;
   padding: 0;
-
   z-index: 1;
   &::after {
     content: "";
     display: block;
     height: 2px;
     background-color: var(--light-grayish-blue);
-    margin-top: 0.5em;
+    position: absolsute;
+    width: 100%;
   }
 }
+
+/* .tableBox thead {
+} */
+
+.tableBox td > div {
+  padding: 0.1em 0;
+  padding-right: 1em;
+  min-height: 3em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .dateHeadBox {
   display: flex;
   flex-direction: row;

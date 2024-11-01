@@ -131,7 +131,7 @@ export default function SetOrderClientForm({
       if (response.ok) {
         console.log(`"Client created":`, result.client);
         setClientData(result.client);
-        setClientSelected(result.client._id);
+        setClientSelected(result.client);
         setCreatingClient(false);
         setIsHidden(true);
       } else {

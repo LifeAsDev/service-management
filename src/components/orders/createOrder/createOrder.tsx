@@ -108,7 +108,7 @@ export default function CreateOrder({ id }: { id?: string }) {
 
           if (clientSelected)
             data.append("clientId", clientSelected._id as string);
-
+          console.log({ clientSelected });
           const response = await fetch("/api/order", {
             method: "POST",
             body: data,

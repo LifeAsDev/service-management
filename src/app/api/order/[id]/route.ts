@@ -73,6 +73,7 @@ export async function PATCH(
       (formData.get("contraseña") as string) || order.contraseña;
     order.clienteFullName = client.fullName || order.clienteFullName;
     order.costos = costos.length ? costos : order.costos;
+    order.observacion = formData.get("observacion");
 
     // Guardar los cambios
     await order.save();

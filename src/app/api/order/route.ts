@@ -47,6 +47,7 @@ export async function POST(req: Request) {
       contraseña: formData.get("contraseña") as string,
       clienteFullName: client.fullName,
       costos,
+      observacion: formData.get("observacion"),
     };
 
     const order = await Order.create(orderData);

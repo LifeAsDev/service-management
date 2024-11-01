@@ -19,5 +19,6 @@ interface Order {
   costos?: { nombre: string; costo: string; key?: string }[];
   clienteFullName?: string;
   customId?: string;
+  observacion?: string;
 }
 export default Order;

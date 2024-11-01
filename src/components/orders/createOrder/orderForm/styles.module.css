@@ -109,3 +109,8 @@
 .activeSuggestion {
   background-color: var(--very-dark-grayish-blue-2);
 }
+
+.form textarea {
+  min-height: 100px; /* Establece una altura mínima de 100px */
+  resize: vertical; /* Permite redimensionarlo solo verticalmente */
+}

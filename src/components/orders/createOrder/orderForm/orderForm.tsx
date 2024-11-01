@@ -10,7 +10,9 @@ export default function OrderForm({
   errors,
 }: {
   creatingOrder: boolean;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   orderData: Order;
   setErrors: Dispatch<
     SetStateAction<{
@@ -88,7 +90,6 @@ export default function OrderForm({
   return (
     <form className={styles.form} ref={formRef}>
       <h3>Servicio</h3>
-
       {(["marca", "modelo", "tipo"] as const).map((field) => (
         <div className={styles.inputGroup} key={field}>
           <label htmlFor={field} className={styles.label}>
@@ -147,7 +148,6 @@ export default function OrderForm({
           )}
         </div>
       ))}
-
       <div className={styles.inputGroup}>
         <label htmlFor="numeroDeSerie" className={styles.label}>
           Número de Serie:
@@ -168,7 +168,6 @@ export default function OrderForm({
           <p className={styles.errorText}>{errors.numeroDeSerie}</p>
         )}
       </div>
-
       <div className={styles.inputGroup}>
         <label htmlFor="contraseña" className={styles.label}>
           Contraseña:
@@ -187,6 +186,25 @@ export default function OrderForm({
         />
         {errors.contraseña && (
           <p className={styles.errorText}>{errors.contraseña}</p>
+        )}
+      </div>
+      <div className={styles.inputGroup}>
+        <label htmlFor="observacion" className={styles.label}>
+          Observacion:
+        </label>
+        <textarea
+          disabled={creatingOrder}
+          id="observacion"
+          name="observacion"
+          value={orderData.observacion}
+          onChange={handleChange}
+          className={`${styles.input} ${
+            errors.observacion ? styles.errorInput : ""
+          }`}
+          onFocus={() => setErrors({})}
+        />
+        {errors.observacion && (
+          <p className={styles.errorText}>{errors.observacion}</p>
         )}
       </div>
     </form>

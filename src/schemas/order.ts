@@ -59,6 +59,9 @@ const orderSchema = new Schema<Order>(
       type: String,
       unique: true, // Asegurar que sea único
     },
+    observacion: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

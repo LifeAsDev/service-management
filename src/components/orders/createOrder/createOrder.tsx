@@ -23,6 +23,7 @@ export default function CreateOrder({ id }: { id?: string }) {
     },
     numeroDeSerie: "",
     contraseña: "",
+    observacion: "",
   });
   const [orderFetch, setOrderFetch] = useState(false);
   const [clientSelected, setClientSelected] = useState<false | Client>(false);
@@ -54,9 +55,7 @@ export default function CreateOrder({ id }: { id?: string }) {
 
     Object.entries(orderData).forEach(([key, value]) => {
       if (
-        ["marca", "modelo", "tipo", "numeroDeSerie", "contraseña"].includes(
-          key
-        ) &&
+        ["marca", "modelo", "tipo"].includes(key) &&
         typeof value === "string" &&
         value.trim() === ""
       ) {
@@ -172,7 +171,9 @@ export default function CreateOrder({ id }: { id?: string }) {
     fetchSubmit();
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value, id } = e.target;
     if (name.startsWith("description") || name.startsWith("price")) {
       const costosKey = name.startsWith("description") ? "nombre" : "costo";

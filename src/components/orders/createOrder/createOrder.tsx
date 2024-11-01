@@ -175,6 +175,7 @@ export default function CreateOrder({ id }: { id?: string }) {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value, id } = e.target;
+
     if (name.startsWith("description") || name.startsWith("price")) {
       const costosKey = name.startsWith("description") ? "nombre" : "costo";
       const costosIndex = parseInt(
@@ -184,7 +185,7 @@ export default function CreateOrder({ id }: { id?: string }) {
         costosKey === "costo"
           ? value === ""
             ? ""
-            : parseFloat(value) || ""
+            : parseFloat(value) || 0
           : value;
 
       setOrderData((prev) => {

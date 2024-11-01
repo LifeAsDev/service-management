@@ -11,7 +11,21 @@ export async function POST(req: Request) {
   try {
     const formData = await req.formData();
 
-    const client = await Client.findById(formData.get("clientId"));
+    const clientId = formData.get("clientId") as string;
+    if (!clientId) {
+      return NextResponse.json(
+        { message: "Client ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const client = await Client.findById(clientId);
+    if (!client) {
+      return NextResponse.json(
+        { message: "Client not found" },
+        { status: 404 }
+      );
+    }
     const costosRaw = formData.get("costos") as string | null;
 
     const marca = formData.get("marca") as string;
@@ -44,7 +58,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Error creating order:", error);
     return NextResponse.json(
-      { message: "Error creating order" },
+      { message: "Error creating order", error },
       { status: 500 }
     );
   }

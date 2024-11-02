@@ -39,6 +39,8 @@
   width: 100%;
   gap: 1em;
   margin-bottom: 1.1em;
+  justify-content: flex-start;
+  align-items: start;
 }
 
 .costoLi .inputGroup:first-of-type {
@@ -80,7 +82,7 @@
 .costMinus {
   cursor: pointer;
   height: 34px;
-  margin-top: auto;
+  margin-top: 24px;
 }
 
 .costMinus:hover {

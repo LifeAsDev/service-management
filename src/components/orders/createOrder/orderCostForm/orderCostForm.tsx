@@ -25,7 +25,9 @@ export default function OrderCostForm({
       }[]
     >
   >;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   setOrderData: Dispatch<SetStateAction<Order>>;
 }) {
   const formatNumber = (num: number) => {
@@ -87,14 +89,13 @@ export default function OrderCostForm({
       <ul className={styles.costoUl}>
         {costs &&
           costs.map((item, index) => (
-            <li key={item.key} className={styles.costoLi}>
+            <li key={item.key + item.costo} className={styles.costoLi}>
               <div className={styles.inputGroup}>
                 <label htmlFor={`description${index}`} className={styles.label}>
                   Descripcion:
                 </label>
-                <input
+                <textarea
                   disabled={creatingOrder}
-                  type="text"
                   placeholder="Descripcion"
                   id={`description${index}`}
                   name={`description${index}`}
@@ -162,7 +163,11 @@ export default function OrderCostForm({
               </svg>
             </li>
           ))}
-        <li onClick={addCost} className={styles.costoAddBtn}>
+        <li
+          key={"AgregarCosto"}
+          onClick={addCost}
+          className={styles.costoAddBtn}
+        >
           Agregar Costo
         </li>
       </ul>

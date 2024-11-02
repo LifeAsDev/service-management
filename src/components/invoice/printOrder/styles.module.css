@@ -150,3 +150,11 @@
 .totalCostBox {
   margin-left: auto;
 }
+
+.keyCost {
+  white-space: nowrap;
+}
+
+.tr td {
+  padding-right: 1em;
+}

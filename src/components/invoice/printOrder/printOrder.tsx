@@ -124,7 +124,7 @@ export default function PrintOrder({ order }: { order: Order }) {
                 <span>Numero de serie:</span> {order.numeroDeSerie}
               </li>
               <li>
-                <span>Observacion:</span> {order.observacion}
+                <span>Observaciones:</span> {order.observacion}
               </li>
             </ul>
           </div>
@@ -138,10 +138,12 @@ export default function PrintOrder({ order }: { order: Order }) {
                 </tr>
               </thead>
               <tbody>
-                {order.costos?.map((item, index) => (
-                  <tr key={index}>
+                {order.costos!.map((item, index) => (
+                  <tr className={styles.tr} key={index}>
                     <td>{item.nombre}</td>
-                    <td>$ {formatNumber(parseFloat(item.costo))}</td>
+                    <td className={styles.keyCost}>
+                      $ {formatNumber(parseFloat(item.costo))}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -155,7 +157,7 @@ export default function PrintOrder({ order }: { order: Order }) {
               <div className={styles.costBoxRight}>$ {costSummary.cost}</div>
             </div>
             <div className={styles.costBox}>
-              <div className={styles.costBoxLeft}>Impuesto%</div>
+              <div className={styles.costBoxLeft}>Impuesto 19%</div>
               <div className={styles.costBoxRight}>$ {costSummary.iva}</div>
             </div>
             <div className={styles.costBox}>

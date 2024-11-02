@@ -123,6 +123,9 @@ export default function PrintOrder({ order }: { order: Order }) {
               <li>
                 <span>Numero de serie:</span> {order.numeroDeSerie}
               </li>
+              <li>
+                <span>Observacion:</span> {order.observacion}
+              </li>
             </ul>
           </div>
           <div className={styles.dataBox}>

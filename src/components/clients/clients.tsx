@@ -275,17 +275,17 @@ export default function Clients() {
                       </td>
                       <td className={`${styles.td} ${styles.rut}`}>
                         <div>
-                          <p>{item.id}</p>
+                          <p>{item.id || "N/A"}</p>
                         </div>
                       </td>
                       <td className={styles.td}>
                         <div>
-                          <p>{item.correo}</p>
+                          <p>{item.correo || "N/A"}</p>
                         </div>
                       </td>
                       <td className={styles.td}>
                         <div className={styles.direccionBox}>
-                          <p>{item.direccion}</p>
+                          <p>{item.direccion || "N/A"}</p>
                         </div>
                       </td>
                     </tr>

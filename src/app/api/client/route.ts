@@ -17,17 +17,18 @@ export async function POST(req: Request, { params }: { params: any }) {
     };
 
     // Verificar si ya existe un cliente con el mismo ID
-    const existingClient = await Client.findOne({ id: clientData.id });
-    if (existingClient) {
-      return NextResponse.json(
-        {
-          message: "Client with this ID already exists",
-          errors: { id: "Ya existe un cliente con este RUT" },
-        },
-        { status: 400 }
-      );
+    if (clientData.id) {
+      const existingClient = await Client.findOne({ id: clientData.id });
+      if (existingClient) {
+        return NextResponse.json(
+          {
+            message: "Client with this ID already exists",
+            errors: { id: "Ya existe un cliente con este RUT" },
+          },
+          { status: 400 }
+        );
+      }
     }
-
     // Crear el nuevo cliente si no existe
     const client = await Client.create(clientData);
 
@@ -86,7 +87,6 @@ export async function GET(req: Request) {
     const clients = clientsData[0].data;
     const totalCount = clientsData[0].metadata[0]?.totalCount ?? 0;
 
-    console.log({ clients });
     return NextResponse.json({
       clients,
       keyword,

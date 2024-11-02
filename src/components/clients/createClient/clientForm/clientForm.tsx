@@ -38,12 +38,7 @@ export default function ClientForm({ clientFetch }: { clientFetch?: Client }) {
     e.preventDefault();
     const newErrors: Partial<Record<keyof Omit<Client, "_id">, string>> = {};
     Object.entries(clientData).forEach(([key, value]) => {
-      if (
-        ["fullName", "numero", "correo", "direccion", "id", "notas"].includes(
-          key
-        ) &&
-        value.trim() === ""
-      ) {
+      if (["fullName"].includes(key) && value.trim() === "") {
         newErrors[key as keyof Omit<Client, "_id">] =
           "Este campo es obligatorio.";
       }

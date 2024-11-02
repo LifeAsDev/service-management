@@ -3,6 +3,7 @@ import Client from "@/models/client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import styles from "./styles.module.css";
 import Order from "@/models/order";
+import { formatRut } from "@/components/clients/createClient/clientForm/clientForm";
 
 export default function SetOrderClientForm({
   setClientErrors,
@@ -140,8 +141,10 @@ export default function SetOrderClientForm({
     }
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
+    let { name, value } = e.target;
+    if (name === "id") {
+      value = formatRut(value);
+    }
     setClientData((prevClientData) => ({
       ...prevClientData,
       [name]: value, // Actualiza el campo correspondiente con el valor del input

@@ -3,7 +3,21 @@ import Client from "@/models/client";
 import { useState } from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/navigation";
+export function formatRut(value: string): string {
+  // Elimina cualquier carácter que no sea un número o letra (para el último dígito)
+  const cleanValue = value.replace(/[^a-zA-Z0-9]/g, "");
 
+  // Extrae el último carácter (que puede ser un número o una letra)
+  const verifierDigit = cleanValue.slice(-1);
+  // Extrae el resto de los caracteres
+  const mainNumbers = cleanValue.slice(0, -1);
+
+  // Agrega los puntos en los lugares correctos
+  const formatted = mainNumbers.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+  // Retorna el RUT formateado
+  return `${formatted}-${verifierDigit}`;
+}
 export default function ClientForm({ clientFetch }: { clientFetch?: Client }) {
   const [clientData, setClientData] = useState<Omit<Client, "_id">>(
     clientFetch || {
@@ -22,7 +36,10 @@ export default function ClientForm({ clientFetch }: { clientFetch?: Client }) {
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+    if (name === "id") {
+      value = formatRut(value);
+    }
     setClientData({
       ...clientData,
       [name]: value,

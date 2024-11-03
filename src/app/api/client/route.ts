@@ -1,6 +1,8 @@
 import { connectMongoDB } from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 import Client from "@/schemas/client"; // Import the Client model
+import Order from "@/schemas/order";
+import mongoose from "mongoose";
 
 export async function POST(req: Request, { params }: { params: any }) {
   await connectMongoDB();
@@ -113,19 +115,31 @@ export async function DELETE(req: Request) {
         { status: 400 }
       );
     }
-
-    const deletedClient = await Client.findByIdAndDelete(clientId);
-
-    if (!deletedClient) {
-      return NextResponse.json(
-        { message: "Client not found" },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json({
-      message: "Client deleted successfully",
+    const orders = await Order.find({
+      cliente: new mongoose.Types.ObjectId(clientId),
     });
+    console.log({ orders });
+    if (orders.length === 0) {
+      const deletedClient = await Client.findByIdAndDelete(clientId);
+
+      if (!deletedClient) {
+        return NextResponse.json(
+          { message: "Client not found" },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json({
+        message: "Client deleted successfully",
+      });
+    } else {
+      return NextResponse.json({
+        message: "Client have orders",
+        orders: orders.map((order) => {
+          return order.customId;
+        }),
+      });
+    }
   } catch (error) {
     console.error("Error deleting client:", error);
     return NextResponse.json(

@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import DropdownMenu from "@/components/clients/dropdownMenu/dropdownMenu";
 import DeleteClient from "@/components/clients/deleteClient/deleteClient";
 import { useRouter } from "next/navigation";
+import OrdersOfClient from "@/components/clients/ordersOfClient/ordersOfClient";
 
 export default function Clients() {
   const [fetchingMonitor, setFetchingMonitor] = useState(true);
@@ -21,6 +22,7 @@ export default function Clients() {
     Client | false
   >(false);
   const router = useRouter();
+  const [ordersOfClient, setOrdersOfClient] = useState<null | string[]>(null);
 
   const fetchClients = async () => {
     setFetchingMonitor(true);
@@ -58,9 +60,6 @@ export default function Clients() {
   }, []);
 
   const fetchDeleteClient = async () => {
-    setFetchingMonitor(true);
-    setClientsArr([]);
-
     try {
       const searchParams = new URLSearchParams();
 
@@ -71,15 +70,21 @@ export default function Clients() {
       });
 
       const resData = await res.json();
-      fetchClients();
+      console.log(resData.orders);
+      if (resData.orders) {
+        setOrdersOfClient(resData.orders);
+      } else {
+        setFetchingMonitor(true);
+        setClientsArr([]);
+        fetchClients();
+      }
     } catch (error) {
+      setFetchingMonitor(true);
+      setClientsArr([]);
       fetchClients();
     }
   };
-  const editClient = (clientId: string) => {
-    // Redirigir a /clients/edit
-    router.push(`/clients/edit/${clientId}`);
-  };
+
   const usePagination = ({
     totalCount,
     pageSize,
@@ -188,6 +193,12 @@ export default function Clients() {
           }}
           clientData={confirmClientDelete}
           cancel={() => setConfirmClientDelete(false)}
+        />
+      )}
+      {ordersOfClient && (
+        <OrdersOfClient
+          orders={ordersOfClient}
+          cancel={() => setOrdersOfClient(null)}
         />
       )}
       <div className={styles.top}>

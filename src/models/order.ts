@@ -20,5 +20,6 @@ interface Order {
   clienteFullName?: string;
   customId?: string;
   observacion?: string;
+  garantia: number;
 }
 export default Order;

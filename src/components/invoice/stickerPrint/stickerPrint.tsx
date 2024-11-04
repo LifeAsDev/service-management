@@ -61,6 +61,9 @@ export default function StickerPrint({ order }: { order: Order }) {
           <li>
             <span>Tipo:</span> {order.tipo}
           </li>
+          <li>
+            <span>Observaciones:</span> {order.observacion}
+          </li>
         </ul>
       </div>
     </>

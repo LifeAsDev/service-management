@@ -124,6 +124,9 @@ export default function TermicoPrint({ order }: { order: Order }) {
               <li>
                 <span>Numero de serie:</span> {order.numeroDeSerie}
               </li>
+              <li>
+                <span>Observaciones:</span> {order.observacion}
+              </li>
             </ul>
           </div>
           <div className={styles.dataBox}>
@@ -139,12 +142,17 @@ export default function TermicoPrint({ order }: { order: Order }) {
                 {order.costos?.map((item, index) => (
                   <tr key={index}>
                     <td>{item.nombre}</td>
-                    <td>$ {formatNumber(parseFloat(item.costo))}</td>
+                    <td className={styles.costBoxRight}>
+                      $ {formatNumber(parseFloat(item.costo))}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          <p className={styles.garantiaBox}>
+            Garantia: {order.garantia | 3} Meses
+          </p>
         </section>
         <section>
           <div className={styles.totalCostBox}>

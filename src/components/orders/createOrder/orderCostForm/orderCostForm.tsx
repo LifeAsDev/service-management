@@ -13,7 +13,9 @@ export default function OrderCostForm({
   setErrorsCosts,
   handleChange,
   setOrderData,
+  garantia,
 }: {
+  garantia: number;
   creatingOrder: boolean;
   costs?: { nombre: string; costo: string; key?: string }[];
   errorsCosts: { nombre?: string; costo?: string }[];
@@ -26,7 +28,9 @@ export default function OrderCostForm({
     >
   >;
   handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => void;
   setOrderData: Dispatch<SetStateAction<Order>>;
 }) {
@@ -171,6 +175,25 @@ export default function OrderCostForm({
           Agregar Costo
         </li>
       </ul>
+      <div className={styles.garantiaBox}>
+        <label htmlFor="garantia" className={styles.label}>
+          Garantía (meses):
+        </label>
+        <select
+          id="garantia"
+          name="garantia"
+          disabled={creatingOrder}
+          onChange={handleChange}
+          className={styles.input}
+          value={garantia}
+        >
+          {Array.from({ length: 12 }, (_, i) => (
+            <option key={i + 1} value={i + 1}>
+              {i + 1}
+            </option>
+          ))}
+        </select>
+      </div>
       <ul className={styles.costsBox}>
         <li>
           Costo <span>$ {costSummary.cost}</span>

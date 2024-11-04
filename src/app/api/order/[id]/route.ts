@@ -74,7 +74,7 @@ export async function PATCH(
     order.clienteFullName = client.fullName || order.clienteFullName;
     order.costos = costos.length ? costos : order.costos;
     order.observacion = formData.get("observacion");
-
+    order.garantia = Number(formData.get("garantia"));
     // Guardar los cambios
     await order.save();
 

@@ -24,6 +24,7 @@ export default function CreateOrder({ id }: { id?: string }) {
     numeroDeSerie: "",
     contraseña: "",
     observacion: "",
+    garantia: 3,
   });
   const [orderFetch, setOrderFetch] = useState(false);
   const [clientSelected, setClientSelected] = useState<false | Client>(false);
@@ -172,7 +173,9 @@ export default function CreateOrder({ id }: { id?: string }) {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value, id } = e.target;
 
@@ -309,6 +312,7 @@ export default function CreateOrder({ id }: { id?: string }) {
               setErrorsCosts={setErrorsCost}
               creatingOrder={creatingOrder}
               costs={orderData.costos}
+              garantia={orderData.garantia}
             />
           )}
         </div>

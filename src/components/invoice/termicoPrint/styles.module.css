@@ -110,8 +110,16 @@
 .costBoxRight {
   color: black;
   text-align: right; /* Alinea a la derecha */
+  white-space: nowrap;
+  padding: 0 0.2em;
 }
 
 .totalCostBox {
   margin-top: 1em; /* Añade espacio entre la tabla y el total */
+}
+
+.garantiaBox {
+  color: black;
+  padding-left: 0.1em;
+  margin-top: -0.5em;
 }

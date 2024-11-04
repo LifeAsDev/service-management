@@ -62,6 +62,7 @@ const orderSchema = new Schema<Order>(
     observacion: {
       type: String,
     },
+    garantia: Number,
   },
   { timestamps: true }
 );

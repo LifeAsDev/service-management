@@ -148,7 +148,7 @@ export default function SetOrderClientForm({
     if (name === "id") {
       value = formatRut(value);
     }
-    if ((name = "numero")) {
+    if (name === "numero") {
       value = formatPhone(value);
     }
     setClientData((prevClientData) => ({

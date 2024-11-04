@@ -21,18 +21,35 @@ export function formatRut(value: string): string {
 }
 
 export function formatPhone(input: string): string {
-  // Remueve cualquier carácter que no sea un número y el prefijo
-  const cleaned = input.replace(/\D/g, "").replace(/^56/, "").replace(/^9/, "");
+  // Remueve cualquier carácter que no sea un número
+  const cleaned = input.replace(/\D/g, "");
 
-  // Empieza siempre con el prefijo +56 9
-  let formatted = "+56 9 ";
-
-  // Formatea en el formato +56 9 XXXX XXXX
-  if (cleaned.length > 0) {
-    formatted += cleaned.slice(0, 4);
+  // Si el número está vacío, devuelve una cadena vacía
+  if (cleaned.length === 0) {
+    return "";
   }
-  if (cleaned.length > 4) {
-    formatted += " " + cleaned.slice(4, 8);
+
+  // Determina el código de país y el número
+  let formatted = "";
+  if (cleaned.length >= 9) {
+    // Extrae el código de país (los primeros dos dígitos)
+    const countryCode = cleaned.slice(0, 2); // Por ejemplo, "56"
+    const firstDigit = cleaned[2]; // Primer dígito del número (por ejemplo, "9")
+    const number = cleaned.slice(3); // Los restantes dígitos del número
+
+    // Construye el formato
+    formatted = `+${countryCode} ${firstDigit} `;
+
+    // Formatea el número en dos partes
+    if (number.length > 0) {
+      formatted += number.slice(0, 4); // Primer segmento (XXXX)
+    }
+    if (number.length > 4) {
+      formatted += " " + number.slice(4); // Segundo segmento (XXXX)
+    }
+  } else {
+    // Si el número es demasiado corto, puedes manejarlo según necesites
+    formatted = `+${cleaned}`; // Solo devuelve el número limpio
   }
 
   return formatted.trim();
@@ -60,7 +77,7 @@ export default function ClientForm({ clientFetch }: { clientFetch?: Client }) {
     if (name === "id") {
       value = formatRut(value);
     }
-    if ((name = "numero")) {
+    if (name === "numero") {
       value = formatPhone(value);
     }
     setClientData({

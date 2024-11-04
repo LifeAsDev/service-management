@@ -33,7 +33,14 @@ export async function GET(req: Request) {
   await connectMongoDB();
   const { searchParams } = new URL(req.url);
   const secret = searchParams.get("secret");
-
+  if (secret != process.env.NEXTAUTH_SECRET) {
+    return NextResponse.json(
+      {
+        message: "Incorrect secret",
+      },
+      { status: 400 }
+    );
+  }
   // Generar una contraseña aleatoria con hash
   const randomPassword = generateRandomPassword();
 

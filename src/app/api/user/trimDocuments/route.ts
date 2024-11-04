@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { connectMongoDB } from "@/lib/mongodb";
 import Order from "@/schemas/order";
 import Client from "@/schemas/client";
-export function formatRut(value: string): string {
+function formatRut(value: string): string {
   // Elimina cualquier carácter que no sea un número o letra (para el último dígito)
   const cleanValue = value.replace(/[^a-zA-Z0-9]/g, "");
 
@@ -18,7 +18,7 @@ export function formatRut(value: string): string {
   return `${formatted}-${verifierDigit}`;
 }
 
-export function formatPhone(input: string): string {
+function formatPhone(input: string): string {
   // Remueve cualquier carácter que no sea un número
   const cleaned = input.replace(/\D/g, "");
 

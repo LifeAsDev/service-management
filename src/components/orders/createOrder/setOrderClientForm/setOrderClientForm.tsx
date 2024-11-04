@@ -3,7 +3,10 @@ import Client from "@/models/client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import styles from "./styles.module.css";
 import Order from "@/models/order";
-import { formatRut } from "@/components/clients/createClient/clientForm/clientForm";
+import {
+  formatPhone,
+  formatRut,
+} from "@/components/clients/createClient/clientForm/clientForm";
 
 export default function SetOrderClientForm({
   setClientErrors,
@@ -144,6 +147,9 @@ export default function SetOrderClientForm({
     let { name, value } = e.target;
     if (name === "id") {
       value = formatRut(value);
+    }
+    if ((name = "numero")) {
+      value = formatPhone(value);
     }
     setClientData((prevClientData) => ({
       ...prevClientData,

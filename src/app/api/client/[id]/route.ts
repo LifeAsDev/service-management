@@ -50,20 +50,6 @@ export async function PATCH(
       id: formData.get("id") as string,
     };
 
-    // Verificar si ya existe un cliente con el mismo ID
-    if (clientData.id) {
-      const existingClient = await Client.findOne({ id: clientData.id });
-      if (existingClient) {
-        return NextResponse.json(
-          {
-            message: "Client with this ID already exists",
-            errors: { id: "Ya existe un cliente con este RUT" },
-          },
-          { status: 400 }
-        );
-      }
-    }
-
     // Buscar el cliente por su id y actualizarlo
     const updatedClient = await Client.findByIdAndUpdate(id, clientData, {
       new: true, // Devolver el documento actualizado

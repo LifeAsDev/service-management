@@ -3,6 +3,7 @@ import Client from "@/models/client";
 import { useState } from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/navigation";
+
 export function formatRut(value: string): string {
   // Elimina cualquier carácter que no sea un número o letra (para el último dígito)
   const cleanValue = value.replace(/[^a-zA-Z0-9]/g, "");
@@ -18,6 +19,25 @@ export function formatRut(value: string): string {
   // Retorna el RUT formateado
   return `${formatted}-${verifierDigit}`;
 }
+
+export function formatPhone(input: string): string {
+  // Remueve cualquier carácter que no sea un número y el prefijo
+  const cleaned = input.replace(/\D/g, "").replace(/^56/, "").replace(/^9/, "");
+
+  // Empieza siempre con el prefijo +56 9
+  let formatted = "+56 9 ";
+
+  // Formatea en el formato +56 9 XXXX XXXX
+  if (cleaned.length > 0) {
+    formatted += cleaned.slice(0, 4);
+  }
+  if (cleaned.length > 4) {
+    formatted += " " + cleaned.slice(4, 8);
+  }
+
+  return formatted.trim();
+}
+
 export default function ClientForm({ clientFetch }: { clientFetch?: Client }) {
   const [clientData, setClientData] = useState<Omit<Client, "_id">>(
     clientFetch || {
@@ -39,6 +59,9 @@ export default function ClientForm({ clientFetch }: { clientFetch?: Client }) {
     let { name, value } = e.target;
     if (name === "id") {
       value = formatRut(value);
+    }
+    if ((name = "numero")) {
+      value = formatPhone(value);
     }
     setClientData({
       ...clientData,

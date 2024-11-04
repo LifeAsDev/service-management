@@ -149,7 +149,7 @@ export default function PrintOrder({ order }: { order: Order }) {
               </tbody>
             </table>
             <p className={styles.garantiaBox}>
-              Garantia: {order.garantia | 3} Meses
+              Garantia: {order.garantia || 3} Meses
             </p>
           </div>
         </section>

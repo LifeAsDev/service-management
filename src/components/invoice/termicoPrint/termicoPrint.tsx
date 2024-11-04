@@ -151,7 +151,7 @@ export default function TermicoPrint({ order }: { order: Order }) {
             </table>
           </div>
           <p className={styles.garantiaBox}>
-            Garantia: {order.garantia | 3} Meses
+            Garantia: {order.garantia || 3} Meses
           </p>
         </section>
         <section>

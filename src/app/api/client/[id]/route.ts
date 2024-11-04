@@ -42,12 +42,12 @@ export async function PATCH(
   try {
     const formData = await req.formData();
     const clientData = {
-      fullName: formData.get("fullName") as string,
-      numero: formData.get("numero") as string,
-      correo: formData.get("correo") as string,
-      direccion: formData.get("direccion") as string,
-      notas: formData.get("notas") as string,
-      id: formData.get("id") as string,
+      fullName: (formData.get("fullName") as string).trim(),
+      numero: (formData.get("numero") as string).trim(),
+      correo: (formData.get("correo") as string).trim(),
+      direccion: (formData.get("direccion") as string).trim(),
+      notas: (formData.get("notas") as string).trim(),
+      id: (formData.get("id") as string).trim(),
     };
 
     // Buscar el cliente por su id y actualizarlo

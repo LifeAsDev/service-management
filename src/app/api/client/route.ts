@@ -10,12 +10,12 @@ export async function POST(req: Request, { params }: { params: any }) {
   try {
     const formData = await req.formData();
     const clientData = {
-      fullName: formData.get("fullName") as string,
-      numero: formData.get("numero") as string,
-      correo: formData.get("correo") as string,
-      direccion: formData.get("direccion") as string,
-      notas: formData.get("notas") as string,
-      id: formData.get("id") as string,
+      fullName: (formData.get("fullName") as string).trim(),
+      numero: (formData.get("numero") as string).trim(),
+      correo: (formData.get("correo") as string).trim(),
+      direccion: (formData.get("direccion") as string).trim(),
+      notas: (formData.get("notas") as string).trim(),
+      id: (formData.get("id") as string).trim(),
     };
 
     // Verificar si ya existe un cliente con el mismo ID

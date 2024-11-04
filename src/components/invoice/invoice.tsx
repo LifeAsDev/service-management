@@ -23,6 +23,7 @@ export default function Invoice({ id }: { id: string }) {
     },
     numeroDeSerie: "",
     contraseña: "",
+    garantia: 3,
   });
   const [orderFetch, setOrderFetch] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);

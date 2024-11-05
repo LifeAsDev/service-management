@@ -93,7 +93,7 @@ export default function OrderCostForm({
       <ul className={styles.costoUl}>
         {costs &&
           costs.map((item, index) => (
-            <li key={item.key + item.costo} className={styles.costoLi}>
+            <li key={item.key} className={styles.costoLi}>
               <div className={styles.inputGroup}>
                 <label htmlFor={`description${index}`} className={styles.label}>
                   Descripcion:

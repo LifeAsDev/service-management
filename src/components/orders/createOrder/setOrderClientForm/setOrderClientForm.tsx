@@ -7,6 +7,7 @@ import {
   formatPhone,
   formatRut,
 } from "@/components/clients/createClient/clientForm/clientForm";
+import Link from "next/link";
 
 export default function SetOrderClientForm({
   setClientErrors,
@@ -156,6 +157,8 @@ export default function SetOrderClientForm({
       [name]: value, // Actualiza el campo correspondiente con el valor del input
     }));
   };
+  const clientId: string = (clientSelected as Client)._id!; // Reemplaza con el ID real
+  console.log(clientId);
   return (
     <div className={styles.setOrderClientForm}>
       <h3>Cliente</h3>
@@ -261,37 +264,45 @@ export default function SetOrderClientForm({
           </ul>
         </div>
       )}
-      <p
-        onClick={() => {
-          setIsHidden(!isHidden);
-          setClientSelected(false);
-        }}
-        className={styles.toggleClientFields}
-      >
-        {isHidden ? "Crear nuevo cliente" : "Ocultar"}
-        <svg
-          className={`${isHidden && styles.rotate180}`}
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+      <div className={styles.clientBottomBox}>
+        <p
+          onClick={() => {
+            setIsHidden(!isHidden);
+            setClientSelected(false);
+          }}
+          className={styles.toggleClientFields}
         >
-          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-          <g
-            id="SVGRepo_tracerCarrier"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          ></g>
-          <g id="SVGRepo_iconCarrier">
-            <path
-              d="M7 10L12 15L17 10"
-              stroke="#cacde8"
-              strokeWidth="1.5"
+          {isHidden ? "Crear nuevo cliente" : "Ocultar"}
+          <svg
+            className={`${isHidden && styles.rotate180}`}
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
               strokeLinecap="round"
               strokeLinejoin="round"
-            ></path>
-          </g>
-        </svg>
-      </p>
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <path
+                d="M7 10L12 15L17 10"
+                stroke="#cacde8"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></path>
+            </g>
+          </svg>
+        </p>
+        <Link
+          className={styles.toggleClientFields}
+          href={`/clients/edit/${clientId}`}
+        >
+          Editar
+        </Link>
+      </div>
       <div
         style={{ height: 0 }}
         id="setOrderClientForm"

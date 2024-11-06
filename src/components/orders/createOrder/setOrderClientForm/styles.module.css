@@ -163,3 +163,9 @@
   position: absolute;
   right: 0;
 }
+
+.clientBottomBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

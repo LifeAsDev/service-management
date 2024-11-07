@@ -47,6 +47,17 @@ export default function PrintOrder({ order }: { order: Order }) {
   return (
     <>
       <div className={styles.printOrderMainBox}>
+        {order.estado === "Entregado" && (
+          <div className={styles.paidImgBox}>
+            <Image
+              src={"/pagado.png"}
+              width={1000}
+              height={1000}
+              alt={"Sello de pagado"}
+            ></Image>
+          </div>
+        )}
+
         <section>
           <div className={styles.business}>
             <Image

@@ -10,6 +10,7 @@
   flex-direction: column;
   gap: 1.5em;
   padding: 2em;
+  position: relative;
 }
 
 .business {
@@ -162,4 +163,18 @@
 .garantiaBox {
   color: black;
   padding-left: 0.5em;
+}
+
+.paidImgBox {
+  position: absolute;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 1em;
+}
+
+.paidImgBox img {
+  opacity: 30%;
+  filter: hue-rotate(-120deg) brightness(1) saturate(2.5);
 }

@@ -38,6 +38,16 @@ export default function Login() {
 
   return (
     <main className={styles.main}>
+      {process.env.NEXT_PUBLIC_SHOW_IN_PORTFOLIO === "true" && (
+        <div className={styles.credentialBox}>
+          <p>
+            <strong>Username:</strong> Usuario39
+          </p>
+          <p>
+            <strong>Contraseña:</strong> K7VY4R
+          </p>
+        </div>
+      )}
       <div className={styles.container}>
         <h1>Iniciar Sesión</h1>
         <div className={styles.inputGroup}>

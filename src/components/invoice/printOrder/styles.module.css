@@ -1,180 +1,182 @@
 @media print {
-  .printOrderMainBox {
-    margin: 0 0;
-  }
+	.printOrderMainBox {
+		margin: 0 0;
+	}
 }
 
 .printOrderMainBox {
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5em;
-  padding: 2em;
-  position: relative;
+	background-color: white;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5em;
+	padding: 2em;
+	position: relative;
 }
 
 .business {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
 .business h2 {
-  color: var(--very-dark-grayish-blue-1);
-  font-size: 2em;
-  font-weight: 800;
+	color: var(--very-dark-grayish-blue-1);
+	font-size: 2em;
+	font-weight: 800;
 }
 .dataBox {
-  min-width: 20em;
-  height: fit-content;
+	min-width: 20em;
+	height: fit-content;
 }
 
 .dataHeader {
-  background-color: black;
-  color: white;
-  width: 100%;
-  padding: 0.1em 0.5em;
+	background-color: black;
+	color: white;
+	width: 100%;
+	padding: 0.1em 0.5em;
 }
 
 .dataHeader span {
-  text-align: center;
-  width: 100%;
-  display: block;
+	text-align: center;
+	width: 100%;
+	display: block;
 }
 .printOrderMainBox section {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--light-grayish-blue);
-  padding-bottom: 1em;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	border-bottom: 1px solid var(--light-grayish-blue);
+	padding-bottom: 1em;
 }
 
 .ul {
-  width: 100%;
+	width: 100%;
 
-  color: black;
-  border: 1px solid var(--light-grayish-blue);
+	color: black;
+	border: 1px solid var(--light-grayish-blue);
 }
 .ul span {
-  text-align: center;
-  width: 100%;
-  display: block;
-  font-weight: 600;
+	text-align: center;
+	width: 100%;
+	display: block;
+	font-weight: 600;
 }
 
 .section2 {
-  gap: 1em;
+	gap: 1em;
 }
 .section2 .dataBox {
-  margin: 0;
-  width: 50%;
+	margin: 0;
+	width: 50%;
 }
 .section2 li {
-  margin-left: 0.5em;
-  font-weight: 400;
+	margin-left: 0.5em;
+	font-weight: 400;
 }
 
 .section2 li span {
-  text-align: left;
-  display: inline;
-  font-weight: 650;
+	text-align: left;
+	display: inline;
+	font-weight: 650;
 }
 
 .section3 li {
-  margin-left: 0.5em;
-  font-weight: 400;
+	margin-left: 0.5em;
+	font-weight: 400;
 }
 
 .section3 li span {
-  text-align: left;
-  display: inline;
-  font-weight: 650;
+	text-align: left;
+	display: inline;
+	font-weight: 650;
 }
 .section3 {
-  gap: 1em;
+	gap: 1em;
 }
 
 .section3 .dataBox {
-  width: 50%;
+	width: 50%;
 }
 
 .section3 .dataHeader {
-  text-align: center;
+	text-align: center;
 }
 
 .section3 .dataBox:first-of-type .dataHeader {
-  text-align: left;
+	text-align: left;
 }
 
 .section3 table {
-  border: 1px solid var(--light-grayish-blue);
-  color: black;
-  width: 100%;
+	border: 1px solid var(--light-grayish-blue);
+	color: black;
+	width: 100%;
 }
 .section3 thead {
-  border-bottom: 1px solid var(--light-grayish-blue);
-  color: black;
-  text-align: left;
-  padding-left: 0.5em;
+	border-bottom: 1px solid var(--light-grayish-blue);
+	color: black;
+	text-align: left;
+	padding-left: 0.5em;
 }
 
 .section3 td {
-  padding: 0.5em 0;
+	padding: 0.5em 0;
 }
 
 .section3 th:first-of-type,
 .section3 td:first-of-type {
-  padding-left: 0.5em;
+	padding-left: 0.5em;
 }
 
 .costBox {
-  display: flex;
-  flex-direction: row;
-  font-weight: 400;
+	display: flex;
+	flex-direction: row;
+	font-weight: 400;
 }
 
 .costBoxLeft {
-  background-color: black;
-  color: white;
-  width: 7em;
-  padding: 0 0.25em;
+	background-color: black;
+	color: white;
+	width: 7em;
+	padding: 0 0.25em;
 }
 
 .costBoxRight {
-  color: black;
-  min-width: 7em;
-  border: 1px solid var(--light-grayish-blue);
-  text-align: right;
-  padding: 0 0.25em;
+	color: black;
+	min-width: 7em;
+	border: 1px solid var(--light-grayish-blue);
+	text-align: right;
+	padding: 0 0.25em;
 }
 
 .totalCostBox {
-  margin-left: auto;
+	margin-left: auto;
 }
 
 .keyCost {
-  white-space: nowrap;
+	white-space: nowrap;
 }
 
 .tr td {
-  padding-right: 1em;
+	padding-right: 1em;
 }
 
 .garantiaBox {
-  color: black;
-  padding-left: 0.5em;
+	color: black;
+	padding-left: 0.5em;
+	display: flex;
+	justify-content: space-between;
 }
 
 .paidImgBox {
-  position: absolute;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  padding: 1em;
+	position: absolute;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	padding: 1em;
 }
 
 .paidImgBox img {
-  opacity: 30%;
-  filter: hue-rotate(-120deg) brightness(1) saturate(2.5);
+	opacity: 30%;
+	filter: hue-rotate(-120deg) brightness(1) saturate(2.5);
 }
